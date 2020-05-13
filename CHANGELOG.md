@@ -1,3 +1,10 @@
+# 1.0.0 (2020-05-13)
+
+
+### Bug Fixes
+
+* **deps:** npm audit fix ([627a27b](https://github.com/adobe/helix-content-proxy/commit/627a27b165f08834dbcef6e46741f96e79fbdb81))
+
 ## [1.8.25](https://github.com/adobe/helix-service/compare/v1.8.24...v1.8.25) (2020-05-07)
 
 
