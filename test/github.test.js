@@ -35,6 +35,9 @@ describe('GitHub Integration Tests', () => {
       repo: 'helix-pipeline',
       ref: '9526b3b315a8b8a5e48c8e70fff362bf43426020',
       path: 'docs/markdown.md',
+      __ow_headers: {
+        'x-request-id': 'fake'
+      }
     });
 
     assert.equal(result.statusCode, 200);
