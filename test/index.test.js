@@ -42,34 +42,34 @@ describe('Index Tests', () => {
 mountpoints:
   /foo: https://www.example.com/`));
 
-  const result = await index({
-    owner: 'adobe',
-    repo: 'theblog',
-    ref: 'fake',
-    path: '/foo/index.md',
-  });
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'fake',
+      path: '/foo/index.md',
+    });
 
-  assert.equal(result.statusCode, 501);
+    assert.equal(result.statusCode, 501);
   });
 
   it('index returns 504 upon timeout', async function shortTimeout() {
     const { server } = this.polly;
 
     server
-    .get('https://raw.githubusercontent.com/adobe/theblog/fake/fstab.yaml')
-    .intercept(async (_, res) => {
-      await server.timeout(50);
-      res.sendStatus(500);
+      .get('https://raw.githubusercontent.com/adobe/theblog/fake/fstab.yaml')
+      .intercept(async (_, res) => {
+        await server.timeout(50);
+        res.sendStatus(500);
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'fake',
+      path: '/foo/index.md',
+      HTTP_TIMEOUT: 10,
     });
 
-  const result = await index({
-    owner: 'adobe',
-    repo: 'theblog',
-    ref: 'fake',
-    path: '/foo/index.md',
-    HTTP_TIMEOUT: 10
-  });
-
-  assert.equal(result.statusCode, 504);
+    assert.equal(result.statusCode, 504);
   });
 });

@@ -69,7 +69,7 @@ async function main({
   };
 
   const externalOptions = {
-    timeout: HTTP_TIMEOUT * 10 || 10 * 1000,
+    timeout: HTTP_TIMEOUT ? HTTP_TIMEOUT * 10 : 10 * 1000,
     requestId: originalHeaders['x-request-id']
     || originalHeaders['x-cdn-request-id']
     || originalHeaders['x-openwhisk-activation-id']
@@ -98,9 +98,16 @@ async function main({
       };
     }
 
-    return handler.handle(mp || githubRootPath,
-      owner, repo, ref, path, log,
-      mp ?  externalOptions: githubOptions);
+    return handler.handle({
+      mp,
+      githubRootPath,
+      owner,
+      repo,
+      ref,
+      path,
+      log,
+      options: mp ? externalOptions : githubOptions,
+    });
   } catch (e) {
     if (e instanceof TimeoutError) {
       return {
@@ -111,7 +118,7 @@ async function main({
     log.error('Unhandled error', e, e.stack);
     return {
       body: e.message,
-      statusCode: 
+      statusCode:
       /* istanbul ignore next */
       e.status || 500,
     };

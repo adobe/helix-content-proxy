@@ -36,8 +36,8 @@ describe('GitHub Integration Tests', () => {
       ref: '9526b3b315a8b8a5e48c8e70fff362bf43426020',
       path: 'docs/markdown.md',
       __ow_headers: {
-        'x-request-id': 'fake'
-      }
+        'x-request-id': 'fake',
+      },
     });
 
     assert.equal(result.statusCode, 200);
@@ -52,14 +52,14 @@ describe('GitHub Integration Tests', () => {
       .intercept((_, res) => res.sendStatus(404));
 
 
-    let foundtoken, foundid;
+    let foundtoken;
+    let foundid;
     server
       .get('https://raw.githubusercontent.com/adobe/project-helix/master/README.md')
       .intercept((req, res) => {
-        console.log(req.headers);
         foundtoken = req.headers.authorization;
-        foundid = req.headers['x-request-id']
-        res.status(200).send('# Read me')
+        foundid = req.headers['x-request-id'];
+        res.status(200).send('# Read me');
       });
 
     const result = await index({
@@ -69,8 +69,8 @@ describe('GitHub Integration Tests', () => {
       path: 'README.md',
       __ow_headers: {
         'x-request-id': 'fake',
-        'x-github-token': 'undisclosed-token'
-      }
+        'x-github-token': 'undisclosed-token',
+      },
     });
 
     assert.equal(result.statusCode, 200);
@@ -87,14 +87,14 @@ describe('GitHub Integration Tests', () => {
       .intercept((_, res) => res.sendStatus(404));
 
 
-    let foundtoken, foundid;
+    let foundtoken;
+    let foundid;
     server
       .get('https://raw.githubusercontent.com/adobe/project-helix/master/README.md')
       .intercept((req, res) => {
-        console.log(req.headers);
         foundtoken = req.headers.authorization;
-        foundid = req.headers['x-request-id']
-        res.status(200).send('# Read me')
+        foundid = req.headers['x-request-id'];
+        res.status(200).send('# Read me');
       });
 
     const result = await index({
@@ -105,7 +105,7 @@ describe('GitHub Integration Tests', () => {
       __ow_headers: {
         'x-request-id': 'fake',
       },
-      GITHUB_TOKEN: 'fake-token'
+      GITHUB_TOKEN: 'fake-token',
     });
 
     assert.equal(result.statusCode, 200);

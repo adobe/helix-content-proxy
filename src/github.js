@@ -49,8 +49,10 @@ function isimmutable(ref) {
   return ref && ref.match(/^[a-f0-9]{40}$/i);
 }
 
-async function handle(root, owner, repo, ref, path, log, options) {
-  const uri = computeGithubURI(root, owner, repo, ref, path);
+async function handle({
+  githubRootPath, owner, repo, ref, path, log, options,
+}) {
+  const uri = computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, options);
   if (response.ok) {
     return {
@@ -59,7 +61,7 @@ async function handle(root, owner, repo, ref, path, log, options) {
       headers: {
         'x-source-location': uri,
         'cache-control': isimmutable(ref) ? 'max-age=30758400' : 'max-age=60',
-        'surrogate-control': isimmutable(ref) ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60'
+        'surrogate-control': isimmutable(ref) ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
       },
     };
   }
