@@ -42,8 +42,14 @@ const HANDLERS = [
 async function main({
   owner, repo, ref, path,
   REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN,
-  __ow_headers: originalHeaders, __ow_logger: log,
+  __ow_headers: originalHeaders = {}, __ow_logger: log,
 }) {
+  if (!(owner && repo && ref && path)) {
+    return {
+      statusCode: 400,
+      body: 'owner, repo, ref, and path parameters are required'
+    }
+  }
   const gitHubToken = GITHUB_TOKEN || originalHeaders['x-github-token'];
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
 
@@ -71,7 +77,7 @@ async function main({
   };
 
   try {
-    const fstab = await fetchFSTab(githubRootPath, owner, repo, ref, 'helix-fstab.yaml', log, githubOptions);
+    const fstab = await fetchFSTab(githubRootPath, owner, repo, ref, log, githubOptions);
     const mount = await new MountConfig().withSource(fstab).init();
 
     // black magic from helix-pipeline
@@ -102,6 +108,7 @@ async function main({
         body: e.message,
       };
     }
+    log.error('Unhandled error', e, e.stack);
     return {
       body: e.message,
       statusCode: e.status || 500,
