@@ -97,7 +97,7 @@ async function main({
         statusCode: 501, // not implemented
       };
     }
-    
+
     return handler.handle(mp || githubRootPath,
       owner, repo, ref, path, log,
       mp ?  externalOptions: githubOptions);
@@ -111,7 +111,9 @@ async function main({
     log.error('Unhandled error', e, e.stack);
     return {
       body: e.message,
-      statusCode: e.status || 500,
+      statusCode: 
+      /* istanbul ignore next */
+      e.status || 500,
     };
   }
 }
