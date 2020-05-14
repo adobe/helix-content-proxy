@@ -27,4 +27,16 @@ describe('GitHub Integration Tests', () => {
     assert.equal(result.statusCode, 200);
     assert.equal(result.body.indexOf('# Markdown Features in Project Helix'), 0);
   });
+
+  it('Retrieves Markdown from GitHub when FSTab.yaml is present', async () => {
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: '04f19cd404780382c5a53d0cf64fbe4b0b827eff',
+      path: '/index.md',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.indexOf('---'), 0);
+  });
 });

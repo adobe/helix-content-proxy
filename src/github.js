@@ -30,7 +30,7 @@ function computeGithubURI(root, owner, repo, ref, path) {
 }
 
 async function fetchFSTab(root, owner, repo, ref, log, options) {
-  const response = await fetch(computeGithubURI(root, owner, repo, ref, 'helix-fstab.yaml'), options);
+  const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
   if (response.ok) {
     return response.text();
   } else if (response.status === 404) {
