@@ -9,16 +9,20 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const URL = require('url');
+const { URL } = require('url');
+
 const { fetch } = require('@adobe/helix-fetch').context({
   httpsProtocols: process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
 const { utils } = require('@adobe/helix-shared');
 
-async function handle(mp, owner, repo, ref, _, log, options) {
+async function handle({
+  mp, owner, repo, ref, log, options,
+}) {
   const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/gdocs2md@v1');
+
   url.searchParams.append('path', mp.relPath);
-  url.searchParams.append('rootId'.mp.id);
+  url.searchParams.append('rootId', mp.id);
 
   url.searchParams.append('rid', options.requestId);
   url.searchParams.append('src', `${owner}/${repo}/${ref}`);
@@ -32,7 +36,12 @@ async function handle(mp, owner, repo, ref, _, log, options) {
       body: await response.text(),
       statusCode: 200,
       headers: {
-        'x-source-location': response.headers.get('x-source-location'),
+        // if the backend does not provide a source location, use the URL
+        'x-source-location': await response.headers.get('x-source-location') || url.href,
+        // cache for Runtime (non-flushable) – 1 minute
+        'cache-control': 'max-age=60',
+        // cache for Fastly (flushable) – endless
+        'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       },
     };
   }
