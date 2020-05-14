@@ -51,6 +51,7 @@ describe('GitHub Integration Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.body.indexOf('---'), 0);
+    assert.equal(result.headers['x-source-location'], 'https://raw.githubusercontent.com/adobe/theblog/04f19cd404780382c5a53d0cf64fbe4b0b827eff/index.md');
   });
 
   it('Fails to retrieve Markdown from GitHub is malfunctioning', async function badGitHub() {
