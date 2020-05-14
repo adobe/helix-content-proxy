@@ -83,7 +83,7 @@ async function main({
     // black magic from helix-pipeline
     const idxLastSlash = path.lastIndexOf('/');
     const idx = path.indexOf('.', idxLastSlash + 1);
-    const resourcePath = decodeURIComponent(path.substring(0, idx));
+    const resourcePath = path.substring(0, idx);
 
     // mountpoint
     const mp = mount.match(resourcePath);
