@@ -16,8 +16,13 @@
 
 const assert = require('assert');
 const index = require('../src/index.js').main;
+const { setupPolly } = require('./utils.js');
 
 describe('Index Tests', () => {
+  setupPolly({
+    recordIfMissing: false,
+  });
+
   it('index function is present', async () => {
     const result = await index({});
     assert.deepEqual(result.statusCode, 400);
@@ -26,5 +31,24 @@ describe('Index Tests', () => {
   it('index function returns an object', async () => {
     const result = await index();
     assert.equal(typeof result, 'object');
+  });
+
+  it('index bails if mount point is not supported', async function badMountpoint() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/fake/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(`
+mountpoints:
+  /foo: https://www.example.com/`));
+
+  const result = await index({
+    owner: 'adobe',
+    repo: 'theblog',
+    ref: 'fake',
+    path: '/foo/index.md',
+  });
+
+  assert.equal(result.statusCode, 501);
   });
 });
