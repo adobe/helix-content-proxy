@@ -68,7 +68,7 @@ async function handle({
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${uri} (${response.status}) from GitHub`);
   return {
     statusCode: utils.propagateStatusCode(response.status),
-    body: response.text(),
+    body: await response.text(),
   };
 }
 

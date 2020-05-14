@@ -38,7 +38,7 @@ async function handle(mp, owner, repo, ref, _, log, options) {
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md`);
   return {
     statusCode: utils.propagateStatusCode(response.statusCode),
-    body: response.text(),
+    body: await response.text(),
   };
 }
 
