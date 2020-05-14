@@ -12,6 +12,8 @@
 
 /* eslint-env mocha */
 
+process.env.FORCE_HTTP1 = 'true';
+
 const assert = require('assert');
 const index = require('../src/index.js').main;
 const { setupPolly } = require('./utils.js');
@@ -19,10 +21,6 @@ const { setupPolly } = require('./utils.js');
 describe('GitHub Integration Tests', () => {
   setupPolly({
     recordIfMissing: false,
-  });
-
-  before(() => {
-    process.env.FORCE_HTTP1 = 'true';
   });
 
   after(() => {
