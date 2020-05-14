@@ -16,7 +16,6 @@ const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha } = require('@pollyjs/core');
 
 function setupPolly(opts) {
-
   setupMocha({
     logging: false,
     recordFailedRequests: true,
@@ -37,4 +36,4 @@ function setupPolly(opts) {
   });
 }
 
-module.exports = { setupPolly }
+module.exports = { setupPolly };

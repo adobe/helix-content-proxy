@@ -27,7 +27,7 @@ describe('GitHub Integration Tests', () => {
 
   after(() => {
     delete process.env.FORCE_HTTP1;
-  })
+  });
 
   it('Retrieves Markdown from GitHub', async () => {
     const result = await index({
@@ -75,6 +75,27 @@ describe('GitHub Integration Tests', () => {
 
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(503));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
+      path: '/index.md',
+    });
+
+    assert.equal(result.statusCode, 503);
+  });
+
+  it('Fails to retrieve Markdown from GitHub is partially down', async function badGitHub() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(404));
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/index.md')
       .intercept((_, res) => res.sendStatus(503));
 
     const result = await index({

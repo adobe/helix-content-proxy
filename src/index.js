@@ -99,7 +99,7 @@ async function main({
     }
 
     return handler.handle(mp || githubRootPath,
-      owner, repo, ref, path,
+      owner, repo, ref, path, log,
       mp ? githubOptions : externalOptions);
   } catch (e) {
     if (e instanceof TimeoutError) {
