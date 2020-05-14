@@ -1,3 +1,24 @@
+# [1.1.0](https://github.com/adobe/helix-content-proxy/compare/v1.0.0...v1.1.0) (2020-05-14)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) ([#2](https://github.com/adobe/helix-content-proxy/issues/2)) ([481d817](https://github.com/adobe/helix-content-proxy/commit/481d817e9c6538e92799f04571f5443caba58a60))
+* **deps:** update helix-shared version ([ceed735](https://github.com/adobe/helix-content-proxy/commit/ceed735b0b7a59296b7a07cd00f6fea860450141))
+* **fetch:** await responses ([3d57200](https://github.com/adobe/helix-content-proxy/commit/3d572004d726878517e2bf04d4dda60f15117811))
+* **github:** fix URL construction ([0de43b5](https://github.com/adobe/helix-content-proxy/commit/0de43b53803249da89093aca201004f4f8dc6f73))
+* **github:** use correct fstab.yaml file name ([f0d25ce](https://github.com/adobe/helix-content-proxy/commit/f0d25ce040aaf919cb7e62f68cc5115b208531bc))
+* **google:** correctly handle missing results from google conversion ([363aef1](https://github.com/adobe/helix-content-proxy/commit/363aef1f0e669118f3b6e37df7bc96c94346a6d2))
+* **google:** let google fetch from gdocs2md ([5cdf475](https://github.com/adobe/helix-content-proxy/commit/5cdf475a4b9ac51f6c0229e17595eb77a021cd66))
+* **index:** pass correct default options to GitHub and external handlers ([c197336](https://github.com/adobe/helix-content-proxy/commit/c197336be90b3496af5ab0e3d5163e66f567278b))
+* **onedrive:** fix onedrive retrieval ([27f23de](https://github.com/adobe/helix-content-proxy/commit/27f23ded0939a47d6e2cf134fd46195b1dd00aad))
+
+
+### Features
+
+* **github:** set cache and surrogate-control headers for immutable content ([ebb28a2](https://github.com/adobe/helix-content-proxy/commit/ebb28a2eeed47b993bfe58e41d7e3705afabe84b))
+* **index:** implement github, google, and onedrive handlers ([9275b76](https://github.com/adobe/helix-content-proxy/commit/9275b76b4283918034b5b1090e76dfceb3866905))
+
 # 1.0.0 (2020-05-13)
 
 
