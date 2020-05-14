@@ -41,6 +41,20 @@ describe('GitHub Integration Tests', () => {
     assert.equal(result.body.indexOf('# Markdown Features in Project Helix'), 0);
   });
 
+  it('Retrieves Markdown from GitHub with low cache', async () => {
+    const result = await index({
+      owner: 'adobe',
+      repo: 'helix-pipeline',
+      ref: 'master',
+      path: 'docs/markdown.md',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.indexOf('# Markdown Features in Project Helix'), 0);
+    assert.equal(result.headers['cache-control'], 'max-age=60');
+    assert.equal(result.headers['surrogate-control'], 'max-age=60');
+  });
+
   it('Retrieves Markdown from GitHub when FSTab.yaml is present', async () => {
     const result = await index({
       owner: 'adobe',
