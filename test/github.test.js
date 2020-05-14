@@ -14,8 +14,21 @@
 
 const assert = require('assert');
 const index = require('../src/index.js').main;
+const { setupPolly } = require('./utils.js');
 
 describe('GitHub Integration Tests', () => {
+  setupPolly({
+    recordIfMissing: false,
+  });
+
+  before(() => {
+    process.env.FORCE_HTTP1 = 'true';
+  });
+
+  after(() => {
+    delete process.env.FORCE_HTTP1;
+  })
+
   it('Retrieves Markdown from GitHub', async () => {
     const result = await index({
       owner: 'adobe',
@@ -38,5 +51,39 @@ describe('GitHub Integration Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.body.indexOf('---'), 0);
+  });
+
+  it('Fails to retrieve Markdown from GitHub is malfunctioning', async function badGitHub() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(500));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
+      path: '/index.md',
+    });
+
+    assert.equal(result.statusCode, 502);
+  });
+
+  it('Fails to retrieve Markdown from GitHub is down', async function badGitHub() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(503));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
+      path: '/index.md',
+    });
+
+    assert.equal(result.statusCode, 503);
   });
 });
