@@ -97,10 +97,10 @@ async function main({
         statusCode: 501, // not implemented
       };
     }
-
+    
     return handler.handle(mp || githubRootPath,
       owner, repo, ref, path, log,
-      mp ? githubOptions : externalOptions);
+      mp ?  externalOptions: githubOptions);
   } catch (e) {
     if (e instanceof TimeoutError) {
       return {

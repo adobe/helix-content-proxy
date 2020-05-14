@@ -44,6 +44,76 @@ describe('GitHub Integration Tests', () => {
     assert.equal(result.body.indexOf('# Markdown Features in Project Helix'), 0);
   });
 
+  it('Retrieves Markdown from GitHub with Token from Headers', async function staticToken() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/project-helix/master/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(404));
+
+
+    let foundtoken, foundid;
+    server
+      .get('https://raw.githubusercontent.com/adobe/project-helix/master/README.md')
+      .intercept((req, res) => {
+        console.log(req.headers);
+        foundtoken = req.headers.authorization;
+        foundid = req.headers['x-request-id']
+        res.status(200).send('# Read me')
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'project-helix',
+      ref: 'master',
+      path: 'README.md',
+      __ow_headers: {
+        'x-request-id': 'fake',
+        'x-github-token': 'undisclosed-token'
+      }
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.indexOf('# Read me'), 0);
+    assert.equal(foundtoken, 'token undisclosed-token');
+    assert.equal(foundid, 'fake');
+  });
+
+  it('Retrieves Markdown from GitHub with Token from Config', async function staticToken() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/project-helix/master/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(404));
+
+
+    let foundtoken, foundid;
+    server
+      .get('https://raw.githubusercontent.com/adobe/project-helix/master/README.md')
+      .intercept((req, res) => {
+        console.log(req.headers);
+        foundtoken = req.headers.authorization;
+        foundid = req.headers['x-request-id']
+        res.status(200).send('# Read me')
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'project-helix',
+      ref: 'master',
+      path: 'README.md',
+      __ow_headers: {
+        'x-request-id': 'fake',
+      },
+      GITHUB_TOKEN: 'fake-token'
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.indexOf('# Read me'), 0);
+    assert.equal(foundtoken, 'token fake-token');
+    assert.equal(foundid, 'fake');
+  });
+
   it('Retrieves Markdown from GitHub with low cache', async () => {
     const result = await index({
       owner: 'adobe',
