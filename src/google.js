@@ -12,7 +12,9 @@
 const { URL } = require('url');
 
 const { fetch } = require('@adobe/helix-fetch').context({
-  httpsProtocols: process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
+  httpsProtocols: 
+  /* istanbul ignore next */
+  process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
 const { utils } = require('@adobe/helix-shared');
 
@@ -45,10 +47,13 @@ async function handle({
       },
     };
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md:`, await response.text());
+  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md`);
   return {
-    statusCode: utils.propagateStatusCode(response.statusCode),
+    statusCode: utils.propagateStatusCode(response.status),
     body: await response.text(),
+    headers: {
+      'cache-control': 'max-age=60',
+    },
   };
 }
 

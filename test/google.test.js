@@ -53,4 +53,23 @@ describe('Google Integration Tests', () => {
     assert.equal(result.headers['cache-control'], 'max-age=60');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
   }).timeout(5000);
+
+  it('Retrieves Missing Document from Google Docs', async function okGoogle() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/g/not-here.md',
+    });
+
+    assert.equal(result.statusCode, 404);
+    assert.equal(result.body, 'error while converting document');
+    assert.equal(result.headers['cache-control'], 'max-age=60');
+  }).timeout(5000);
 });
