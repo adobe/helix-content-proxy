@@ -12,7 +12,7 @@
 const { URL } = require('url');
 
 const { fetch } = require('@adobe/helix-fetch').context({
-  httpsProtocols: 
+  httpsProtocols:
   /* istanbul ignore next */
   process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });

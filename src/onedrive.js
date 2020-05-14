@@ -12,7 +12,7 @@
 const { URL } = require('url');
 
 const { fetch } = require('@adobe/helix-fetch').context({
-  httpsProtocols: 
+  httpsProtocols:
   /* istanbul ignore next */
   process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
@@ -22,7 +22,7 @@ async function handle({
   mp, owner, repo, ref, log, options,
 }) {
   const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v1');
-  url.searchParams.append('path', mp.relPath + '.docx');
+  url.searchParams.append('path', `${mp.relPath}.docx`);
   url.searchParams.append('shareLink', mp.url);
 
   url.searchParams.append('rid', options.requestId);
@@ -52,7 +52,7 @@ async function handle({
     body: await response.text(),
     headers: {
       'cache-control': 'max-age=60',
-    }
+    },
   };
 }
 
