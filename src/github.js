@@ -26,7 +26,7 @@ function computeGithubURI(root, owner, repo, ref, path) {
 
   rootURI.pathname = fullPath;
 
-  return rootURI.href;
+  return URL.format(rootURI);
 }
 
 async function fetchFSTab(root, owner, repo, ref, log, options) {
@@ -49,7 +49,7 @@ async function handle(root, owner, repo, ref, path, log, options) {
   if (response.ok) {
     return {
       statusCode: 200,
-      body: response.text(),
+      body: await response.text(),
       headers: {
         'x-source-location': uri,
       },

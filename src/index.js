@@ -47,8 +47,8 @@ async function main({
   if (!(owner && repo && ref && path)) {
     return {
       statusCode: 400,
-      body: 'owner, repo, ref, and path parameters are required'
-    }
+      body: 'owner, repo, ref, and path parameters are required',
+    };
   }
   const gitHubToken = GITHUB_TOKEN || originalHeaders['x-github-token'];
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
