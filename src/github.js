@@ -40,7 +40,7 @@ async function fetchFSTab(root, owner, repo, ref, log, options) {
     return '';
   }
   log[utils.logLevelForStatusCode(response.status)](`Invalid response (${response.status}) when fetching fstab for ${owner}/${repo}`);
-  const err = new Error('Unable to fetch fstab');
+  const err = new Error('Unable to fetch fstab', await response.text());
   err.status = utils.propagateStatusCode(response.status);
   throw err;
 }

@@ -29,13 +29,14 @@ async function handle(mp, owner, repo, ref, _, log, options) {
   const response = await fetch(url.href, fetchopts);
   if (response.ok) {
     return {
+      body: await response.text(),
       statusCode: 200,
       headers: {
         'x-source-location': response.headers.get('x-source-location'),
       },
     };
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md`);
+  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md:`, await response.text());
   return {
     statusCode: utils.propagateStatusCode(response.statusCode),
     body: await response.text(),

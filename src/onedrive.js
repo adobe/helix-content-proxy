@@ -16,7 +16,7 @@ const { fetch } = require('@adobe/helix-fetch').context({
 const { utils } = require('@adobe/helix-shared');
 
 async function handle(mp, owner, repo, ref, _, log, options) {
-  const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/word22md@v1');
+  const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v1');
   url.searchParams.append('path', mp.relPath);
   url.searchParams.append('rootId'.mp.id);
 
@@ -29,13 +29,14 @@ async function handle(mp, owner, repo, ref, _, log, options) {
   const response = await fetch(url.href, fetchopts);
   if (response.ok) {
     return {
+      body: await response.text(),
       statusCode: 200,
       headers: {
         'x-source-location': response.headers.get('x-source-location'),
       },
     };
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md`);
+  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md:`, await response.text());
   return {
     statusCode: utils.propagateStatusCode(response.statusCode),
     body: await response.text(),
