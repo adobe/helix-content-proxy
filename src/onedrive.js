@@ -9,16 +9,21 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const URL = require('url');
+const { URL } = require('url');
+
 const { fetch } = require('@adobe/helix-fetch').context({
-  httpsProtocols: process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
+  httpsProtocols: 
+  /* istanbul ignore next */
+  process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
 const { utils } = require('@adobe/helix-shared');
 
-async function handle(mp, owner, repo, ref, _, log, options) {
+async function handle({
+  mp, owner, repo, ref, log, options,
+}) {
   const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v1');
-  url.searchParams.append('path', mp.relPath);
-  url.searchParams.append('rootId'.mp.id);
+  url.searchParams.append('path', mp.relPath + '.docx');
+  url.searchParams.append('shareLink', mp.url);
 
   url.searchParams.append('rid', options.requestId);
   url.searchParams.append('src', `${owner}/${repo}/${ref}`);
@@ -32,14 +37,22 @@ async function handle(mp, owner, repo, ref, _, log, options) {
       body: await response.text(),
       statusCode: 200,
       headers: {
-        'x-source-location': response.headers.get('x-source-location'),
+        // if the backend does not provide a source location, use the URL
+        'x-source-location': await response.headers.get('x-source-location'),
+        // cache for Runtime (non-flushable) – 1 minute
+        'cache-control': 'max-age=60',
+        // cache for Fastly (flushable) – endless
+        'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       },
     };
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md:`, await response.text());
+  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md`);
   return {
-    statusCode: utils.propagateStatusCode(response.statusCode),
+    statusCode: utils.propagateStatusCode(response.status),
     body: await response.text(),
+    headers: {
+      'cache-control': 'max-age=60',
+    }
   };
 }
 
