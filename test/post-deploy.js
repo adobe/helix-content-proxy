@@ -33,6 +33,8 @@ function getbaseurl() {
 
 describe('Post-Deploy Tests', () => {
   it('Helix Pages README', async () => {
+    console.log(`Trying https://adobeioruntime.net/${getbaseurl()}?owner=adobe&repo=helix-pages&ref=17e0aeeb8639b8dae1c9243cf9fbd0042f564750&path=index.md`)
+
     await chai
       .request('https://adobeioruntime.net/')
       .get(`${getbaseurl()}?owner=adobe&repo=helix-pages&ref=17e0aeeb8639b8dae1c9243cf9fbd0042f564750&path=index.md`)
