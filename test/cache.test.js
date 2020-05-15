@@ -12,20 +12,20 @@
 
 /* eslint-env mocha */
 
-const cache = require('../src/cache');
 const assert = require('assert');
+const cache = require('../src/cache').options({ maxSize: 10 });
 
 let errcounter = 0;
 const errfn = () => {
   errcounter += 1;
-  throw new Error('This is error #' + errcounter);
-}
+  throw new Error(`This is error #${errcounter}`);
+};
 
 let counter = 0;
 const countfn = () => {
   counter += 1;
   return counter;
-}
+};
 
 describe('Cache Tests', () => {
   it('Errors do not get cached by default', async () => {
@@ -57,7 +57,7 @@ describe('Cache Tests', () => {
   it('Errors do not get cached when I want it', async () => {
     errcounter = 0;
     const cached = cache(errfn, {
-      cacheerror: () => true
+      cacheerror: () => true,
     });
 
     try {
@@ -80,12 +80,12 @@ describe('Cache Tests', () => {
     } catch (e) {
       assert.equal(e.message, 'This is error #1');
     }
-  })
+  });
 
   it('Some results do not get cached when I do not want it', async () => {
     counter = 0;
     const cached = cache(countfn, {
-      cacheresult: value => value % 3 === 0
+      cacheresult: (value) => value % 3 === 0,
     });
 
     assert.equal(await cached(), 1);
@@ -93,5 +93,5 @@ describe('Cache Tests', () => {
     assert.equal(await cached(), 3);
     assert.equal(await cached(), 3);
     assert.equal(await cached(), 3);
-  })
+  });
 });

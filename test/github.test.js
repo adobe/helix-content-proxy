@@ -247,7 +247,7 @@ mountpoints:
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a8/fstab.yaml')
       .intercept((_, res) => {
         fstabfetches += 1;
-        if (fstabfetches<2) {
+        if (fstabfetches < 2) {
           // fake fail the first time
           return res.sendStatus(500);
         }

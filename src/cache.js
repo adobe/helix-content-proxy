@@ -12,7 +12,7 @@
 
 const QuickLRU = require('quick-lru');
 
-const lru = new QuickLRU({ maxSize: 1000 });
+let lru = new QuickLRU({ maxSize: 1000 });
 
 function cache(fn, {
   hash = (...args) => args.join(),
@@ -48,5 +48,11 @@ function cache(fn, {
     }
   };
 }
+
+cache.options = (opts) => {
+  lru = new QuickLRU(opts);
+
+  return cache;
+};
 
 module.exports = cache;
