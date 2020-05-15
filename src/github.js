@@ -16,6 +16,7 @@ const { fetch } = require('@adobe/helix-fetch').context({
   process.env.FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
 const { utils } = require('@adobe/helix-shared');
+const cache = require('./cache');
 
 function computeGithubURI(root, owner, repo, ref, path) {
   const rootURI = URL.parse(root);
@@ -31,7 +32,7 @@ function computeGithubURI(root, owner, repo, ref, path) {
   return URL.format(rootURI);
 }
 
-async function fetchFSTab(root, owner, repo, ref, log, options) {
+async function fetchFSTabImpl(root, owner, repo, ref, log, options) {
   const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
   if (response.ok) {
     return response.text();
@@ -44,6 +45,17 @@ async function fetchFSTab(root, owner, repo, ref, log, options) {
   err.status = utils.propagateStatusCode(response.status);
   throw err;
 }
+
+// keep it cachy.
+const fetchFSTab = cache(fetchFSTabImpl, {
+  hash: (fn, root, owner, repo, ref, _, options) => ([
+    fn.name,
+    owner,
+    repo,
+    ref,
+    options && options.headers && options.headers.Authorization ? options.headers.Authorization : undefined
+  ].join())
+});
 
 function isimmutable(ref) {
   return ref && ref.match(/^[a-f0-9]{40}$/i);
