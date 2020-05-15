@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Adobe. All rights reserved.
+ * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,13 +11,38 @@
  */
 
 /* eslint-env mocha */
-const assert = require('assert');
+/* eslint-disable no-unused-expressions */
+
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const packjson = require('../package.json');
+
+chai.use(chaiHttp);
+const { expect } = chai;
+
+function getbaseurl() {
+  const namespace = 'helix';
+  const package = 'helix-services';
+  const name = packjson.name.replace('@adobe/helix-', '');
+  let version = `${packjson.version}`;
+  if (process.env.CI && process.env.CIRCLE_BUILD_NUM && process.env.CIRCLE_BRANCH !== 'master') {
+    version = `ci${process.env.CIRCLE_BUILD_NUM}`;
+  }
+  return `api/v1/web/${namespace}/${package}/${name}@${version}`;
+}
 
 describe('Post-Deploy Tests', () => {
-  it('Service is ready for monitoring', () => {
-    assert.equal(
-      'Not yet, but I will change this line as soon as I am ready',
-      'I am ready to go on call for this',
-    );
-  });
+  it('Helix Pages README', async () => {
+    await chai
+      .request('https://adobeioruntime.net/')
+      .get(`${getbaseurl()}?owner=adobe&repo=helix-pages&ref=17e0aeeb8639b8dae1c9243cf9fbd0042f564750&path=index.md`)
+      .then((response) => {
+        // console.log(response.body);
+        expect(response).to.be.text;
+        expect(response.body).to.be.a('string').that.includes('Welcome to Helix Pages!');
+        expect(response).to.have.status(200);
+      }).catch((e) => {
+        throw e;
+      });
+  }).timeout(10000);
 });
