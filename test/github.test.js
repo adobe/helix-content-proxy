@@ -195,4 +195,53 @@ describe('GitHub Integration Tests', () => {
 
     assert.equal(result.statusCode, 503);
   });
+
+  const fstab = `
+mountpoints:
+  /ms: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
+  /g: https://drive.google.com/drive/u/0/folders/1bH7_28a1-Q3QEEvFhT9eTmR-D7_9F4xP
+`;
+
+  it('Does not fetch FSTab twice', async function doubleFetch() {
+    const { server } = this.polly;
+    let fstabfetches = 0;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/fstab.yaml')
+      .intercept((_, res) => {
+        fstabfetches += 1;
+        return res.status(200).send(fstab);
+      });
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/hello.md')
+      .intercept((_, res) => {
+        fstabfetches += 1;
+        return res.status(200).send('Hello');
+      });
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/world.md')
+      .intercept((_, res) => {
+        fstabfetches += 1;
+        return res.status(200).send('World');
+      });
+
+      const result1 = await index({
+        owner: 'adobe',
+        repo: 'theblog',
+        ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
+        path: '/hello.md',
+      });
+
+      const result2 = await index({
+        owner: 'adobe',
+        repo: 'theblog',
+        ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
+        path: '/world.md',
+      });
+
+      assert.equal(result1.body, 'Hello');
+      assert.equal(result2.body, 'World');
+      assert.equal(fstabfetches, 1);
+  });
 });
