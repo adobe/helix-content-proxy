@@ -215,14 +215,10 @@ mountpoints:
 
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/hello.md')
-      .intercept((_, res) => {
-        return res.status(200).send('Hello');
-      });
+      .intercept((_, res) => res.status(200).send('Hello'));
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/world.md')
-      .intercept((_, res) => {
-        return res.status(200).send('World');
-      });
+      .intercept((_, res) => res.status(200).send('World'));
 
     const result1 = await index({
       owner: 'adobe',
