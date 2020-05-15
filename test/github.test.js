@@ -238,4 +238,53 @@ mountpoints:
     assert.equal(result2.body, 'World');
     assert.equal(fstabfetches, 1);
   });
+
+  it('Fetches FSTab twice if the first fetch fails', async function doubleFetch() {
+    const { server } = this.polly;
+    let fstabfetches = 0;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a8/fstab.yaml')
+      .intercept((_, res) => {
+        fstabfetches += 1;
+        if (fstabfetches<2) {
+          // fake fail the first time
+          return res.sendStatus(500);
+        }
+        return res.status(200).send(fstab);
+      });
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a8/hello.md')
+      .intercept((_, res) => res.status(200).send('Hello'));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a8/world.md')
+      .intercept((_, res) => res.status(200).send('World'));
+
+    const result1 = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a8',
+      path: '/hello.md',
+    });
+    assert.equal(result1.statusCode, 502);
+
+    const result2 = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a8',
+      path: '/hello.md',
+    });
+
+    const result3 = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a8',
+      path: '/world.md',
+    });
+
+    assert.equal(result2.body, 'Hello');
+    assert.equal(result3.body, 'World');
+    assert.equal(fstabfetches, 2);
+  });
 });
