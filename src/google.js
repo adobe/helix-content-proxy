@@ -38,6 +38,7 @@ async function handle({
       body: await response.text(),
       statusCode: 200,
       headers: {
+        'content-type': 'text/plain',
         // if the backend does not provide a source location, use the URL
         'x-source-location': await response.headers.get('x-source-location') || url.href,
         // cache for Runtime (non-flushable) – 1 minute
