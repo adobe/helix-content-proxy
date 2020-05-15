@@ -37,7 +37,7 @@ describe('Index Tests', () => {
     const { server } = this.polly;
 
     server
-      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
       .intercept((_, res) => res.status(200).send(`
 mountpoints:
   /foo: https://www.example.com/`));
@@ -45,7 +45,7 @@ mountpoints:
     const result = await index({
       owner: 'adobe',
       repo: 'theblog',
-      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a4',
       path: '/foo/index.md',
     });
 
