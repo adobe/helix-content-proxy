@@ -216,32 +216,30 @@ mountpoints:
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/hello.md')
       .intercept((_, res) => {
-        fstabfetches += 1;
         return res.status(200).send('Hello');
       });
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/world.md')
       .intercept((_, res) => {
-        fstabfetches += 1;
         return res.status(200).send('World');
       });
 
-      const result1 = await index({
-        owner: 'adobe',
-        repo: 'theblog',
-        ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
-        path: '/hello.md',
-      });
+    const result1 = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
+      path: '/hello.md',
+    });
 
-      const result2 = await index({
-        owner: 'adobe',
-        repo: 'theblog',
-        ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
-        path: '/world.md',
-      });
+    const result2 = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
+      path: '/world.md',
+    });
 
-      assert.equal(result1.body, 'Hello');
-      assert.equal(result2.body, 'World');
-      assert.equal(fstabfetches, 1);
+    assert.equal(result1.body, 'Hello');
+    assert.equal(result2.body, 'World');
+    assert.equal(fstabfetches, 1);
   });
 });
