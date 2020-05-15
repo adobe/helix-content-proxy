@@ -59,6 +59,7 @@ async function handle({
       statusCode: 200,
       body: await response.text(),
       headers: {
+        'content-type': 'text/plain',
         'x-source-location': uri,
         'cache-control': isimmutable(ref) ? 'max-age=30758400' : 'max-age=60',
         'surrogate-control': isimmutable(ref) ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
