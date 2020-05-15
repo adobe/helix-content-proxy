@@ -21,7 +21,6 @@ function cache(fn, {
 } = {}) {
   return async function cached(...args) {
     const key = hash(fn, ...args);
-    console.log('getting cached value for ', key);
     if (lru.has(key)) {
       // if it's cached, just return it
       const result = lru.get(key);

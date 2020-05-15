@@ -53,8 +53,8 @@ const fetchFSTab = cache(fetchFSTabImpl, {
     owner,
     repo,
     ref,
-    options && options.headers && options.headers.Authorization ? options.headers.Authorization : undefined
-  ].join())
+    options && options.headers && options.headers.Authorization ? options.headers.Authorization : undefined,
+  ].join()),
 });
 
 function isimmutable(ref) {
