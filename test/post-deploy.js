@@ -39,10 +39,9 @@ describe('Post-Deploy Tests', () => {
       .request('https://adobeioruntime.net/')
       .get(`${getbaseurl()}?owner=adobe&repo=helix-pages&ref=17e0aeeb8639b8dae1c9243cf9fbd0042f564750&path=index.md`)
       .then((response) => {
-        // console.log(response.body);
         expect(response).to.be.text;
-        expect(response.body).to.be.a('string').that.includes('Welcome to Helix Pages!');
         expect(response).to.have.status(200);
+        expect(response.text).to.be.a('string').that.includes('Welcome to Helix Pages!');
       }).catch((e) => {
         throw e;
       });
