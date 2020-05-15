@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/adobe/helix-content-proxy/compare/v1.1.1...v1.1.2) (2020-05-15)
+
+
+### Bug Fixes
+
+* **handlers:** use text/plain as content type ([06f10c6](https://github.com/adobe/helix-content-proxy/commit/06f10c6ea5bc24ad4cb946804f04c8c6292657a8))
+
 ## [1.1.1](https://github.com/adobe/helix-content-proxy/compare/v1.1.0...v1.1.1) (2020-05-15)
 
 
