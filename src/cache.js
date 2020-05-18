@@ -47,13 +47,13 @@ function cache(fn, {
     }
     try {
       // invoke the function
-      const ok = await fn(...args);
-      if (cacheresult(ok)) {
+      const result = await fn(...args);
+      if (cacheresult(result)) {
         // store the result under ok if permitted
-        lru.set(key, { ok });
+        lru.set(key, { ok: result });
       }
       // and return the result
-      return ok;
+      return result;
     } catch (err) {
       if (cacheerror(err)) {
         // store the error under err if permitted
