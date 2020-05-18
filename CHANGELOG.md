@@ -1,3 +1,18 @@
+# [1.2.0](https://github.com/adobe/helix-content-proxy/compare/v1.1.3...v1.2.0) (2020-05-18)
+
+
+### Bug Fixes
+
+* **deps:** add missing quick-lru dependency ([8aaee0d](https://github.com/adobe/helix-content-proxy/commit/8aaee0d452012011f85f8801106745e1582744ed))
+* **deps:** pin dependency quick-lru to 5.1.0 ([26d845c](https://github.com/adobe/helix-content-proxy/commit/26d845c92b070bd446337cc9b8236a0806d17260))
+
+
+### Features
+
+* **cache:** a simple lru cache for async functions ([b7a166f](https://github.com/adobe/helix-content-proxy/commit/b7a166ff550105796eb05739b2a8a9e1f9de1b08))
+* **cache:** make the cache size configurable ([82946a3](https://github.com/adobe/helix-content-proxy/commit/82946a3abb3fdd0dddc9bda0c62e71edd9ec8695))
+* **github:** cache responses for fstab.yaml ([a15d106](https://github.com/adobe/helix-content-proxy/commit/a15d1069d03a6b827d7825cb34c6999f0eefd881)), closes [#10](https://github.com/adobe/helix-content-proxy/issues/10)
+
 ## [1.1.3](https://github.com/adobe/helix-content-proxy/compare/v1.1.2...v1.1.3) (2020-05-18)
 
 
