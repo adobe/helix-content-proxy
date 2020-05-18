@@ -32,7 +32,9 @@ function computeGithubURI(root, owner, repo, ref, path) {
   return URL.format(rootURI);
 }
 
-async function fetchFSTabImpl(root, owner, repo, ref, log, options) {
+async function fetchFSTabImpl({
+  root, owner, repo, ref, log, options,
+}) {
   const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
   if (response.ok) {
     return response.text();
@@ -48,7 +50,9 @@ async function fetchFSTabImpl(root, owner, repo, ref, log, options) {
 
 // keep it cachy.
 const fetchFSTab = cache(fetchFSTabImpl, {
-  hash: (fn, root, owner, repo, ref, _, options) => ([
+  hash: (fn, {
+    owner, repo, ref, _, options,
+  }) => ([
     fn.name,
     owner,
     repo,
