@@ -37,7 +37,7 @@ describe('Index Tests', () => {
     const { server } = this.polly;
 
     server
-      .get('https://raw.githubusercontent.com/adobe/theblog/fake/fstab.yaml')
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
       .intercept((_, res) => res.status(200).send(`
 mountpoints:
   /foo: https://www.example.com/`));
@@ -45,7 +45,7 @@ mountpoints:
     const result = await index({
       owner: 'adobe',
       repo: 'theblog',
-      ref: 'fake',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a4',
       path: '/foo/index.md',
     });
 
@@ -56,7 +56,7 @@ mountpoints:
     const { server } = this.polly;
 
     server
-      .get('https://raw.githubusercontent.com/adobe/theblog/fake/fstab.yaml')
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a3/fstab.yaml')
       .intercept(async (_, res) => {
         await server.timeout(50);
         res.sendStatus(500);
@@ -65,7 +65,7 @@ mountpoints:
     const result = await index({
       owner: 'adobe',
       repo: 'theblog',
-      ref: 'fake',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a3',
       path: '/foo/index.md',
       HTTP_TIMEOUT: 10,
     });

@@ -36,13 +36,13 @@ describe('OneDrive Integration Tests', () => {
     const { server } = this.polly;
 
     server
-      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a5/fstab.yaml')
       .intercept((_, res) => res.status(200).send(fstab));
 
     const result = await index({
       owner: 'adobe',
       repo: 'theblog',
-      ref: 'master',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a5',
       path: '/index.docx',
     });
 
@@ -57,13 +57,13 @@ describe('OneDrive Integration Tests', () => {
     const { server } = this.polly;
 
     server
-      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/fstab.yaml')
       .intercept((_, res) => res.status(200).send(fstab));
 
     const result = await index({
       owner: 'adobe',
       repo: 'theblog',
-      ref: 'master',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a6',
       path: '/not-here.md',
     });
 

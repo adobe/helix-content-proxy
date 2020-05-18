@@ -77,7 +77,9 @@ async function main({
   };
 
   try {
-    const fstab = await fetchFSTab(githubRootPath, owner, repo, ref, log, githubOptions);
+    const fstab = await fetchFSTab({
+      root: githubRootPath, owner, repo, ref, log, options: githubOptions,
+    });
     const mount = await new MountConfig().withSource(fstab).init();
 
     // black magic from helix-pipeline
