@@ -32,7 +32,7 @@ const HANDLERS = [
 ];
 
 /**
- * Retrives content from a content repository
+ * Retrieves content from a content repository
  * @param {string} owner github org or username
  * @param {string} repo repository name
  * @param {string} ref branch or tag name
