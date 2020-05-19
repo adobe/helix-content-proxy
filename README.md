@@ -10,13 +10,38 @@
 [![LGTM Code Quality Grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/adobe/helix-content-proxy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adobe/helix-content-proxy)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/adobe/helix-content-proxy.svg)](https://greenkeeper.io/)
 
-## Installation
+## Purpose
+
+`helix-content-proxy` serves Markdown documents (later JSON tables, too) from data sources supported by Project Helix (GitHub, Google Docs, OneDrive) and applies transparent resolution of an [`fstab.yaml`](https://github.com/adobe/helix-shared/blob/master/docs/fstab.md) configuration files, so that all kinds of content can be retrieved just by knowing `owner`, `repo`, `ref`, and `path`. `helix-content-proxy` is intended to be used by [`helix-pipeline`](https://github.com/adobe/helix-pipeline), where it will replace the existing logic for fetching external content from Google Docs and OneDrive and behave like a drop-in-replacement to `raw.githubusercontent.com`.
+
+### Limitations
+
+`helix-content-proxy` assumes `ref` to be an immutable sha, so use `helix-resolve-git-ref` before if you need to resolve a branch or tag name. This limitation is intentional to simplify `helix-content-proxy` and to allow serving content with immutable caching characteristics.
 
 ## Usage
 
+Try:
+* https://adobeioruntime.net/api/v1/web/helix/helix-services/content-proxy@v1?ref=a909113cb32cc3dea62e4c981ec4e6eac2e6d3e1&path=/docs/fstab.md&owner=adobe&repo=helix-shared
+
 ```bash
-curl https://adobeioruntime.net/api/v1/web/helix/helix-services/content-proxy@v1
+curl https://adobeioruntime.net/api/v1/web/helix/helix-services/content-proxy@v1?owner=…&repo=…&ref=…&path=….md
 ```
+
+### Caching
+
+`helix-content-proxy` is served with following caching settings:
+
+```http
+cache-control: max-age=30758400
+surrogate-control: max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable
+x-last-activation-id: c0f5d3fbbe584a81b5d3fbbe587a81fc
+x-openwhisk-activation-id: 9f934cae5e6c482a934cae5e6c182ac3
+x-source-location: https://raw.githubusercontent.com/adobe/helix-shared/a909113cb32cc3dea62e4c981ec4e6eac2e6d3e1/docs/fstab.md
+```
+
+* `cache-control`: to keep content cached in Adobe I/O Runtime and by `helix-fetch`
+* `surrogate-control`: to keep content cached in Fastly (with push invalidation)
+* `x-source-location`: to allow `helix-pipeline` to calculate a source hash for surrogate-key based push invalidation
 
 For more, see the [API documentation](docs/API.md).
 
