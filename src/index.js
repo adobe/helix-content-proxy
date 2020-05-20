@@ -82,7 +82,8 @@ async function main({
     });
     const mount = await new MountConfig().withSource(fstab).init();
 
-    // black magic from helix-pipeline
+    // extract resource path w/o extension.
+    // eg: /foo.bar/welcome.gift.md -> /foo.bar/welcome.gift
     const idxLastSlash = path.lastIndexOf('/');
     const idx = path.indexOf('.', idxLastSlash + 1);
     const resourcePath = path.substring(0, idx);
