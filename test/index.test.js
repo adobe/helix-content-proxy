@@ -25,7 +25,7 @@ describe('Index Tests', () => {
 
   it('index function is present', async () => {
     const result = await index({});
-    assert.deepEqual(result.statusCode, 400);
+    assert.equal(result.statusCode, 400);
   });
 
   it('index function returns an object', async () => {
