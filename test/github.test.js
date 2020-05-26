@@ -12,7 +12,7 @@
 
 /* eslint-env mocha */
 
-process.env.HELIX_FORCE_HTTP1 = 'true';
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
 const { main } = require('../src/index.js');
