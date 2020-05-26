@@ -28,10 +28,6 @@ describe('OneDrive Integration Tests', () => {
     recordIfMissing: false,
   });
 
-  after(() => {
-    delete process.env.FORCE_HTTP1;
-  });
-
   it('Retrieves Document from Word', async function okOnedrive() {
     const { server } = this.polly;
 
