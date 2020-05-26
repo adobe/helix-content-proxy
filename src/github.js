@@ -32,9 +32,20 @@ function computeGithubURI(root, owner, repo, ref, path) {
   return URL.format(rootURI);
 }
 
-async function fetchFSTabUncached({
-  root, owner, repo, ref, log, options,
-}) {
+/**
+ * Fetches an FSTab file from a GitHub repository
+ * @param {object} opts options
+ * @param {string} opts.root base URL for GitHub
+ * @param {string} opts.owner GitHub owner or org
+ * @param {string} opts.repo GitHub repository
+ * @param {string} opts.ref GitHub ref
+ * @param {object} opts.log Helix-Log instance
+ * @param {object} opts.options HTTP request options
+ */
+async function fetchFSTabUncached(opts) {
+  const {
+    root, owner, repo, ref, log, options,
+  } = opts;
   const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
   const text = await response.text();
   if (response.ok) {
