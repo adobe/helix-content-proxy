@@ -94,4 +94,24 @@ describe('Cache Tests', () => {
     assert.equal(await cached(), 3);
     assert.equal(await cached(), 3);
   });
+
+  it('Even falsy values can get cached', async () => {
+    let start = true;
+
+    function flip() {
+      start = Boolean(start ^ true);
+      return start;
+    }
+
+    const cached = cache(flip);
+
+    assert.equal(await flip(), false);
+    assert.equal(await flip(), true);
+    assert.equal(await flip(), false);
+    assert.equal(await flip(), true);
+
+    assert.equal(await cached(), false);
+    assert.equal(await cached(), false, 'flip got called again');
+    
+  });
 });

@@ -42,7 +42,7 @@ function cache(fn, opts = {}) {
     if (lru.has(key)) {
       // if it's cached, just return it
       const result = lru.get(key);
-      if (result.ok) {
+      if (result.ok !== undefined) {
         return result.ok;
       }
       throw result.err;
