@@ -36,14 +36,15 @@ async function fetchFSTabImpl({
   root, owner, repo, ref, log, options,
 }) {
   const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
+  const text = await response.text();
   if (response.ok) {
-    return response.text();
+    return text;
   } else if (response.status === 404) {
-    log.info(`No fstab.yaml found in repo ${owner}/${repo}`);
+    log.info(`No fstab.yaml found in repo ${owner}/${repo}, ${text}`);
     return '';
   }
   log[utils.logLevelForStatusCode(response.status)](`Invalid response (${response.status}) when fetching fstab for ${owner}/${repo}`);
-  const err = new Error('Unable to fetch fstab', await response.text());
+  const err = new Error('Unable to fetch fstab', text);
   err.status = utils.propagateStatusCode(response.status);
   throw err;
 }
