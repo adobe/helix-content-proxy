@@ -63,7 +63,7 @@ const fetchFSTab = cache(fetchFSTabImpl, {
   ].join()),
 });
 
-function isimmutable(ref) {
+function isImmutable(ref) {
   return ref && ref.match(/^[a-f0-9]{40}$/i);
 }
 
@@ -74,7 +74,7 @@ async function handle({
   const response = await fetch(uri, options);
   const body = await response.text();
   if (response.ok) {
-    const immutable = isimmutable(ref);
+    const immutable = isImmutable(ref);
     return {
       statusCode: 200,
       body,
