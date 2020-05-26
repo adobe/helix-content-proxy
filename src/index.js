@@ -41,7 +41,7 @@ const HANDLERS = [
  */
 async function main({
   owner, repo, ref, path,
-  REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN,
+  REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
   __ow_headers: originalHeaders = {}, __ow_logger: log,
 }) {
   if (!(owner && repo && ref && path)) {
@@ -69,7 +69,7 @@ async function main({
   };
 
   const externalOptions = {
-    timeout: HTTP_TIMEOUT ? HTTP_TIMEOUT * 10 : 10 * 1000,
+    timeout: HTTP_TIMEOUT_EXTERNAL || 20000,
     requestId: originalHeaders['x-request-id']
     || originalHeaders['x-cdn-request-id']
     || originalHeaders['x-openwhisk-activation-id']
