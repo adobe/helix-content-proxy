@@ -29,10 +29,6 @@ describe('Google Integration Tests', () => {
     recordIfMissing: false,
   });
 
-  after(() => {
-    delete process.env.FORCE_HTTP1;
-  });
-
   it('Retrieves Document from Google Docs', async function okGoogle() {
     const { server } = this.polly;
 

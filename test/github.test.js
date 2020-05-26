@@ -15,7 +15,7 @@
 process.env.FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
-const index = require('../src/index.js').main;
+const { main } = require('../src/index.js');
 const { setupPolly } = require('./utils.js');
 
 describe('GitHub Integration Tests', () => {
@@ -23,12 +23,8 @@ describe('GitHub Integration Tests', () => {
     recordIfMissing: false,
   });
 
-  after(() => {
-    delete process.env.FORCE_HTTP1;
-  });
-
   it('Retrieves Markdown from GitHub', async () => {
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'helix-pipeline',
       ref: '9526b3b315a8b8a5e48c8e70fff362bf43426020',
@@ -60,7 +56,7 @@ describe('GitHub Integration Tests', () => {
         res.status(200).send('# Read me');
       });
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'project-helix',
       ref: 'master',
@@ -95,7 +91,7 @@ describe('GitHub Integration Tests', () => {
         res.status(200).send('# Read me');
       });
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'project-helix',
       ref: 'master',
@@ -113,7 +109,7 @@ describe('GitHub Integration Tests', () => {
   });
 
   it('Retrieves Markdown from GitHub with low cache', async () => {
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'helix-pipeline',
       ref: 'master',
@@ -127,7 +123,7 @@ describe('GitHub Integration Tests', () => {
   });
 
   it('Retrieves Markdown from GitHub when FSTab.yaml is present', async () => {
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: '04f19cd404780382c5a53d0cf64fbe4b0b827eff',
@@ -148,7 +144,7 @@ describe('GitHub Integration Tests', () => {
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
       .intercept((_, res) => res.sendStatus(500));
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
@@ -165,7 +161,7 @@ describe('GitHub Integration Tests', () => {
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/fstab.yaml')
       .intercept((_, res) => res.sendStatus(503));
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
@@ -186,7 +182,7 @@ describe('GitHub Integration Tests', () => {
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a2/index.md')
       .intercept((_, res) => res.sendStatus(503));
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a2',
@@ -220,14 +216,14 @@ mountpoints:
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a1/world.md')
       .intercept((_, res) => res.status(200).send('World'));
 
-    const result1 = await index({
+    const result1 = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
       path: '/hello.md',
     });
 
-    const result2 = await index({
+    const result2 = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a1',
@@ -261,7 +257,7 @@ mountpoints:
       .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a8/world.md')
       .intercept((_, res) => res.status(200).send('World'));
 
-    const result1 = await index({
+    const result1 = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a8',
@@ -269,14 +265,14 @@ mountpoints:
     });
     assert.equal(result1.statusCode, 502);
 
-    const result2 = await index({
+    const result2 = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a8',
       path: '/hello.md',
     });
 
-    const result3 = await index({
+    const result3 = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a8',
