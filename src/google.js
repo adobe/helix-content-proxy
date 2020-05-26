@@ -33,14 +33,15 @@ async function handle({
   delete fetchopts.requestId;
 
   const response = await fetch(url.href, fetchopts);
+  const body = await response.text();
   if (response.ok) {
     return {
-      body: await response.text(),
+      body,
       statusCode: 200,
       headers: {
         'content-type': 'text/plain',
         // if the backend does not provide a source location, use the URL
-        'x-source-location': await response.headers.get('x-source-location') || url.href,
+        'x-source-location': response.headers.get('x-source-location') || url.href,
         // cache for Runtime (non-flushable) – 1 minute
         'cache-control': 'max-age=60',
         // cache for Fastly (flushable) – endless
@@ -51,7 +52,7 @@ async function handle({
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md`);
   return {
     statusCode: utils.propagateStatusCode(response.status),
-    body: await response.text(),
+    body,
     headers: {
       'cache-control': 'max-age=60',
     },
