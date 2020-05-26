@@ -118,9 +118,13 @@ async function main({
         body: e.message,
       };
     }
-    log.error('Unhandled error', e, e.stack);
+    log.error('Unhandled error', e,
+    /* istanbul ignore next */
+      e.stack || 'no stack');
     return {
-      body: e.message,
+      body:
+      /* istanbul ignore next */
+      e.message || 'no message',
       statusCode:
       /* istanbul ignore next */
       e.status || 500,
