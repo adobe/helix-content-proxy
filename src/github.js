@@ -71,22 +71,24 @@ async function handle({
 }) {
   const uri = computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, options);
+  const body = await response.text();
   if (response.ok) {
+    const immutable = isimmutable(ref);
     return {
       statusCode: 200,
-      body: await response.text(),
+      body,
       headers: {
         'content-type': 'text/plain',
         'x-source-location': uri,
-        'cache-control': isimmutable(ref) ? 'max-age=30758400' : 'max-age=60',
-        'surrogate-control': isimmutable(ref) ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
+        'cache-control': immutable ? 'max-age=30758400' : 'max-age=60',
+        'surrogate-control': immutable ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
       },
     };
   }
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${uri} (${response.status}) from GitHub`);
   return {
     statusCode: utils.propagateStatusCode(response.status),
-    body: await response.text(),
+    body,
   };
 }
 
