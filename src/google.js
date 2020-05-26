@@ -17,10 +17,20 @@ const { fetch } = require('@adobe/helix-fetch').context({
   process.env.HELIX_FETCH_FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
 const { utils } = require('@adobe/helix-shared');
-
-async function handle({
-  mp, owner, repo, ref, log, options,
-}) {
+/**
+ * Retrieves a file from OneDrive
+ * @param {object} opts options
+ * @param {object} opts.mp the mountpoint as defined by helix-shared
+ * @param {string} opts.owner the GitHub org or username
+ * @param {string} opts.repo the GitHub repository
+ * @param {string} opts.ref the GitHub ref
+ * @param {object} opts.log a Helix-Log instance
+ * @param {object} opts.options Helix Fetch options
+ */
+async function handle(opts) {
+  const {
+    mp, owner, repo, ref, log, options,
+  } = opts;
   const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/gdocs2md@v1');
 
   url.searchParams.append('path', mp.relPath);
