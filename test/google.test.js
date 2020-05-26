@@ -15,7 +15,7 @@
 process.env.FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
-const index = require('../src/index.js').main;
+const { main } = require('../src/index.js');
 const { setupPolly } = require('./utils.js');
 
 const fstab = `
@@ -40,7 +40,7 @@ describe('Google Integration Tests', () => {
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
       .intercept((_, res) => res.status(200).send(fstab));
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'master',
@@ -61,7 +61,7 @@ describe('Google Integration Tests', () => {
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
       .intercept((_, res) => res.status(200).send(fstab));
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'master',
