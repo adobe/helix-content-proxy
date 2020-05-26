@@ -78,9 +78,20 @@ function isImmutable(ref) {
   return ref && ref.match(/^[a-f0-9]{40}$/i);
 }
 
-async function handle({
-  githubRootPath, owner, repo, ref, path, log, options,
-}) {
+/**
+ * Retrieves a file from GitHub
+ * @param {object} opts
+ * @param {string} githubRootPath base URL for raw.githubusercontent.com
+ * @param {string} owner GitHub owner or org
+ * @param {string} repo GitHub repository
+ * @param {string} ref GitHub ref
+ * @param {object} log Helix-Log instance
+ * @param {object} options HTTP fetch options
+ */
+async function handle(opts) {
+  const {
+    githubRootPath, owner, repo, ref, path, log, options,
+  } = opts;
   const uri = computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, options);
   const body = await response.text();
