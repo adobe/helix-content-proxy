@@ -15,7 +15,7 @@
 'use strict';
 
 const assert = require('assert');
-const index = require('../src/index.js').main;
+const { main } = require('../src/index.js');
 const { setupPolly } = require('./utils.js');
 
 describe('Index Tests', () => {
@@ -24,12 +24,12 @@ describe('Index Tests', () => {
   });
 
   it('index function is present', async () => {
-    const result = await index({});
+    const result = await main({});
     assert.equal(result.statusCode, 400);
   });
 
   it('index function returns an object', async () => {
-    const result = await index();
+    const result = await main();
     assert.equal(typeof result, 'object');
   });
 
@@ -42,7 +42,7 @@ describe('Index Tests', () => {
 mountpoints:
   /foo: https://www.example.com/`));
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a4',
@@ -62,7 +62,7 @@ mountpoints:
         res.sendStatus(500);
       });
 
-    const result = await index({
+    const result = await main({
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a3',
