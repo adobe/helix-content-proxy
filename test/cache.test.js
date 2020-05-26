@@ -99,6 +99,7 @@ describe('Cache Tests', () => {
     let start = true;
 
     function flip() {
+      // eslint-disable-next-line no-bitwise
       start = Boolean(start ^ true);
       return start;
     }
@@ -112,6 +113,5 @@ describe('Cache Tests', () => {
 
     assert.equal(await cached(), false);
     assert.equal(await cached(), false, 'flip got called again');
-    
   });
 });
