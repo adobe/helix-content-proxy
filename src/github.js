@@ -32,7 +32,7 @@ function computeGithubURI(root, owner, repo, ref, path) {
   return URL.format(rootURI);
 }
 
-async function fetchFSTabImpl({
+async function fetchFSTabUncached({
   root, owner, repo, ref, log, options,
 }) {
   const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
@@ -50,7 +50,7 @@ async function fetchFSTabImpl({
 }
 
 // keep it cachy.
-const fetchFSTab = cache(fetchFSTabImpl, {
+const fetchFSTabCached = cache(fetchFSTabUncached, {
   hash: (fn, {
     owner, repo, ref, _, options,
   }) => ([
@@ -99,4 +99,4 @@ function canhandle(mp) {
 }
 
 
-module.exports = { canhandle, handle, fetchFSTab };
+module.exports = { canhandle, handle, fetchFSTab: fetchFSTabCached };
