@@ -120,14 +120,14 @@ async function main({
     }
     log.error('Unhandled error', e,
     /* istanbul ignore next */
-      e.stack || 'no stack');
+      (e && e.stack) || 'no stack');
     return {
       body:
       /* istanbul ignore next */
-      e.message || 'no message',
+      (e && e.message) || 'no message',
       statusCode:
       /* istanbul ignore next */
-      e.status || 500,
+      (e && e.status) || 500,
     };
   }
 }
