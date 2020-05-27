@@ -1,3 +1,17 @@
+# [1.3.0](https://github.com/adobe/helix-content-proxy/compare/v1.2.0...v1.3.0) (2020-05-27)
+
+
+### Bug Fixes
+
+* **cache:** allow caching falsy values ([3271b8c](https://github.com/adobe/helix-content-proxy/commit/3271b8cb6093d9a012be30c9f75f8024de3db4eb))
+* **deps:** update dependency @adobe/helix-epsagon to v1.3.1 ([#17](https://github.com/adobe/helix-content-proxy/issues/17)) ([c576a5d](https://github.com/adobe/helix-content-proxy/commit/c576a5db42e4b12cf2c93fbd2b83860102f036d9))
+* **deps:** update dependency @adobe/helix-epsagon to v1.3.2 ([#22](https://github.com/adobe/helix-content-proxy/issues/22)) ([f604af5](https://github.com/adobe/helix-content-proxy/commit/f604af56e57c93257cb85a136e16c259dabb276c))
+
+
+### Features
+
+* **index:** add HTTP_TIMEOUT_EXTERNAL parameter ([ca3f515](https://github.com/adobe/helix-content-proxy/commit/ca3f515efc74e5b0707888818ff2f011fa196664))
+
 # [1.2.0](https://github.com/adobe/helix-content-proxy/compare/v1.1.3...v1.2.0) (2020-05-18)
 
 
