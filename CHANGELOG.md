@@ -1,3 +1,11 @@
+## [1.3.1](https://github.com/adobe/helix-content-proxy/compare/v1.3.0...v1.3.1) (2020-05-27)
+
+
+### Bug Fixes
+
+* **index:** Apply suggestions from code review ([75a4867](https://github.com/adobe/helix-content-proxy/commit/75a48676b89a03b4869783d1a7fc34863e12a913))
+* **index:** prevent crashing from undefined errors ([60e6538](https://github.com/adobe/helix-content-proxy/commit/60e6538cb63e54aadd03bf222aaa6339487528bf))
+
 # [1.3.0](https://github.com/adobe/helix-content-proxy/compare/v1.2.0...v1.3.0) (2020-05-27)
 
 
