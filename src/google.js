@@ -69,6 +69,41 @@ async function handle(opts) {
   };
 }
 
+async function getIdFromPath(path, parentId, log, options) {
+  const [name, ...rest] = path.split('/');
+
+  const query = [
+    `'${parentId}' in parents`,
+    `and name = ${JSON.stringify(name)}`,
+    'and trashed=false',
+    // folder if path continues, sheet otherwise
+    `and mimeType = '${rest.length ? 'application/vnd.google-apps.folder' : 'application/vnd.google-apps.spreadsheet'}'`].join(' ');
+  log.info(query);
+  const list = (await drive.files.list({
+    q: query,
+    fields: 'files(id, name)',
+    includeItemsFromAllDrives: true,
+    supportsAllDrives: true,
+  })).data;
+
+  const [ item ] = list;
+
+  if (item && rest.length) {
+    return getIdFromPath(rest.join('/'), item.id, log, options);
+  } else if (item) {
+    return item.id;
+  }
+  return null;
+}
+
+async function handleJSON(opts) {
+  const {
+    mp, owner, repo, ref, log, options,
+  } = opts;
+
+  const sheetId = await getIdFromPath(mp.relPath, mp.id, log, options);
+}
+
 function canhandle(mp) {
   return mp && mp.type === 'google';
 }
