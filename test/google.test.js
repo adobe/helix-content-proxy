@@ -69,3 +69,55 @@ describe('Google Integration Tests', () => {
     assert.equal(result.headers['cache-control'], 'max-age=60');
   }).timeout(5000);
 });
+
+describe('Google JSON Tests', () => {
+  setupPolly({
+    recordIfMissing: true,
+    mode: 'passthrough',
+  });
+
+  it('gets sheet by id from google', async function googleSheet() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/g/deeply/nested/folder/structure.json',
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.headers['x-source-location'], 'https://docs.google.com/spreadsheets/d/1jXZBaOHP9x9-2NiYPbeyiWOHbmDRKobIeb11JdCVyUw/edit');
+    assert.deepEqual(result.body, [{ depth: 1, name: 'deeply' },
+      { depth: 2, name: 'nested' },
+      { depth: 3, name: 'folder' },
+      { depth: 4, name: 'structure' }]);
+  }).timeout(50000);
+
+  it('gets missing sheet by id from google', async function googleSheet() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/g/deeply/nested/folder/missing.json',
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+    });
+
+    assert.equal(result.statusCode, 404);
+  }).timeout(50000);
+});
