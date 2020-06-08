@@ -106,6 +106,9 @@ async function handleJSON(opts) {
 
   const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
   const url = `https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1/${sheetURL}`;
+
+  console.log(url);
+
   const response = await fetch(url, options);
 
   try {
@@ -119,7 +122,7 @@ async function handleJSON(opts) {
           // if the backend does not provide a source location, use the URL
           'x-source-location': response.headers.get('x-source-location') || sheetURL,
           // cache for Runtime (non-flushable)
-          'cache-control': response.headers.get('cache-control') || 'max-age=60',
+          'cache-control': response.headers.get('cache-control'),
           // cache for Fastly (flushable) – endless
           'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
         },

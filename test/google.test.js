@@ -73,7 +73,6 @@ describe('Google Integration Tests', () => {
 describe('Google JSON Tests', () => {
   setupPolly({
     recordIfMissing: true,
-    mode: 'passthrough',
   });
 
   it('gets sheet by id from google', async function googleSheet() {
@@ -113,6 +112,58 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/deeply/nested/folder/missing.json',
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+    });
+
+    assert.equal(result.statusCode, 404);
+  }).timeout(50000);
+
+  it('handles bad json from google', async function googleSheet() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    server
+      .get('https://adobeioruntime.net/*')
+      .intercept((_, res) => {
+        res.status(200).send('try parsing this');
+      });
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/g/data.json',
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+    });
+
+    assert.equal(result.statusCode, 502);
+  }).timeout(50000);
+
+  it('handles bad response from runtime', async function googleSheet() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    server
+      .get('https://adobeioruntime.net/*')
+      .intercept((_, res) => {
+        res.status(404).send('{}');
+      });
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/g/data.json',
       GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
       GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
       GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
