@@ -11,10 +11,12 @@
  */
 
 /* eslint-env mocha */
+/* eslint-disable no-param-reassign */
 
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
+const z = require('zlib');
 const { main } = require('../src/index.js');
 const { setupPolly } = require('./utils.js');
 
@@ -26,7 +28,7 @@ mountpoints:
 
 describe('Google Integration Tests', () => {
   setupPolly({
-    recordIfMissing: false,
+    recordIfMissing: true,
   });
 
   it('Retrieves Document from Google Docs', async function okGoogle() {
@@ -70,13 +72,49 @@ describe('Google Integration Tests', () => {
   }).timeout(5000);
 });
 
+function scramble(server) {
+  server.any().on('beforePersist', (_, recording) => {
+    recording.request.headers = recording.request.headers.filter(({ name }) => name !== 'authorization');
+    delete recording.request.postData;
+
+    if (recording.request.url === 'https://oauth2.googleapis.com/token') {
+      const val = JSON.parse(z.gunzipSync(Buffer.from(JSON.parse(recording.response.content.text).join(''), 'hex')));
+      val.access_token = val.access_token
+        .replace(/[A-Z]/g, 'A')
+        .replace(/[0-9]/g, '0')
+        .replace(/[a-z]/g, 'a');
+
+      const buf = JSON.stringify([z.gzipSync(Buffer.from(JSON.stringify(val), 'utf8')).toString('hex')]);
+      recording.response.content.text = buf;
+    }
+  });
+}
+
 describe('Google JSON Tests', () => {
   setupPolly({
-    recordIfMissing: true,
+    recordIfMissing: false,
+    matchRequestsBy: {
+      method: true,
+      headers: false,
+      body: false,
+      order: false,
+      url: {
+        protocol: true,
+        username: false,
+        password: false,
+        hostname: true,
+        port: false,
+        pathname: true,
+        query: true,
+        hash: true,
+      },
+    },
   });
 
   it('gets sheet by id from google', async function googleSheet() {
     const { server } = this.polly;
+    scramble(server);
+
 
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
@@ -87,9 +125,9 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/deeply/nested/folder/structure.json',
-      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
-      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
-      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
     });
 
     assert.equal(result.statusCode, 200);
@@ -102,6 +140,7 @@ describe('Google JSON Tests', () => {
 
   it('gets missing sheet by id from google', async function googleSheet() {
     const { server } = this.polly;
+    scramble(server);
 
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
@@ -112,9 +151,9 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/deeply/nested/folder/missing.json',
-      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
-      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
-      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
     });
 
     assert.equal(result.statusCode, 404);
@@ -122,6 +161,7 @@ describe('Google JSON Tests', () => {
 
   it('handles bad json from google', async function googleSheet() {
     const { server } = this.polly;
+    scramble(server);
 
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
@@ -138,9 +178,9 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/data.json',
-      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
-      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
-      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
     });
 
     assert.equal(result.statusCode, 502);
@@ -148,6 +188,7 @@ describe('Google JSON Tests', () => {
 
   it('handles bad response from runtime', async function googleSheet() {
     const { server } = this.polly;
+    scramble(server);
 
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
@@ -164,9 +205,9 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/data.json',
-      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID,
-      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET,
-      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN,
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
     });
 
     assert.equal(result.statusCode, 404);

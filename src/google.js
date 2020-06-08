@@ -107,8 +107,6 @@ async function handleJSON(opts) {
   const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
   const url = `https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1/${sheetURL}`;
 
-  console.log(url);
-
   const response = await fetch(url, options);
 
   try {
@@ -129,7 +127,7 @@ async function handleJSON(opts) {
       };
     }
 
-    log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md`);
+    log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from gdocs2md`);
     return {
       statusCode: utils.propagateStatusCode(response.status),
       body,
