@@ -115,7 +115,7 @@ async function main({
         ref,
         path,
         log,
-        options: mp ? externalOptions : githubOptions,
+        options: externalOptions,
       });
     }
 
