@@ -17,6 +17,8 @@ const { fetch } = require('@adobe/helix-fetch').context({
   process.env.HELIX_FETCH_FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
 });
 const { utils } = require('@adobe/helix-shared');
+const { handleJSON } = require('./google-json');
+
 /**
  * Retrieves a file from OneDrive
  * @param {object} opts options
@@ -73,4 +75,4 @@ function canhandle(mp) {
   return mp && mp.type === 'google';
 }
 
-module.exports = { canhandle, handle };
+module.exports = { canhandle, handle, handleJSON };

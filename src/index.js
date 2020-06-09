@@ -42,6 +42,8 @@ const HANDLERS = [
 async function main({
   owner, repo, ref, path,
   REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
+  GOOGLE_DOCS2MD_CLIENT_ID, GOOGLE_DOCS2MD_CLIENT_SECRET,
+  GOOGLE_DOCS2MD_REFRESH_TOKEN,
   __ow_headers: originalHeaders = {}, __ow_logger: log,
 }) {
   if (!(owner && repo && ref && path)) {
@@ -69,6 +71,9 @@ async function main({
   };
 
   const externalOptions = {
+    GOOGLE_DOCS2MD_CLIENT_ID,
+    GOOGLE_DOCS2MD_CLIENT_SECRET,
+    GOOGLE_DOCS2MD_REFRESH_TOKEN,
     timeout: HTTP_TIMEOUT_EXTERNAL || 20000,
     requestId: originalHeaders['x-request-id']
     || originalHeaders['x-cdn-request-id']
@@ -99,6 +104,19 @@ async function main({
         body: 'Invalid mount configuration',
         statusCode: 501, // not implemented
       };
+    }
+
+    if (path.endsWith('.json') && handler.handleJSON) {
+      return handler.handleJSON({
+        mp,
+        githubRootPath,
+        owner,
+        repo,
+        ref,
+        path,
+        log,
+        options: externalOptions,
+      });
     }
 
     return handler.handle({
