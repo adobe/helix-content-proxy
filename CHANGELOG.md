@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/adobe/helix-content-proxy/compare/v1.3.9...v1.4.0) (2020-06-09)
+
+
+### Bug Fixes
+
+* **index:** always use external options ([093bd55](https://github.com/adobe/helix-content-proxy/commit/093bd55c3cd08ee75d63b909e416ffb060da537b))
+
+
+### Features
+
+* **google:** add JSON/Sheets support ([27e8d08](https://github.com/adobe/helix-content-proxy/commit/27e8d08ef84dd8c62cbe7213fc24c98e4afc7d92)), closes [#41](https://github.com/adobe/helix-content-proxy/issues/41)
+* **google:** wip support google json ([aea0203](https://github.com/adobe/helix-content-proxy/commit/aea0203378971c29513951552f4a1eed6be5a5fd))
+
 ## [1.3.9](https://github.com/adobe/helix-content-proxy/compare/v1.3.8...v1.3.9) (2020-06-09)
 
 
