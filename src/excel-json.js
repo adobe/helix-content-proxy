@@ -10,12 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-const { fetch } = require('@adobe/helix-fetch').context({
-  httpsProtocols:
-  /* istanbul ignore next */
-  process.env.HELIX_FETCH_FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
-});
+const { fetch } = require('@adobe/helix-fetch');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
+const { utils } = require('@adobe/helix-shared');
 
 async function handleJSON(opts) {
   const {
@@ -25,26 +22,91 @@ async function handleJSON(opts) {
   const {
     AZURE_WORD2MD_CLIENT_ID: clientId,
     AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
-//    AZURE_WORD2MD_REFRESH_TOKEN: refreshToken,
+    //    AZURE_WORD2MD_REFRESH_TOKEN: refreshToken,
     AZURE_HELIX_USER: username,
     AZURE_HELIX_PASSWORD: password,
   } = options;
 
-  const drive = new OneDrive({
-    clientId,
-    clientSecret,
-//    refreshToken,
-    username,
-    password,
-    log,
-  });
+  try {
+    const drive = new OneDrive({
+      clientId,
+      clientSecret,
+      //    refreshToken,
+      username,
+      password,
+      log,
+    });
 
-  console.log(await drive.me());
+    const rootItem = await drive.getDriveItemFromShareLink(mp.url);
 
-  const rootItem = await drive.getDriveItemFromShareLink(mp.url);
-  const item = await drive.getDriveItem(rootItem, encodeURI(mp.relPath + '.xlsx'));
+    const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
 
-  console.log(item);
+    const url = `https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1?src=${encodeURIComponent(item.webUrl)}`;
+
+    try {
+      const response = await fetch(url, options);
+
+      const body = await response.json();
+      if (response.ok) {
+        return {
+          body,
+          statusCode: 200,
+          headers: {
+            'content-type': 'application/json',
+            // if the backend does not provide a source location, use the URL
+            'x-source-location': response.headers.get('x-source-location') || item.webUrl,
+            // cache for Runtime (non-flushable)
+            'cache-control': response.headers.get('cache-control'),
+            // cache for Fastly (flushable) – endless
+            'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
+          },
+        };
+      }
+
+      log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from gdocs2md`);
+      return {
+        statusCode: utils.propagateStatusCode(response.status),
+        body,
+        headers: {
+          'cache-control': 'max-age=60',
+        },
+      };
+    } catch (gatewayerror) {
+      return {
+        body: gatewayerror.toString(),
+        statusCode: 502, // no JSON = bad gateway
+        headers: {
+          'content-type': 'text/plain',
+          // if the backend does not provide a source location, use the URL
+          'x-source-location': url,
+          // cache for Runtime (non-flushable)
+          'cache-control': 'max-age=60',
+        },
+      };
+    }
+  } catch (servererror) {
+    if (servererror.statusCode) {
+      log[utils.logLevelForStatusCode(servererror.statusCode)](`Unable to fetch spreadsheet from onedrive (${servererror.statusCode}) - ${servererror.message}`);
+      return {
+        statusCode: utils.propagateStatusCode(servererror.statusCode),
+        body: servererror.message,
+        headers: {
+          'cache-control': 'max-age=60',
+        },
+      };
+    }
+
+    log.error(servererror);
+    return {
+      body: servererror.toString(),
+      statusCode: 500, // no config = servererror
+      headers: {
+        'content-type': 'text/plain',
+        // cache for Runtime (non-flushable)
+        'cache-control': 'max-age=60',
+      },
+    };
+  }
 }
 
 
