@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/adobe/helix-content-proxy/compare/v1.5.0...v1.5.1) (2020-06-10)
+
+
+### Bug Fixes
+
+* **deps:** pin dependencies ([63325ae](https://github.com/adobe/helix-content-proxy/commit/63325ae58d55d168f0c713362d646a7d08d25260))
+
 # [1.5.0](https://github.com/adobe/helix-content-proxy/compare/v1.4.0...v1.5.0) (2020-06-10)
 
 
