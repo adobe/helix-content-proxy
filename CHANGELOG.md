@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/adobe/helix-content-proxy/compare/v1.4.0...v1.5.0) (2020-06-10)
+
+
+### Features
+
+* **excel:** full json support ([be7c964](https://github.com/adobe/helix-content-proxy/commit/be7c9640c942ca17e14201b1e3fcee66460423b6)), closes [#41](https://github.com/adobe/helix-content-proxy/issues/41)
+* **excel:** start building json support ([673cb8a](https://github.com/adobe/helix-content-proxy/commit/673cb8aff6d89b3994d25b9e2b88ad5aa479cf38))
+
 # [1.4.0](https://github.com/adobe/helix-content-proxy/compare/v1.3.9...v1.4.0) (2020-06-09)
 
 
