@@ -29,16 +29,6 @@ class FakeOneDrive {
     'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/admin',
       cTag: '"c:{8EE52397-D2C5-498C-B917-4BFA92337E76},0"',
       size: 895505630,
-      createdBy:
-    {
-      user:
-       { email: 'tripod@adobe.com', displayName: 'Tobias Bocanegra' },
-    },
-      lastModifiedBy:
-    {
-      user:
-       { email: 'tripod@adobe.com', displayName: 'Tobias Bocanegra' },
-    },
       parentReference:
     {
       driveId:
@@ -78,29 +68,6 @@ class FakeOneDrive {
 'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B28EE8CDD-211C-4B36-9F20-F2751134B342%7D&file=urls.xlsx&action=default&mobileredirect=true',
       cTag: '"c:{28EE8CDD-211C-4B36-9F20-F2751134B342},110"',
       size: 306302,
-      createdBy:
-{
-  user:
-   {
-     email: 'acapt@adobe.com',
-     id: '5254d5d0-b3dd-4230-92c9-4841f4055d77',
-     displayName: 'Alexandre Capt',
-   },
-},
-      lastModifiedBy:
-{
-  application:
-   {
-     id: '5ae8492a-c873-4a65-b4d3-64e8dd5fa3a1',
-     displayName: 'Helix Markdown Importer',
-   },
-  user:
-   {
-     email: 'acapt@adobe.com',
-     id: '5254d5d0-b3dd-4230-92c9-4841f4055d77',
-     displayName: 'Alexandre Capt',
-   },
-},
       parentReference:
 {
   driveId:
