@@ -46,4 +46,18 @@ describe('Post-Deploy Tests', () => {
         throw e;
       });
   }).timeout(10000);
+
+  it('Helix The Blog Excel', async () => {
+    console.log(`Trying https://adobeioruntime.net/${getbaseurl()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json`);
+
+    await chai
+      .request('https://adobeioruntime.net/')
+      .get(`${getbaseurl()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json`)
+      .then((response) => {
+        expect(response).to.have.status(200);
+        expect(response).to.be.json;
+      }).catch((e) => {
+        throw e;
+      });
+  }).timeout(10000);
 });
