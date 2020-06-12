@@ -1,3 +1,11 @@
+## [1.5.3](https://github.com/adobe/helix-content-proxy/compare/v1.5.2...v1.5.3) (2020-06-12)
+
+
+### Bug Fixes
+
+* **excel:** integrate excel support ([2d12035](https://github.com/adobe/helix-content-proxy/commit/2d1203569ba1c1f87551d7042b96714b98eb6ed6)), closes [#51](https://github.com/adobe/helix-content-proxy/issues/51)
+* **excel:** share credentials ([a7dbda4](https://github.com/adobe/helix-content-proxy/commit/a7dbda47dd67910322183a43f6ebff14f729bfc9))
+
 ## [1.5.2](https://github.com/adobe/helix-content-proxy/compare/v1.5.1...v1.5.2) (2020-06-11)
 
 
