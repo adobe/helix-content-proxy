@@ -44,6 +44,8 @@ async function main({
   REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
   GOOGLE_DOCS2MD_CLIENT_ID, GOOGLE_DOCS2MD_CLIENT_SECRET,
   GOOGLE_DOCS2MD_REFRESH_TOKEN,
+  AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
+  AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
   __ow_headers: originalHeaders = {}, __ow_logger: log,
 }) {
   if (!(owner && repo && ref && path)) {
@@ -74,6 +76,10 @@ async function main({
     GOOGLE_DOCS2MD_CLIENT_ID,
     GOOGLE_DOCS2MD_CLIENT_SECRET,
     GOOGLE_DOCS2MD_REFRESH_TOKEN,
+    AZURE_WORD2MD_CLIENT_ID,
+    AZURE_WORD2MD_CLIENT_SECRET,
+    AZURE_HELIX_USER,
+    AZURE_HELIX_PASSWORD,
     timeout: HTTP_TIMEOUT_EXTERNAL || 20000,
     requestId: originalHeaders['x-request-id']
     || originalHeaders['x-cdn-request-id']
