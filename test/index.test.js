@@ -68,6 +68,7 @@ mountpoints:
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a3',
       path: '/foo/index.md',
       HTTP_TIMEOUT: 10,
+      __ow_namespace: 'helix-mini',
     });
 
     assert.equal(result.statusCode, 504);

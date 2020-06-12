@@ -47,6 +47,7 @@ async function main({
   AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
   AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
   __ow_headers: originalHeaders = {}, __ow_logger: log,
+  __ow_namespace: namespace = 'helix',
 }) {
   if (!(owner && repo && ref && path)) {
     return {
@@ -85,6 +86,7 @@ async function main({
     || originalHeaders['x-cdn-request-id']
     || originalHeaders['x-openwhisk-activation-id']
     || '',
+    namespace,
   };
 
   try {
