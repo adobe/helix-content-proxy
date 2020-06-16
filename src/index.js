@@ -47,7 +47,6 @@ async function main({
   AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
   AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
   __ow_headers: originalHeaders = {}, __ow_logger: log,
-  __ow_namespace: namespace = 'helix',
 }) {
   if (!(owner && repo && ref && path)) {
     return {
@@ -57,6 +56,8 @@ async function main({
   }
   const gitHubToken = GITHUB_TOKEN || originalHeaders['x-github-token'];
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
+  // eslint-disable-next-line no-underscore-dangle
+  const namespace = process.env.__OW_NAMESPACE || 'helix';
 
   const githubOptions = {
     timeout: HTTP_TIMEOUT || 1000,
