@@ -62,6 +62,9 @@ mountpoints:
         res.sendStatus(500);
       });
 
+    // eslint-disable-next-line no-underscore-dangle
+    process.env.__OW_NAMESPACE = 'helix-mini';
+
     const result = await main({
       owner: 'adobe',
       repo: 'theblog',
@@ -69,6 +72,9 @@ mountpoints:
       path: '/foo/index.md',
       HTTP_TIMEOUT: 10,
     });
+
+    // eslint-disable-next-line no-underscore-dangle
+    delete process.env.__OW_NAMESPACE;
 
     assert.equal(result.statusCode, 504);
   });

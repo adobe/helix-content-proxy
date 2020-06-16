@@ -33,7 +33,7 @@ async function handle(opts) {
   const {
     mp, owner, repo, ref, log, options,
   } = opts;
-  const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/gdocs2md@v1');
+  const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/gdocs2md@v1`);
 
   url.searchParams.append('path', mp.relPath);
   url.searchParams.append('rootId', mp.id);
