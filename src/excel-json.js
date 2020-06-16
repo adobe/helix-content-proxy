@@ -13,8 +13,9 @@
 const { fetch } = require('@adobe/helix-fetch');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
+const { appendURLParams } = require('./utils');
 
-async function handleJSON(opts) {
+async function handleJSON(opts, params) {
   const {
     mp, log, options,
   } = opts;
@@ -41,7 +42,10 @@ async function handleJSON(opts) {
 
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
 
-    const url = `https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1?src=${encodeURIComponent(item.webUrl)}`;
+    const url = appendURLParams('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1', {
+      ...params,
+      src: item.webUrl,
+    });
 
     try {
       const response = await fetch(url, options);

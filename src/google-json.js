@@ -18,6 +18,7 @@ const { fetch } = require('@adobe/helix-fetch').context({
 });
 const { utils } = require('@adobe/helix-shared');
 const cache = require('./cache');
+const { appendURLParams } = require('./utils');
 
 /**
  * Remember the access token for future action invocations.
@@ -86,7 +87,7 @@ async function getUncachedIdFromPath(path, parentId, log, options) {
 
 const getIdFromPath = cache(getUncachedIdFromPath);
 
-async function handleJSON(opts) {
+async function handleJSON(opts, params) {
   const {
     mp, log, options,
   } = opts;
@@ -104,7 +105,7 @@ async function handleJSON(opts) {
   }
 
   const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
-  const url = `https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1/${sheetURL}`;
+  const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1/${sheetURL}`, params);
 
   try {
     const response = await fetch(url, options);

@@ -47,6 +47,7 @@ async function main({
   AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
   AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
   __ow_headers: originalHeaders = {}, __ow_logger: log,
+  limit, offset,
 }) {
   if (!(owner && repo && ref && path)) {
     return {
@@ -87,6 +88,11 @@ async function main({
     || '',
   };
 
+  const dataOptions = {
+    'hlx_p.limit': limit,
+    'hlx_p.offset': offset,
+  };
+
   try {
     const fstab = await fetchFSTab({
       root: githubRootPath, owner, repo, ref, log, options: githubOptions,
@@ -122,7 +128,7 @@ async function main({
         path,
         log,
         options: externalOptions,
-      });
+      }, dataOptions);
     }
 
     return handler.handle({
