@@ -57,6 +57,8 @@ async function main({
   }
   const gitHubToken = GITHUB_TOKEN || originalHeaders['x-github-token'];
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
+  // eslint-disable-next-line no-underscore-dangle
+  const namespace = process.env.__OW_NAMESPACE || 'helix';
 
   const githubOptions = {
     timeout: HTTP_TIMEOUT || 1000,
@@ -86,6 +88,7 @@ async function main({
     || originalHeaders['x-cdn-request-id']
     || originalHeaders['x-openwhisk-activation-id']
     || '',
+    namespace,
   };
 
   const dataOptions = {

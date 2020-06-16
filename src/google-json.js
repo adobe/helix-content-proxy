@@ -92,6 +92,8 @@ async function handleJSON(opts, params) {
     mp, log, options,
   } = opts;
 
+  const { namespace } = options;
+
   const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
 
   if (!sheetId) {
@@ -105,7 +107,7 @@ async function handleJSON(opts, params) {
   }
 
   const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
-  const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1/${sheetURL}`, params);
+  const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1/${sheetURL}`, params);
 
   try {
     const response = await fetch(url, options);

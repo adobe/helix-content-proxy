@@ -26,6 +26,7 @@ async function handleJSON(opts, params) {
     //    AZURE_WORD2MD_REFRESH_TOKEN: refreshToken,
     AZURE_HELIX_USER: username,
     AZURE_HELIX_PASSWORD: password,
+    namespace,
   } = options;
 
   try {
@@ -42,7 +43,7 @@ async function handleJSON(opts, params) {
 
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
 
-    const url = appendURLParams('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1', {
+    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
       ...params,
       src: item.webUrl,
     });
