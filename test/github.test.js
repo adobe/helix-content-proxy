@@ -45,7 +45,6 @@ describe('GitHub Integration Tests', () => {
       .get('https://raw.githubusercontent.com/adobe/project-helix/master/fstab.yaml')
       .intercept((_, res) => res.sendStatus(404));
 
-
     let foundtoken;
     let foundid;
     server
@@ -79,7 +78,6 @@ describe('GitHub Integration Tests', () => {
     server
       .get('https://raw.githubusercontent.com/adobe/project-helix/master/fstab.yaml')
       .intercept((_, res) => res.sendStatus(404));
-
 
     let foundtoken;
     let foundid;

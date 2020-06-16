@@ -109,5 +109,4 @@ async function handleJSON(opts) {
   }
 }
 
-
 module.exports = { handleJSON };

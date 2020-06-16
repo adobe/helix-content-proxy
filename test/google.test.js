@@ -115,7 +115,6 @@ describe('Google JSON Tests', () => {
     const { server } = this.polly;
     scramble(server);
 
-
     server
       .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
       .intercept((_, res) => res.status(200).send(fstab));

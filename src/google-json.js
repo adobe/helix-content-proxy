@@ -19,7 +19,6 @@ const { fetch } = require('@adobe/helix-fetch').context({
 const { utils } = require('@adobe/helix-shared');
 const cache = require('./cache');
 
-
 /**
  * Remember the access token for future action invocations.
  */
