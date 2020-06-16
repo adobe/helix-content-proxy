@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/adobe/helix-content-proxy/compare/v1.5.10...v1.6.0) (2020-06-16)
+
+
+### Features
+
+* **json:** add limit and offset parameters for JSON data ([b934441](https://github.com/adobe/helix-content-proxy/commit/b9344416de0a290996cdf9fdbb5f35b6c98f417e)), closes [#55](https://github.com/adobe/helix-content-proxy/issues/55)
+
 ## [1.5.10](https://github.com/adobe/helix-content-proxy/compare/v1.5.9...v1.5.10) (2020-06-16)
 
 
