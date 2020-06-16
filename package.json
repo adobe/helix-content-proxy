@@ -32,7 +32,7 @@
   "homepage": "https://github.com/adobe/helix-content-proxy#readme",
   "dependencies": {
     "@adobe/helix-epsagon": "1.3.11",
-    "@adobe/helix-fetch": "1.6.1",
+    "@adobe/helix-fetch": "1.6.2",
     "@adobe/helix-onedrive-support": "2.4.1",
     "@adobe/helix-shared": "7.6.0",
     "@adobe/helix-status": "7.1.3",
