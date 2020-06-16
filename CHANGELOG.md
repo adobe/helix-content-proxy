@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/adobe/helix-content-proxy/compare/v1.5.6...v1.5.7) (2020-06-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-fetch to v1.6.2 ([#66](https://github.com/adobe/helix-content-proxy/issues/66)) ([0123fb8](https://github.com/adobe/helix-content-proxy/commit/0123fb8eb23d2af9c71a817cd57818c92e22c194))
+
 ## [1.5.6](https://github.com/adobe/helix-content-proxy/compare/v1.5.5...v1.5.6) (2020-06-15)
 
 
