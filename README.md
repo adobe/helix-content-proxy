@@ -27,6 +27,10 @@ Try:
 curl https://adobeioruntime.net/api/v1/web/helix/helix-services/content-proxy@v1?owner=…&repo=…&ref=…&path=….md
 ```
 
+### Pagination
+
+When requesting a JSON resource, use the `limit` and `offset` URL parameters to restrict the results.
+
 ### Caching
 
 `helix-content-proxy` is served with following caching settings:
