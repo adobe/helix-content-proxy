@@ -1,3 +1,11 @@
+## [1.5.10](https://github.com/adobe/helix-content-proxy/compare/v1.5.9...v1.5.10) (2020-06-16)
+
+
+### Bug Fixes
+
+* **index:** use __OW_NAMESPACE env var ([7e51f04](https://github.com/adobe/helix-content-proxy/commit/7e51f0454658cb2d9c0a791697535192c9b4570e))
+* **index:** use customer namespace ([fb9e40d](https://github.com/adobe/helix-content-proxy/commit/fb9e40db0086c7512fbdc3f725cdac1b103a0f9d)), closes [#52](https://github.com/adobe/helix-content-proxy/issues/52)
+
 ## [1.5.9](https://github.com/adobe/helix-content-proxy/compare/v1.5.8...v1.5.9) (2020-06-16)
 
 
