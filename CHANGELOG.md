@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/adobe/helix-content-proxy/compare/v1.6.1...v1.6.2) (2020-06-17)
+
+
+### Bug Fixes
+
+* **excel:** do not use src parameter ([bab2eb5](https://github.com/adobe/helix-content-proxy/commit/bab2eb5cf2f20704217065bc167695fb6d962f53))
+
 ## [1.6.1](https://github.com/adobe/helix-content-proxy/compare/v1.6.0...v1.6.1) (2020-06-17)
 
 
