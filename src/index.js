@@ -122,7 +122,7 @@ async function main({
     }
 
     if (path.endsWith('.json') && handler.handleJSON) {
-      return handler.handleJSON({
+      const res = await handler.handleJSON({
         mp,
         githubRootPath,
         owner,
@@ -132,9 +132,10 @@ async function main({
         log,
         options: externalOptions,
       }, dataOptions);
+      return res;
     }
 
-    return handler.handle({
+    const res = await handler.handle({
       mp,
       githubRootPath,
       owner,
@@ -144,6 +145,7 @@ async function main({
       log,
       options: mp ? externalOptions : githubOptions,
     });
+    return res;
   } catch (e) {
     if (e instanceof TimeoutError) {
       return {
