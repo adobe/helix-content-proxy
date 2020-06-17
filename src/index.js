@@ -135,7 +135,7 @@ async function main({
       return res;
     }
 
-    const res = handler.handle({
+    const res = await handler.handle({
       mp,
       githubRootPath,
       owner,
