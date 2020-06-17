@@ -52,10 +52,12 @@ describe('Post-Deploy Tests', () => {
 
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json`)
+      .get(`${getbaseurl()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json&limit=1`)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.be.json;
+        expect(response.body).to.be.an('array');
+        expect(response.body).to.have.a.lengthOf(1);
       }).catch((e) => {
         throw e;
       });
