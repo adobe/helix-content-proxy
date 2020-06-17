@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/adobe/helix-content-proxy/compare/v1.6.0...v1.6.1) (2020-06-17)
+
+
+### Bug Fixes
+
+* **index:** add missing await ([ecf197c](https://github.com/adobe/helix-content-proxy/commit/ecf197c68a1d0cda81b86fdb2888b2770dbd30bd))
+* **index:** wait for handler to complete to catch async errors ([6945432](https://github.com/adobe/helix-content-proxy/commit/694543248cedacc89b62ace8d951152a11842980)), closes [#59](https://github.com/adobe/helix-content-proxy/issues/59)
+
 # [1.6.0](https://github.com/adobe/helix-content-proxy/compare/v1.5.10...v1.6.0) (2020-06-16)
 
 
