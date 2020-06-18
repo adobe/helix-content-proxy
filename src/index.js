@@ -97,13 +97,12 @@ async function main({
   };
 
   try {
-    let handler
+    let handler;
     let mp;
 
     // ignore externals for some well known github files
     if (['/head.md', '/header.md', '/footer.md'].indexOf(path) >= 0) {
       handler = github;
-
     } else {
       const fstab = await fetchFSTab({
         root: githubRootPath, owner, repo, ref, log, options: githubOptions,
