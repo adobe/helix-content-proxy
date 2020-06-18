@@ -97,21 +97,29 @@ async function main({
   };
 
   try {
-    const fstab = await fetchFSTab({
-      root: githubRootPath, owner, repo, ref, log, options: githubOptions,
-    });
-    const mount = await new MountConfig().withSource(fstab).init();
+    let handler
+    let mp;
 
-    // extract resource path w/o extension.
-    // eg: /foo.bar/welcome.gift.md -> /foo.bar/welcome.gift
-    const idxLastSlash = path.lastIndexOf('/');
-    const idx = path.indexOf('.', idxLastSlash + 1);
-    const resourcePath = path.substring(0, idx);
+    // ignore externals for some well known github files
+    if (['/head.md', '/header.md', '/footer.md'].indexOf(path) >= 0) {
+      handler = github;
 
-    // mountpoint
-    const mp = mount.match(resourcePath);
+    } else {
+      const fstab = await fetchFSTab({
+        root: githubRootPath, owner, repo, ref, log, options: githubOptions,
+      });
+      const mount = await new MountConfig().withSource(fstab).init();
 
-    const handler = HANDLERS.find(({ canhandle }) => canhandle && canhandle(mp));
+      // extract resource path w/o extension.
+      // eg: /foo.bar/welcome.gift.md -> /foo.bar/welcome.gift
+      const idxLastSlash = path.lastIndexOf('/');
+      const idx = path.indexOf('.', idxLastSlash + 1);
+      const resourcePath = path.substring(0, idx);
+
+      // mountpoint
+      mp = mount.match(resourcePath);
+      handler = HANDLERS.find(({ canhandle }) => canhandle && canhandle(mp));
+    }
 
     if (!handler) {
       log.error(`No handler found for type ${mp.type} at path ${path} (${owner}/${repo})`);
@@ -122,7 +130,7 @@ async function main({
     }
 
     if (path.endsWith('.json') && handler.handleJSON) {
-      const res = await handler.handleJSON({
+      return await handler.handleJSON({
         mp,
         githubRootPath,
         owner,
@@ -132,10 +140,9 @@ async function main({
         log,
         options: externalOptions,
       }, dataOptions);
-      return res;
     }
 
-    const res = await handler.handle({
+    return await handler.handle({
       mp,
       githubRootPath,
       owner,
@@ -145,7 +152,6 @@ async function main({
       log,
       options: mp ? externalOptions : githubOptions,
     });
-    return res;
   } catch (e) {
     if (e instanceof TimeoutError) {
       return {

@@ -43,6 +43,7 @@ async function handleJSON(opts, params) {
 
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
 
+    // todo: use src parameter again, once it's fixed in data-embed
     const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1/${item.webUrl}`, {
       ...params,
     });
