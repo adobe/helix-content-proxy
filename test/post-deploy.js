@@ -71,7 +71,7 @@ describe('Post-Deploy Tests', () => {
 
     await chai
       .request('https://adobeioruntime.net/')
-      .get(`${getbaseurl()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json&hlx_rangeproperty.property=just&hlx_rangeproperty.lowerBound=1`)
+      .get(`${getbaseurl()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json&hlx_rangeproperty.property=and&hlx_rangeproperty.lowerBound=1`)
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.be.json;
