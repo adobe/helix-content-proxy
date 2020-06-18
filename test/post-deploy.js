@@ -76,7 +76,7 @@ describe('Post-Deploy Tests', () => {
         expect(response).to.have.status(200);
         expect(response).to.be.json;
         expect(response.body).to.be.an('array');
-        expect(response.body).to.have.a.lengthOf(2);
+        expect(response.body).to.have.a.lengthOf(3);
       }).catch((e) => {
         throw e;
       });
