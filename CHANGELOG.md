@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/adobe/helix-content-proxy/compare/v1.6.2...v1.7.0) (2020-06-18)
+
+
+### Features
+
+* always serve head.md, header.md, footer.md from github ([#74](https://github.com/adobe/helix-content-proxy/issues/74)) ([5d9e624](https://github.com/adobe/helix-content-proxy/commit/5d9e624887e3503263acef9af4f524b3e92ba75a))
+
 ## [1.6.2](https://github.com/adobe/helix-content-proxy/compare/v1.6.1...v1.6.2) (2020-06-17)
 
 
