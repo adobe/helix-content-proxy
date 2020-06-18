@@ -81,12 +81,12 @@ function isImmutable(ref) {
 /**
  * Retrieves a file from GitHub
  * @param {object} opts
- * @param {string} githubRootPath base URL for raw.githubusercontent.com
- * @param {string} owner GitHub owner or org
- * @param {string} repo GitHub repository
- * @param {string} ref GitHub ref
- * @param {object} log Helix-Log instance
- * @param {object} options HTTP fetch options
+ * @param {string} opts.githubRootPath base URL for raw.githubusercontent.com
+ * @param {string} opts.owner GitHub owner or org
+ * @param {string} opts.repo GitHub repository
+ * @param {string} opts.ref GitHub ref
+ * @param {object} opts.log Helix-Log instance
+ * @param {object} opts.options HTTP fetch options
  */
 async function handle(opts) {
   const {

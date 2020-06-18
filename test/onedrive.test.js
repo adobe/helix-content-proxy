@@ -67,4 +67,63 @@ describe('OneDrive Integration Tests', () => {
     assert.equal(result.body, 'Error while converting document');
     assert.equal(result.headers['cache-control'], 'max-age=60');
   }).timeout(5000);
+
+  it('delivers /head.md from github even if matches 1d mountpoint', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/head.md')
+      .intercept((_, res) => res.status(404).send());
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a6',
+      path: '/head.md',
+    });
+
+    assert.equal(result.statusCode, 404);
+  });
+
+  it('delivers /header.md from github even if matches 1d mountpoint', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/header.md')
+      .intercept((_, res) => res.status(200).send('# Hello, world'));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a6',
+      path: '/header.md',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body, '# Hello, world');
+  });
+
+  it('delivers /footer.md from github even if matches 1d mountpoint', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/footer.md')
+      .intercept((_, res) => res.status(200).send('# Hello, world'));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a6',
+      path: '/footer.md',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body, '# Hello, world');
+  });
 });
