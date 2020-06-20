@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/adobe/helix-content-proxy/compare/v1.7.0...v1.8.0) (2020-06-20)
+
+
+### Features
+
+* **json:** enable all querybuilder parameters ([f9478c5](https://github.com/adobe/helix-content-proxy/commit/f9478c592b214687d1f27e6527aaa7730c12f30a)), closes [#55](https://github.com/adobe/helix-content-proxy/issues/55)
+
 # [1.7.0](https://github.com/adobe/helix-content-proxy/compare/v1.6.2...v1.7.0) (2020-06-18)
 
 
