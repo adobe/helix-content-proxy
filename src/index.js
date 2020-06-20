@@ -39,16 +39,17 @@ const HANDLERS = [
  * @param {string} path file path
  * @returns {object} a greeting
  */
-async function main({
-  owner, repo, ref, path,
-  REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
-  GOOGLE_DOCS2MD_CLIENT_ID, GOOGLE_DOCS2MD_CLIENT_SECRET,
-  GOOGLE_DOCS2MD_REFRESH_TOKEN,
-  AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
-  AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
-  __ow_headers: originalHeaders = {}, __ow_logger: log,
-  limit, offset,
-}) {
+async function main(mainopts) {
+  const {
+    owner, repo, ref, path,
+    REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
+    GOOGLE_DOCS2MD_CLIENT_ID, GOOGLE_DOCS2MD_CLIENT_SECRET,
+    GOOGLE_DOCS2MD_REFRESH_TOKEN,
+    AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
+    AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
+    __ow_headers: originalHeaders = {}, __ow_logger: log,
+    limit, offset,
+  } = mainopts;
   if (!(owner && repo && ref && path)) {
     return {
       statusCode: 400,
@@ -59,6 +60,14 @@ async function main({
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
   // eslint-disable-next-line no-underscore-dangle
   const namespace = process.env.__OW_NAMESPACE || 'helix';
+
+  const qboptions = Object.entries(mainopts)
+    .filter(([key]) => key.startsWith('hlx_'))
+    .reduce((p, [key, value]) => {
+      // eslint-disable-next-line no-param-reassign
+      p[key] = value;
+      return p;
+    }, {});
 
   const githubOptions = {
     timeout: HTTP_TIMEOUT || 1000,
@@ -92,6 +101,7 @@ async function main({
   };
 
   const dataOptions = {
+    ...qboptions,
     'hlx_p.limit': limit,
     'hlx_p.offset': offset,
   };

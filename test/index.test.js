@@ -47,6 +47,8 @@ mountpoints:
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a4',
       path: '/foo/index.md',
+      'hlx_p.limit': 1,
+      'hlx_p.offset': 1,
     });
 
     assert.equal(result.statusCode, 501);
@@ -71,6 +73,8 @@ mountpoints:
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a3',
       path: '/foo/index.md',
       HTTP_TIMEOUT: 10,
+      limit: 1,
+      offset: 1,
     });
 
     // eslint-disable-next-line no-underscore-dangle
