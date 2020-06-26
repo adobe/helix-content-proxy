@@ -103,6 +103,7 @@ async function handle(opts) {
       headers: {
         'content-type': 'text/plain',
         'x-source-location': uri,
+        'surrogate-key': utils.computeSurrogateKey(uri),
         'cache-control': immutable ? 'max-age=30758400' : 'max-age=60',
         'surrogate-control': immutable ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
       },

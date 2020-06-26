@@ -60,6 +60,8 @@ async function handleJSON(opts, params) {
             'content-type': 'application/json',
             // if the backend does not provide a source location, use the URL
             'x-source-location': response.headers.get('x-source-location') || item.webUrl,
+            // enable fine-grained cache invalidation
+            'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location') || item.webUrl),
             // cache for Runtime (non-flushable)
             'cache-control': response.headers.get('cache-control'),
             // cache for Fastly (flushable) – endless
