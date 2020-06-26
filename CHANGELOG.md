@@ -1,3 +1,14 @@
+## [1.8.4](https://github.com/adobe/helix-content-proxy/compare/v1.8.3...v1.8.4) (2020-06-26)
+
+
+### Bug Fixes
+
+* **excel:** add surrogate-key ([1bff8db](https://github.com/adobe/helix-content-proxy/commit/1bff8dba8e6797a78b0ceab7b87255243bafd11a)), closes [#77](https://github.com/adobe/helix-content-proxy/issues/77)
+* **gdocs:** add surrogate-key ([a06baa1](https://github.com/adobe/helix-content-proxy/commit/a06baa1a93631e34d8fd170afe4e4f29d2eded39)), closes [#77](https://github.com/adobe/helix-content-proxy/issues/77)
+* **github:** add missing surrogate-key ([fd5ae8b](https://github.com/adobe/helix-content-proxy/commit/fd5ae8b1a2fc0fbe603a3b6aa5dbb47bcc878ca5)), closes [#77](https://github.com/adobe/helix-content-proxy/issues/77)
+* **google:** add surrogate-key for sheets ([96bcd43](https://github.com/adobe/helix-content-proxy/commit/96bcd436f6586dcdef1675fcb9a16da214bf1976)), closes [#77](https://github.com/adobe/helix-content-proxy/issues/77)
+* **onedrive:** add surrogate-key ([081eca5](https://github.com/adobe/helix-content-proxy/commit/081eca5d68e259946d971bebe3aa309042caf7b6)), closes [#77](https://github.com/adobe/helix-content-proxy/issues/77)
+
 ## [1.8.3](https://github.com/adobe/helix-content-proxy/compare/v1.8.2...v1.8.3) (2020-06-26)
 
 
