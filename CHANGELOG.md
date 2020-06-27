@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/adobe/helix-content-proxy/compare/v1.8.4...v1.8.5) (2020-06-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.8.1 ([#82](https://github.com/adobe/helix-content-proxy/issues/82)) ([643265b](https://github.com/adobe/helix-content-proxy/commit/643265b730bb6dd5c483fcbad3b6dc2bd6c945d5))
+
 ## [1.8.4](https://github.com/adobe/helix-content-proxy/compare/v1.8.3...v1.8.4) (2020-06-26)
 
 
