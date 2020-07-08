@@ -1,3 +1,10 @@
+## [1.8.13](https://github.com/adobe/helix-content-proxy/compare/v1.8.12...v1.8.13) (2020-07-08)
+
+
+### Bug Fixes
+
+* **excel:** use correct source-location ([#99](https://github.com/adobe/helix-content-proxy/issues/99)) ([fe3f55a](https://github.com/adobe/helix-content-proxy/commit/fe3f55aad322fd548bc87e01a01b2aaaa29653e1))
+
 ## [1.8.12](https://github.com/adobe/helix-content-proxy/compare/v1.8.11...v1.8.12) (2020-07-02)
 
 
