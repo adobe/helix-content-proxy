@@ -152,6 +152,13 @@ describe('Excel JSON Integration tests', () => {
     });
 
     assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.headers, {
+      'cache-control': undefined,
+      'content-type': 'application/json',
+      'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
+      'surrogate-key': 'uZNkzznjLFRdaoIc',
+      'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
+    });
     assert.ok(Array.isArray(res.body));
   }).timeout(50000);
 

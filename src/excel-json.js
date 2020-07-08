@@ -50,8 +50,8 @@ async function handleJSON(opts, params) {
 
     try {
       const response = await fetch(url, options);
-
       const body = await response.json();
+      const sourceLocation = response.headers.get('x-source-location') || `/drives/${item.parentReference.driveId}/items/${item.id}`;
       if (response.ok) {
         return {
           body,
@@ -59,9 +59,9 @@ async function handleJSON(opts, params) {
           headers: {
             'content-type': 'application/json',
             // if the backend does not provide a source location, use the URL
-            'x-source-location': response.headers.get('x-source-location') || item.webUrl,
+            'x-source-location': sourceLocation,
             // enable fine-grained cache invalidation
-            'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location') || item.webUrl),
+            'surrogate-key': utils.computeSurrogateKey(sourceLocation),
             // cache for Runtime (non-flushable)
             'cache-control': response.headers.get('cache-control'),
             // cache for Fastly (flushable) – endless
