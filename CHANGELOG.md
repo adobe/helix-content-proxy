@@ -1,3 +1,10 @@
+## [1.8.14](https://github.com/adobe/helix-content-proxy/compare/v1.8.13...v1.8.14) (2020-07-10)
+
+
+### Bug Fixes
+
+* **google:** disable caching for google sheets ([#100](https://github.com/adobe/helix-content-proxy/issues/100)) ([829df3a](https://github.com/adobe/helix-content-proxy/commit/829df3abceea81e01c868925ce54e7950b00d20a))
+
 ## [1.8.13](https://github.com/adobe/helix-content-proxy/compare/v1.8.12...v1.8.13) (2020-07-08)
 
 
