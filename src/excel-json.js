@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  */
 
-const { fetch } = require('@adobe/helix-fetch');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
-const { appendURLParams } = require('./utils');
+const { AbortError } = require('@adobe/helix-fetch');
+const { appendURLParams, fetch, getFetchOptions } = require('./utils');
 
 async function handleJSON(opts, params) {
   const {
@@ -37,7 +37,9 @@ async function handleJSON(opts, params) {
       log,
     });
 
+    log.debug(`resolving sharelink to ${mp.url}`);
     const rootItem = await drive.getDriveItemFromShareLink(mp.url);
+    log.debug(`retrieving item-id for ${mp.relPath}.xlsx`);
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
     const itemUri = OneDrive.driveItemToURL(item);
     const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
@@ -46,12 +48,12 @@ async function handleJSON(opts, params) {
     });
 
     try {
-      const response = await fetch(url, options);
-      const body = await response.json();
+      log.debug(`fetching data from ${url}`);
+      const response = await fetch(url, getFetchOptions(options));
       const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
       if (response.ok) {
         return {
-          body,
+          body: await response.json(),
           statusCode: 200,
           headers: {
             'content-type': 'application/json',
@@ -67,18 +69,19 @@ async function handleJSON(opts, params) {
         };
       }
 
-      log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from gdocs2md`);
+      log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from data-embed`);
       return {
         statusCode: utils.propagateStatusCode(response.status),
-        body,
+        body: await response.text(),
         headers: {
           'cache-control': 'max-age=60',
         },
       };
     } catch (gatewayerror) {
+      log.error(`error fetching data from ${url}: ${gatewayerror}`);
       return {
         body: gatewayerror.toString(),
-        statusCode: 502, // no JSON = bad gateway
+        statusCode: gatewayerror instanceof AbortError ? 504 : 502, // no JSON = bad gateway
         headers: {
           'content-type': 'text/plain',
           // if the backend does not provide a source location, use the URL

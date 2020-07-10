@@ -11,10 +11,23 @@
  */
 /* eslint-env mocha */
 const assert = require('assert');
-const { appendURLParams } = require('../src/utils');
+const { appendURLParams, getFetchOptions } = require('../src/utils');
 
 describe('Utils unit tests', () => {
   it('Test appendURLParams', () => {
     assert.equal(appendURLParams('https://example.com', { foo: 'bar' }), 'https://example.com/?foo=bar');
+  });
+
+  it('Creates fetch options correctly', () => {
+    assert.deepEqual(getFetchOptions({
+      cache: 'no-store',
+      SUPER_SECRET: 'foo',
+      requestId: '1234',
+    }), {
+      cache: 'no-store',
+      headers: {
+        'x-request-id': '1234',
+      },
+    });
   });
 });

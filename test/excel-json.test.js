@@ -12,9 +12,12 @@
 
 /* eslint-env mocha */
 /* eslint-disable global-require, class-methods-use-this, no-console */
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const proxyquire = require('proxyquire');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
+const { fetchContext } = require('../src/utils.js');
+const { setupPolly } = require('./utils.js');
 
 class FakeOneDrive {
   static driveItemToURL(driveItem) {
@@ -98,6 +101,10 @@ class FakeOneDrive {
 }
 
 describe('Excel JSON Integration tests', () => {
+  setupPolly({
+    recordIfMissing: false,
+  });
+
   it('Do not get sharelink from path with invalid credentials', async () => {
     const { handleJSON } = require('../src/excel-json');
 
@@ -125,15 +132,6 @@ describe('Excel JSON Integration tests', () => {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
-      '@adobe/helix-fetch': {
-        fetch: () => ({
-          ok: true,
-          headers: new Map(),
-          json: () => ([
-            { foo: 1, bar: 2 },
-          ]),
-        }),
-      },
     });
 
     const res = await handleJSON({
@@ -153,12 +151,15 @@ describe('Excel JSON Integration tests', () => {
         AZURE_WORD2MD_REFRESH_TOKEN: process.env.AZURE_WORD2MD_REFRESH_TOKEN || 'fake',
         AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
+        namespace: 'helix',
       },
+    }, {
+      'hlx_p.limit': 4,
     });
 
     assert.equal(res.statusCode, 200);
     assert.deepEqual(res.headers, {
-      'cache-control': undefined,
+      'cache-control': 'no-store, private, must-revalidate',
       'content-type': 'application/json',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       'surrogate-key': 'uZNkzznjLFRdaoIc',
@@ -166,8 +167,24 @@ describe('Excel JSON Integration tests', () => {
     });
     assert.deepEqual(res.body, [
       {
-        bar: 2,
-        foo: 1,
+        'import date': '2020-06-24T07:45:30.983Z',
+        url: 'https://theblog.adobe.com/how-retailers-can-build-relationships-with-customers-from-a-distance/',
+        year: 44005,
+      },
+      {
+        'import date': '2020-06-24T07:45:30.986Z',
+        url: 'https://theblog.adobe.com/u-s-executive-order-on-immigration-2020/',
+        year: 44005,
+      },
+      {
+        'import date': '2020-06-24T07:45:30.988Z',
+        url: 'https://theblog.adobe.com/build-for-good-adobe-document-cloud-and-topcoder-host-developer-challenge-powered-by-adobe-pdf-sdks/',
+        year: 44005,
+      },
+      {
+        'import date': '2020-06-24T07:45:31.715Z',
+        url: 'https://theblog.adobe.com/reimagining-customer-loyalty-through-value-driven-strategies/',
+        year: 44005,
       },
     ]);
   }).timeout(50000);
@@ -176,15 +193,6 @@ describe('Excel JSON Integration tests', () => {
     const { handleJSON } = proxyquire('../src/excel-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
-      },
-      '@adobe/helix-fetch': {
-        fetch: () => ({
-          ok: true,
-          headers: new Map(),
-          json: () => ([
-            { foo: 1, bar: 2 },
-          ]),
-        }),
       },
     });
 
@@ -205,26 +213,57 @@ describe('Excel JSON Integration tests', () => {
         AZURE_WORD2MD_REFRESH_TOKEN: process.env.AZURE_WORD2MD_REFRESH_TOKEN || 'fake',
         AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
+        namespace: 'helix',
       },
     });
 
     assert.equal(res.statusCode, 404);
   }).timeout(50000);
 
-  it('Get bad JSON', async () => {
+  it('Get missing JSON from data-embed', async function test() {
     const { handleJSON } = proxyquire('../src/excel-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
-      '@adobe/helix-fetch': {
-        fetch: () => ({
-          ok: true,
-          headers: new Map(),
-          json: () => JSON.parse('not json'),
-        }),
+    });
+    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+      .intercept((req, res) => res
+        .sendStatus(404));
+
+    const res = await handleJSON({
+      mp: {
+        url: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/admin',
+        relPath: '/importer/urls',
+      },
+      log: {
+        debug: console.log,
+        info: console.log,
+        warn: console.log,
+        error: console.log,
+      },
+      options: {
+        AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'fake',
+        AZURE_WORD2MD_CLIENT_SECRET: process.env.AZURE_WORD2MD_CLIENT_SECRET || 'fake',
+        AZURE_WORD2MD_REFRESH_TOKEN: process.env.AZURE_WORD2MD_REFRESH_TOKEN || 'fake',
+        AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
+        AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
+        namespace: 'helix',
       },
     });
 
+    assert.equal(res.statusCode, 404);
+  }).timeout(50000);
+
+  it('Get bad JSON', async function test() {
+    const { handleJSON } = proxyquire('../src/excel-json', {
+      '@adobe/helix-onedrive-support': {
+        OneDrive: FakeOneDrive,
+      },
+    });
+    this.polly.server.get('https://adobeioruntime.net/api/v1/web/undefined/helix-services/data-embed@v1?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+      .intercept((req, res) => res
+        .status(200)
+        .send('no json'));
     const res = await handleJSON({
       mp: {
         url: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/admin',
@@ -248,20 +287,19 @@ describe('Excel JSON Integration tests', () => {
     assert.equal(res.statusCode, 502);
   }).timeout(50000);
 
-  it('Get timeout', async () => {
+  it('Get timeout', async function test() {
     const { handleJSON } = proxyquire('../src/excel-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
-      '@adobe/helix-fetch': {
-        fetch: () => ({
-          ok: false,
-          status: 504,
-          headers: new Map(),
-          json: () => ([]),
-        }),
-      },
     });
+
+    const { server } = this.polly;
+    server.get('https://adobeioruntime.net/api/v1/web/undefined/helix-services/data-embed@v1?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+      .intercept(async (req, res) => {
+        await server.timeout(1000);
+        res.status(200).send([]);
+      });
 
     const res = await handleJSON({
       mp: {
@@ -280,6 +318,7 @@ describe('Excel JSON Integration tests', () => {
         AZURE_WORD2MD_REFRESH_TOKEN: process.env.AZURE_WORD2MD_REFRESH_TOKEN || 'fake',
         AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
+        signal: fetchContext.timeoutSignal(100),
       },
     });
 

@@ -11,6 +11,18 @@
  */
 /* eslint-disable no-param-reassign */
 const { URL } = require('url');
+const fetchAPI = require('@adobe/helix-fetch');
+
+function createFetchContext() {
+  /* istanbul ignore next */
+  if (process.env.HELIX_FETCH_FORCE_HTTP1) {
+    return fetchAPI.context({ httpProtocol: 'http1', httpsProtocols: ['http1'] });
+  }
+  /* istanbul ignore next */
+  return fetchAPI.context({});
+}
+const fetchContext = createFetchContext();
+const { fetch } = fetchContext;
 
 function appendURLParams(url, params) {
   const u = new URL(url);
@@ -24,6 +36,33 @@ function appendURLParams(url, params) {
   return u.href;
 }
 
+/**
+ * Returns fetch compatible options for the given handler options.
+ * @param {object} options Handler options
+ * @return {object} fetch options.
+ */
+function getFetchOptions(options) {
+  const fetchopts = {
+    headers: {},
+    ...options,
+  };
+  if (options.requestId) {
+    fetchopts.headers['x-request-id'] = options.requestId;
+  }
+  delete fetchopts.requestId;
+  // delete all secrets
+  Object.keys(fetchopts)
+    .forEach((key) => {
+      if (key.match(/^[A-Z0-9_]+$/)) {
+        delete fetchopts[key];
+      }
+    });
+  return fetchopts;
+}
+
 module.exports = {
   appendURLParams,
+  fetch,
+  fetchContext,
+  getFetchOptions,
 };
