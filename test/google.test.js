@@ -130,7 +130,7 @@ describe('Google JSON Tests', () => {
     });
 
     assert.equal(result.statusCode, 200);
-    assert.equal(result.headers['x-source-location'], 'https://docs.google.com/spreadsheets/d/1jXZBaOHP9x9-2NiYPbeyiWOHbmDRKobIeb11JdCVyUw/edit');
+    assert.equal(result.headers['x-source-location'], 'https://docs.google.com/spreadsheets/d/1jXZBaOHP9x9-2NiYPbeyiWOHbmDRKobIeb11JdCVyUw/view');
     assert.deepEqual(result.body, [{ depth: 1, name: 'deeply' },
       { depth: 2, name: 'nested' },
       { depth: 3, name: 'folder' },

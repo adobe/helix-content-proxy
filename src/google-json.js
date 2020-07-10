@@ -101,16 +101,22 @@ async function handleJSON(opts, params) {
       statusCode: 404,
       body: 'spreadsheet not found',
       headers: {
-        'cache-control': 'max-age=60',
+        'cache-control': 'no-store, private, must-revalidate',
       },
     };
   }
 
-  const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
-  const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1/${sheetURL}`, params);
+  const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
+  const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
+    ...params,
+    src: sheetURL,
+  });
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      cache: 'no-store',
+      options,
+    });
 
     const body = await response.json();
     if (response.ok) {
@@ -123,7 +129,7 @@ async function handleJSON(opts, params) {
           'x-source-location': response.headers.get('x-source-location') || sheetURL,
           'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location') || sheetURL),
           // cache for Runtime (non-flushable)
-          'cache-control': response.headers.get('cache-control'),
+          'cache-control': 'no-store, private, must-revalidate',
           // cache for Fastly (flushable) – endless
           'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
         },
@@ -148,7 +154,7 @@ async function handleJSON(opts, params) {
         // if the backend does not provide a source location, use the URL
         'x-source-location': url,
         // cache for Runtime (non-flushable)
-        'cache-control': 'max-age=60',
+        'cache-control': 'no-store, private, must-revalidate',
       },
     };
   }
