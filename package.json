@@ -38,7 +38,7 @@
     "@adobe/helix-status": "8.1.0",
     "@adobe/openwhisk-action-logger": "2.2.0",
     "@adobe/openwhisk-action-utils": "4.2.3",
-    "googleapis": "52.1.0",
+    "googleapis": "54.0.0",
     "quick-lru": "5.1.1"
   },
   "devDependencies": {
