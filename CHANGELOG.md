@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/adobe/helix-content-proxy/compare/v1.8.17...v1.9.0) (2020-07-20)
+
+
+### Features
+
+* **excel:** use onedrive uri ([#111](https://github.com/adobe/helix-content-proxy/issues/111)) ([4aa6d17](https://github.com/adobe/helix-content-proxy/commit/4aa6d175435d2dc97caf91e31b9ac523d7f35380)), closes [#109](https://github.com/adobe/helix-content-proxy/issues/109)
+
 ## [1.8.17](https://github.com/adobe/helix-content-proxy/compare/v1.8.16...v1.8.17) (2020-07-17)
 
 
