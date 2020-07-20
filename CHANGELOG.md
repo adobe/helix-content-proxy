@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/adobe/helix-content-proxy/compare/v1.9.0...v1.10.0) (2020-07-20)
+
+
+### Features
+
+* consolidate helix fetch changes ([#101](https://github.com/adobe/helix-content-proxy/issues/101)) ([be41357](https://github.com/adobe/helix-content-proxy/commit/be41357d35700a0143e70972c385873a758ce332))
+
 # [1.9.0](https://github.com/adobe/helix-content-proxy/compare/v1.8.17...v1.9.0) (2020-07-20)
 
 
