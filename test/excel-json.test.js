@@ -14,8 +14,13 @@
 /* eslint-disable global-require, class-methods-use-this, no-console */
 const assert = require('assert');
 const proxyquire = require('proxyquire');
+const { OneDrive } = require('@adobe/helix-onedrive-support');
 
 class FakeOneDrive {
+  static driveItemToURL(driveItem) {
+    return OneDrive.driveItemToURL(driveItem);
+  }
+
   getDriveItemFromShareLink() {
     return {
       '@odata.context':
@@ -159,7 +164,12 @@ describe('Excel JSON Integration tests', () => {
       'surrogate-key': 'uZNkzznjLFRdaoIc',
       'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
     });
-    assert.ok(Array.isArray(res.body));
+    assert.deepEqual(res.body, [
+      {
+        bar: 2,
+        foo: 1,
+      },
+    ]);
   }).timeout(50000);
 
   it('Get missing JSON', async () => {

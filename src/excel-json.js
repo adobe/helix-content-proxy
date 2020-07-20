@@ -23,7 +23,6 @@ async function handleJSON(opts, params) {
   const {
     AZURE_WORD2MD_CLIENT_ID: clientId,
     AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
-    //    AZURE_WORD2MD_REFRESH_TOKEN: refreshToken,
     AZURE_HELIX_USER: username,
     AZURE_HELIX_PASSWORD: password,
     namespace,
@@ -33,25 +32,23 @@ async function handleJSON(opts, params) {
     const drive = new OneDrive({
       clientId,
       clientSecret,
-      //    refreshToken,
       username,
       password,
       log,
     });
 
     const rootItem = await drive.getDriveItemFromShareLink(mp.url);
-
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
-
-    // todo: use src parameter again, once it's fixed in data-embed
-    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1/${item.webUrl}`, {
+    const itemUri = OneDrive.driveItemToURL(item);
+    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
       ...params,
+      src: itemUri.toString(),
     });
 
     try {
       const response = await fetch(url, options);
       const body = await response.json();
-      const sourceLocation = response.headers.get('x-source-location') || `/drives/${item.parentReference.driveId}/items/${item.id}`;
+      const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
       if (response.ok) {
         return {
           body,
