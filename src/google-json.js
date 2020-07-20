@@ -108,17 +108,17 @@ async function handleJSON(opts, params) {
 
   try {
     const response = await fetch(url, getFetchOptions(options));
-
     const body = await response.json();
     if (response.ok) {
+      // if the backend does not provide a source location, use the sheetId
+      const sourceLocation = response.headers.get('x-source-location') || sheetId;
       return {
         body,
         statusCode: 200,
         headers: {
           'content-type': 'application/json',
-          // if the backend does not provide a source location, use the URL
-          'x-source-location': response.headers.get('x-source-location') || sheetURL,
-          'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location') || sheetURL),
+          'x-source-location': sourceLocation,
+          'surrogate-key': utils.computeSurrogateKey(sourceLocation),
           // cache for Runtime (non-flushable)
           'cache-control': 'no-store, private, must-revalidate',
           // cache for Fastly (flushable) – endless
