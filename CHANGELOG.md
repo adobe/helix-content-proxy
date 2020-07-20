@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/adobe/helix-content-proxy/compare/v1.10.0...v1.11.0) (2020-07-20)
+
+
+### Features
+
+* **google:** fix source-location ([#113](https://github.com/adobe/helix-content-proxy/issues/113)) ([7f153ff](https://github.com/adobe/helix-content-proxy/commit/7f153ff8986f05a3bf89fcd7aa34def332210dc9)), closes [#112](https://github.com/adobe/helix-content-proxy/issues/112)
+
 # [1.10.0](https://github.com/adobe/helix-content-proxy/compare/v1.9.0...v1.10.0) (2020-07-20)
 
 
