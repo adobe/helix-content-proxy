@@ -10,12 +10,8 @@
  * governing permissions and limitations under the License.
  */
 const URL = require('url');
-const { fetch } = require('@adobe/helix-fetch').context({
-  httpsProtocols:
-  /* istanbul ignore next */
-  process.env.HELIX_FETCH_FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
-});
 const { utils } = require('@adobe/helix-shared');
+const { fetch, getFetchOptions } = require('./utils');
 const cache = require('./cache');
 
 function computeGithubURI(root, owner, repo, ref, path) {
@@ -93,7 +89,7 @@ async function handle(opts) {
     githubRootPath, owner, repo, ref, path, log, options,
   } = opts;
   const uri = computeGithubURI(githubRootPath, owner, repo, ref, path);
-  const response = await fetch(uri, options);
+  const response = await fetch(uri, getFetchOptions(options));
   const body = await response.text();
   if (response.ok) {
     const immutable = isImmutable(ref);

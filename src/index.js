@@ -13,9 +13,10 @@ const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { wrap: status } = require('@adobe/helix-status');
 const { epsagon } = require('@adobe/helix-epsagon');
-const { TimeoutError } = require('@adobe/helix-fetch');
+const { AbortError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
 const { fetchFSTab } = require('./github');
+const { fetchContext } = require('./utils');
 
 const github = require('./github');
 const google = require('./google');
@@ -70,7 +71,8 @@ async function main(mainopts) {
     }, {});
 
   const githubOptions = {
-    timeout: HTTP_TIMEOUT || 1000,
+    cache: 'no-store',
+    signal: fetchContext.timeoutSignal(HTTP_TIMEOUT || 1000),
     headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
       // copy whitelisted headers
       if (originalHeaders[header.toLocaleLowerCase()]) {
@@ -92,7 +94,8 @@ async function main(mainopts) {
     AZURE_WORD2MD_CLIENT_SECRET,
     AZURE_HELIX_USER,
     AZURE_HELIX_PASSWORD,
-    timeout: HTTP_TIMEOUT_EXTERNAL || 20000,
+    cache: 'no-store',
+    signal: fetchContext.timeoutSignal(HTTP_TIMEOUT_EXTERNAL || 20000),
     requestId: originalHeaders['x-request-id']
     || originalHeaders['x-cdn-request-id']
     || originalHeaders['x-openwhisk-activation-id']
@@ -162,7 +165,7 @@ async function main(mainopts) {
       options: mp ? externalOptions : githubOptions,
     });
   } catch (e) {
-    if (e instanceof TimeoutError) {
+    if (e instanceof AbortError) {
       return {
         statusCode: 504,
         body: e.message,
