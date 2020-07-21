@@ -29,7 +29,7 @@ async function handle(opts) {
     mp, owner, repo, ref, log, options,
   } = opts;
   const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/word2md@v1`);
-  url.searchParams.append('path', `${mp.relPath}.docx`);
+  url.searchParams.append('path', mp.relPath ? `${mp.relPath}.docx` : '');
   url.searchParams.append('shareLink', mp.url);
 
   url.searchParams.append('rid', options.requestId);
@@ -53,7 +53,7 @@ async function handle(opts) {
       },
     };
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md`);
+  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md: ${body}`);
   return {
     statusCode: utils.propagateStatusCode(response.status),
     body,

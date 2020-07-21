@@ -24,11 +24,12 @@ const fstab = `
 mountpoints:
   /ms: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
   /g: https://drive.google.com/drive/u/0/folders/1bH7_28a1-Q3QEEvFhT9eTmR-D7_9F4xP
+  /google-home.md: gdrive:1GIItS1y0YXTySslLGqJZUFxwFH1DPlSg3R7ybYY3ATE
 `;
 
 describe('Google Integration Tests', () => {
   setupPolly({
-    recordIfMissing: true,
+    recordIfMissing: false,
   });
 
   it('Retrieves Document from Google Docs', async function okGoogle() {
@@ -48,6 +49,27 @@ describe('Google Integration Tests', () => {
     assert.equal(result.statusCode, 200);
     assert.equal(result.body, '# This is nothing\n\n...yet\n');
     assert.equal(result.headers['x-source-location'], 'https://adobeioruntime.net/api/v1/web/helix/helix-services/gdocs2md@v1?path=%2Fnothing&rootId=1bH7_28a1-Q3QEEvFhT9eTmR-D7_9F4xP&rid=&src=adobe%2Ftheblog%2Fmaster');
+    assert.equal(result.headers['cache-control'], 'max-age=60');
+    assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
+  }).timeout(5000);
+
+  it('Retrieves Document mounted md from Google Docs', async function okGoogle() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/google-home.md',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body, '# This is nothing\n\n...yet\n');
+    assert.equal(result.headers['x-source-location'], '1GIItS1y0YXTySslLGqJZUFxwFH1DPlSg3R7ybYY3ATE');
     assert.equal(result.headers['cache-control'], 'max-age=60');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
   }).timeout(5000);

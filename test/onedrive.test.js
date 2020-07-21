@@ -20,6 +20,7 @@ const { setupPolly } = require('./utils.js');
 
 const fstab = `
 mountpoints:
+  /onedrive-index.md: "onedrive:/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW44UHM362CKX5GYMQO2F4JIHSEV"
   /: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
 `;
 
@@ -39,7 +40,28 @@ describe('OneDrive Integration Tests', () => {
       owner: 'adobe',
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a5',
-      path: '/index.docx',
+      path: '/index.md',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.indexOf('# The Blog | Welcome to Adobe Blog'), 0);
+    assert.equal(result.headers['x-source-location'], '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW44UHM362CKX5GYMQO2F4JIHSEV');
+    assert.equal(result.headers['cache-control'], 'max-age=60');
+    assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
+  }).timeout(5000);
+
+  it('Retrieves Document mounted md from Word', async function okOnedrive() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a5/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a5',
+      path: '/onedrive-index.md',
     });
 
     assert.equal(result.statusCode, 200);
