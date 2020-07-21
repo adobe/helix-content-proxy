@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-content-proxy",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "private": true,
   "description": "Helix Content Proxy",
   "main": "src/index.js",
