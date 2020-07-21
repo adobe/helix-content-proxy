@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/adobe/helix-content-proxy/compare/v1.11.5...v1.12.0) (2020-07-21)
+
+
+### Features
+
+* **fstab:** support mounting of documents ([#119](https://github.com/adobe/helix-content-proxy/issues/119)) ([040bf88](https://github.com/adobe/helix-content-proxy/commit/040bf8898e70608d4a4de322186df75e7f2dfb80)), closes [#97](https://github.com/adobe/helix-content-proxy/issues/97)
+
 ## [1.11.5](https://github.com/adobe/helix-content-proxy/compare/v1.11.4...v1.11.5) (2020-07-21)
 
 
