@@ -17,6 +17,7 @@ const { AbortError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
 const { fetchFSTab } = require('./github');
 const { fetchContext } = require('./utils');
+const reverse = require('./reverse.js');
 
 const github = require('./github');
 const google = require('./google');
@@ -121,6 +122,19 @@ async function main(mainopts) {
         root: githubRootPath, owner, repo, ref, log, options: githubOptions,
       });
       const mount = await new MountConfig().withSource(fstab).init();
+
+      if (mainopts.lookup) {
+        return reverse({
+          mount,
+          uri: new URL(mainopts.lookup),
+          prefix: mainopts.prefix,
+          owner,
+          repo,
+          ref,
+          options: externalOptions,
+          log,
+        });
+      }
 
       // extract resource path w/o extension.
       // eg: /foo.bar/welcome.gift.md -> /foo.bar/welcome.gift

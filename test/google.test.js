@@ -19,6 +19,7 @@ const assert = require('assert');
 const z = require('zlib');
 const { main } = require('../src/index.js');
 const { setupPolly } = require('./utils.js');
+const cache = require('../src/cache.js');
 
 const fstab = `
 mountpoints:
@@ -28,6 +29,11 @@ mountpoints:
 `;
 
 describe('Google Integration Tests', () => {
+  before(() => {
+    // clear cache for tests
+    cache.options({ maxSize: 1000 });
+  });
+
   setupPolly({
     recordIfMissing: false,
   });
@@ -113,6 +119,11 @@ function scramble(server) {
 }
 
 describe('Google JSON Tests', () => {
+  before(() => {
+    // clear cache for tests
+    cache.options({ maxSize: 1000 });
+  });
+
   setupPolly({
     recordIfMissing: false,
     matchRequestsBy: {
