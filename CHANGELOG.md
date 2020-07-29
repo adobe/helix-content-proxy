@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/adobe/helix-content-proxy/compare/v1.12.2...v1.13.0) (2020-07-29)
+
+
+### Features
+
+* add reverse lookup feature of document url to external path ([#127](https://github.com/adobe/helix-content-proxy/issues/127)) ([4a6c086](https://github.com/adobe/helix-content-proxy/commit/4a6c0861a6b0e8feca98972912d0a659a887e000)), closes [#126](https://github.com/adobe/helix-content-proxy/issues/126)
+
 ## [1.12.2](https://github.com/adobe/helix-content-proxy/compare/v1.12.1...v1.12.2) (2020-07-28)
 
 
