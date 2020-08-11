@@ -42,7 +42,7 @@ async function fetchFSTabUncached(opts) {
   const {
     root, owner, repo, ref, log, options,
   } = opts;
-  const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), options);
+  const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), getFetchOptions(options));
   const text = await response.text();
   if (response.ok) {
     return text;

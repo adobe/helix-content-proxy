@@ -20,25 +20,25 @@ async function handleJSON(opts, params) {
 
   const { namespace } = options;
 
-  const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
-
-  if (!sheetId) {
-    return {
-      statusCode: 404,
-      body: 'spreadsheet not found',
-      headers: {
-        'cache-control': 'no-store, private, must-revalidate',
-      },
-    };
-  }
-
-  const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
-  const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
-    ...params,
-    src: sheetURL,
-  });
-
   try {
+    const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
+
+    if (!sheetId) {
+      return {
+        statusCode: 404,
+        body: 'spreadsheet not found',
+        headers: {
+          'cache-control': 'no-store, private, must-revalidate',
+        },
+      };
+    }
+
+    const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
+    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
+      ...params,
+      src: sheetURL,
+    });
+
     const response = await fetch(url, getFetchOptions(options));
     const body = await response.json();
     if (response.ok) {
@@ -68,14 +68,12 @@ async function handleJSON(opts, params) {
       },
     };
   } catch (e) {
-    log.error(e);
+    log.error(`error fetching data: ${e.message} (${e.code})`);
     return {
-      body: e.toString(),
+      body: '',
       statusCode: 502, // no JSON = bad gateway
       headers: {
         'content-type': 'text/plain',
-        // if the backend does not provide a source location, use the URL
-        'x-source-location': url,
         // cache for Runtime (non-flushable)
         'cache-control': 'no-store, private, must-revalidate',
       },

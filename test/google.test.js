@@ -218,6 +218,33 @@ describe('Google JSON Tests', () => {
     assert.equal(result.statusCode, 502);
   }).timeout(50000);
 
+  it('handles google api error', async function googleSheet() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    server
+      .post('https://oauth2.googleapis.com/token')
+      .intercept((_, res) => {
+        res.status(403).send('rate limit exceeded.');
+      });
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/g/data.json',
+      GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
+      GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
+      GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
+    });
+
+    assert.equal(result.statusCode, 502);
+  }).timeout(50000);
+
   it('handles bad response from runtime', async function googleSheet() {
     const { server } = this.polly;
     scramble(server);

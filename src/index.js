@@ -16,7 +16,6 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const { AbortError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
 const { fetchFSTab } = require('./github');
-const { fetchContext } = require('./utils');
 const reverse = require('./reverse.js');
 
 const github = require('./github');
@@ -35,10 +34,10 @@ const HANDLERS = [
 
 /**
  * Retrieves content from a content repository
- * @param {string} owner github org or username
- * @param {string} repo repository name
- * @param {string} ref branch or tag name
- * @param {string} path file path
+ * @param {string} mainopts.owner github org or username
+ * @param {string} mainopts.repo repository name
+ * @param {string} mainopts.ref branch or tag name
+ * @param {string} mainopts.path file path
  * @returns {object} a greeting
  */
 async function main(mainopts) {
@@ -73,7 +72,7 @@ async function main(mainopts) {
 
   const githubOptions = {
     cache: 'no-store',
-    signal: fetchContext.timeoutSignal(HTTP_TIMEOUT || 1000),
+    fetchTimeout: HTTP_TIMEOUT || 1000,
     headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
       // copy whitelisted headers
       if (originalHeaders[header.toLocaleLowerCase()]) {
@@ -96,7 +95,7 @@ async function main(mainopts) {
     AZURE_HELIX_USER,
     AZURE_HELIX_PASSWORD,
     cache: 'no-store',
-    signal: fetchContext.timeoutSignal(HTTP_TIMEOUT_EXTERNAL || 20000),
+    fetchTimeout: HTTP_TIMEOUT_EXTERNAL || 20000,
     requestId: originalHeaders['x-request-id']
     || originalHeaders['x-cdn-request-id']
     || originalHeaders['x-openwhisk-activation-id']

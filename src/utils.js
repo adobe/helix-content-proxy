@@ -49,6 +49,9 @@ function getFetchOptions(options) {
   if (options.requestId) {
     fetchopts.headers['x-request-id'] = options.requestId;
   }
+  if (options.fetchTimeout) {
+    fetchopts.signal = fetchContext.timeoutSignal(options.fetchTimeout);
+  }
   delete fetchopts.requestId;
   // delete all secrets
   Object.keys(fetchopts)
