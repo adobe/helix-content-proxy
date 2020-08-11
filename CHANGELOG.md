@@ -1,3 +1,10 @@
+## [1.13.5](https://github.com/adobe/helix-content-proxy/compare/v1.13.4...v1.13.5) (2020-08-11)
+
+
+### Bug Fixes
+
+* **fetch:** improve timeout and google error handling ([#137](https://github.com/adobe/helix-content-proxy/issues/137)) ([8931155](https://github.com/adobe/helix-content-proxy/commit/8931155fba8624f82bc5d48af4ad8b463486bfc5)), closes [#136](https://github.com/adobe/helix-content-proxy/issues/136) [#135](https://github.com/adobe/helix-content-proxy/issues/135)
+
 ## [1.13.4](https://github.com/adobe/helix-content-proxy/compare/v1.13.3...v1.13.4) (2020-08-11)
 
 
