@@ -1,3 +1,10 @@
+## [1.13.6](https://github.com/adobe/helix-content-proxy/compare/v1.13.5...v1.13.6) (2020-08-14)
+
+
+### Bug Fixes
+
+* **index:** return 400 on invalid path ([eb04d47](https://github.com/adobe/helix-content-proxy/commit/eb04d471b6d9462722099e78ee9e990394398b24)), closes [#138](https://github.com/adobe/helix-content-proxy/issues/138)
+
 ## [1.13.5](https://github.com/adobe/helix-content-proxy/compare/v1.13.4...v1.13.5) (2020-08-11)
 
 
