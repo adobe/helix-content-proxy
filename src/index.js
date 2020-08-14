@@ -57,6 +57,13 @@ async function main(mainopts) {
       body: 'owner, repo, ref, and path parameters are required',
     };
   }
+  // validate path parameter
+  if (path.indexOf('//') > -1) {
+    return {
+      statusCode: 400,
+      body: `invalid path: ${path}`,
+    };
+  }
   const gitHubToken = GITHUB_TOKEN || originalHeaders['x-github-token'];
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
   // eslint-disable-next-line no-underscore-dangle
