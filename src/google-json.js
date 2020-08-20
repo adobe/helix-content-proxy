@@ -39,7 +39,10 @@ async function handleJSON(opts, params) {
       src: sheetURL,
     });
 
-    const response = await fetch(url, getFetchOptions(options));
+    const fopts = getFetchOptions(options);
+    fopts.headers['cache-control'] = 'no-cache'; // respected by runtime
+
+    const response = await fetch(url, fopts);
     const body = await response.json();
     if (response.ok) {
       // if the backend does not provide a source location, use the sheetId

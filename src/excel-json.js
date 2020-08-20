@@ -49,7 +49,11 @@ async function handleJSON(opts, params) {
 
     try {
       log.debug(`fetching data from ${url}`);
-      const response = await fetch(url, getFetchOptions(options));
+
+      const fopts = getFetchOptions(options);
+      fopts.headers['cache-control'] = 'no-cache'; // respected by runtime
+
+      const response = await fetch(url, fopts);
       const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
       if (response.ok) {
         return {
