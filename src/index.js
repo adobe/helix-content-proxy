@@ -60,7 +60,7 @@ async function main(mainopts) {
   // validate path parameter
   if (path.indexOf('//') > -1) {
     return {
-      statusCode: 400,
+      statusCode: 404,
       body: `invalid path: ${path}`,
     };
   }

@@ -54,7 +54,7 @@ mountpoints:
     assert.equal(result.statusCode, 501);
   });
 
-  it('index returns 400 on invalid path', async function invalidPath() {
+  it('index returns 404 on invalid path', async function invalidPath() {
     const { server } = this.polly;
 
     server
@@ -70,7 +70,7 @@ mountpoints:
       path: '//foo/index.md',
     });
 
-    assert.equal(result.statusCode, 400);
+    assert.equal(result.statusCode, 404);
   });
 
   it('index returns 404 if no reverse handler can process the lookup', async function noReverse() {
