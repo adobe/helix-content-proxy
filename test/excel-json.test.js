@@ -167,24 +167,24 @@ describe('Excel JSON Integration tests', () => {
     });
     assert.deepEqual(res.body, [
       {
-        'import date': '2020-06-24T07:45:30.983Z',
-        url: 'https://theblog.adobe.com/how-retailers-can-build-relationships-with-customers-from-a-distance/',
-        year: 44005,
+        'import date': '2020-07-22T13:35:27.404Z',
+        url: 'https://theblog.adobe.com/adobe-ibm-and-red-hat-partner-to-advance-customer-experience-transformation/',
+        year: 44033,
       },
       {
-        'import date': '2020-06-24T07:45:30.986Z',
-        url: 'https://theblog.adobe.com/u-s-executive-order-on-immigration-2020/',
-        year: 44005,
+        'import date': '2020-07-22T13:35:27.408Z',
+        url: 'https://theblog.adobe.com/wipro-accelerates-the-paperless-enterprise-with-adobe-sign/',
+        year: 44033,
       },
       {
-        'import date': '2020-06-24T07:45:30.988Z',
-        url: 'https://theblog.adobe.com/build-for-good-adobe-document-cloud-and-topcoder-host-developer-challenge-powered-by-adobe-pdf-sdks/',
-        year: 44005,
+        'import date': '2020-07-22T13:35:27.474Z',
+        url: 'https://theblog.adobe.com/getting-more-from-your-crm-data/',
+        year: 44032,
       },
       {
-        'import date': '2020-06-24T07:45:31.715Z',
-        url: 'https://theblog.adobe.com/reimagining-customer-loyalty-through-value-driven-strategies/',
-        year: 44005,
+        'import date': '2020-07-22T13:35:28.111Z',
+        url: 'https://theblog.adobe.com/the-emoji-year-in-review/',
+        year: 44029,
       },
     ]);
   }).timeout(50000);
