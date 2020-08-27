@@ -1,3 +1,10 @@
+## [1.13.13](https://github.com/adobe/helix-content-proxy/compare/v1.13.12...v1.13.13) (2020-08-27)
+
+
+### Bug Fixes
+
+* **json:** request fresh data from helix-data-embed ([acece23](https://github.com/adobe/helix-content-proxy/commit/acece232720e6ef3f6cd0c13dbbcc17e317f535c))
+
 ## [1.13.12](https://github.com/adobe/helix-content-proxy/compare/v1.13.11...v1.13.12) (2020-08-27)
 
 
