@@ -1,3 +1,10 @@
+## [1.13.12](https://github.com/adobe/helix-content-proxy/compare/v1.13.11...v1.13.12) (2020-08-27)
+
+
+### Bug Fixes
+
+* **request:** return 404 for paths with double slashes ([#153](https://github.com/adobe/helix-content-proxy/issues/153)) ([53b9328](https://github.com/adobe/helix-content-proxy/commit/53b932841a88961999f5b7dd4e4e5ce8b543aa37)), closes [#152](https://github.com/adobe/helix-content-proxy/issues/152)
+
 ## [1.13.11](https://github.com/adobe/helix-content-proxy/compare/v1.13.10...v1.13.11) (2020-08-27)
 
 
