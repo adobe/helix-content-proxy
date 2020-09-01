@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { URL } = require('url');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./google-json');
 const { fetch, getFetchOptions } = require('./utils');
@@ -23,12 +22,15 @@ const { fetch, getFetchOptions } = require('./utils');
  * @param {string} opts.ref the GitHub ref
  * @param {object} opts.log a Helix-Log instance
  * @param {object} opts.options Helix Fetch options
+ * @param {VersionLock} opts.lock Version lock helper
  */
 async function handle(opts) {
   const {
-    mp, owner, repo, ref, log, options,
+    mp, owner, repo, ref, log, options, lock,
   } = opts;
-  const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/gdocs2md@v1`);
+  const url = lock.createActionURL({
+    name: 'gdocs2md@v1',
+  });
 
   url.searchParams.append('path', mp.relPath);
   url.searchParams.append('rootId', mp.id);

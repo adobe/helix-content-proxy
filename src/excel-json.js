@@ -17,7 +17,7 @@ const { appendURLParams, fetch, getFetchOptions } = require('./utils');
 
 async function handleJSON(opts, params) {
   const {
-    mp, log, options,
+    mp, log, options, lock,
   } = opts;
 
   const {
@@ -25,7 +25,6 @@ async function handleJSON(opts, params) {
     AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
     AZURE_HELIX_USER: username,
     AZURE_HELIX_PASSWORD: password,
-    namespace,
   } = options;
 
   try {
@@ -42,7 +41,10 @@ async function handleJSON(opts, params) {
     log.debug(`retrieving item-id for ${mp.relPath}.xlsx`);
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
     const itemUri = OneDrive.driveItemToURL(item);
-    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
+    const actionUrl = lock.createActionURL({
+      name: 'data-embed@v1',
+    });
+    const url = appendURLParams(actionUrl, {
       ...params,
       src: itemUri.toString(),
     });
