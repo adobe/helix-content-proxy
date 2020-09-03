@@ -1,3 +1,10 @@
+## [1.13.14](https://github.com/adobe/helix-content-proxy/compare/v1.13.13...v1.13.14) (2020-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.5.1 ([#156](https://github.com/adobe/helix-content-proxy/issues/156)) ([38fabe5](https://github.com/adobe/helix-content-proxy/commit/38fabe5f1845632fe6143ec4d367d20ae7b80d64))
+
 ## [1.13.13](https://github.com/adobe/helix-content-proxy/compare/v1.13.12...v1.13.13) (2020-08-27)
 
 
