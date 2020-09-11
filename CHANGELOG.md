@@ -1,3 +1,10 @@
+## [1.13.19](https://github.com/adobe/helix-content-proxy/compare/v1.13.18...v1.13.19) (2020-09-11)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([#162](https://github.com/adobe/helix-content-proxy/issues/162)) ([fd23443](https://github.com/adobe/helix-content-proxy/commit/fd234435d7f250aee3f4813b88b5652169128288))
+
 ## [1.13.18](https://github.com/adobe/helix-content-proxy/compare/v1.13.17...v1.13.18) (2020-09-11)
 
 
