@@ -1,3 +1,10 @@
+## [1.13.18](https://github.com/adobe/helix-content-proxy/compare/v1.13.17...v1.13.18) (2020-09-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v2.11.0 ([#161](https://github.com/adobe/helix-content-proxy/issues/161)) ([9ffc0d1](https://github.com/adobe/helix-content-proxy/commit/9ffc0d1d7ec74a9736747c701b7f10f5b33f5112))
+
 ## [1.13.17](https://github.com/adobe/helix-content-proxy/compare/v1.13.16...v1.13.17) (2020-09-10)
 
 
