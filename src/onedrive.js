@@ -28,7 +28,7 @@ async function handle(opts) {
   const {
     mp, owner, repo, ref, log, options,
   } = opts;
-  const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/word2md@v1`);
+  const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/word2md@v2`);
   url.searchParams.append('path', mp.relPath ? `${mp.relPath}.docx` : '');
   url.searchParams.append('shareLink', mp.url);
 

@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const { OneDrive } = require('@adobe/helix-onedrive-support');
+const { filename2url } = require('./filename-to-url.js');
 
 function test(uri) {
   return /^.+\.sharepoint.com$/.test(uri.hostname);
@@ -93,6 +94,8 @@ async function reverseLookup(opts) {
     }
     log.info('path/host from id:', docPath, docHost);
   }
+  // make author un-friendly
+  docPath = encodeURI(filename2url(decodeURI(docPath)));
 
   // find mountpoint that matches the document path and root
   return mount.mountpoints.reduce((path, mp) => {

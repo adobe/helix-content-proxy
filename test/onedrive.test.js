@@ -86,7 +86,7 @@ describe('OneDrive Integration Tests', () => {
     });
 
     assert.equal(result.statusCode, 404);
-    assert.equal(result.body, 'Error while converting document');
+    assert.equal(result.body, 'no matching documents for "/not-here.docx"');
     assert.equal(result.headers['cache-control'], 'max-age=60');
   }).timeout(5000);
 
