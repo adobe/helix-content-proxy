@@ -1,3 +1,10 @@
+## [1.13.24](https://github.com/adobe/helix-content-proxy/compare/v1.13.23...v1.13.24) (2020-09-21)
+
+
+### Bug Fixes
+
+* **resolve:** respect author friendly url mapping and use word2md V2 ([#169](https://github.com/adobe/helix-content-proxy/issues/169)) ([07ff921](https://github.com/adobe/helix-content-proxy/commit/07ff921f7f8614e2177e60d8033439e9de2d7756)), closes [#168](https://github.com/adobe/helix-content-proxy/issues/168)
+
 ## [1.13.23](https://github.com/adobe/helix-content-proxy/compare/v1.13.22...v1.13.23) (2020-09-21)
 
 
