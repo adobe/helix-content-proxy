@@ -1,3 +1,10 @@
+## [1.13.27](https://github.com/adobe/helix-content-proxy/compare/v1.13.26...v1.13.27) (2020-09-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v60 ([#176](https://github.com/adobe/helix-content-proxy/issues/176)) ([418d2e0](https://github.com/adobe/helix-content-proxy/commit/418d2e03378b7e761435c1942010270461c8ae2e))
+
 ## [1.13.26](https://github.com/adobe/helix-content-proxy/compare/v1.13.25...v1.13.26) (2020-09-28)
 
 
