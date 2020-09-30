@@ -15,10 +15,8 @@ const { getIdFromPath } = require('./google-helpers.js');
 
 async function handleJSON(opts, params) {
   const {
-    mp, log, options,
+    mp, log, options, lock,
   } = opts;
-
-  const { namespace } = options;
 
   try {
     const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
@@ -34,7 +32,10 @@ async function handleJSON(opts, params) {
     }
 
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
-    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
+    const actionUrl = lock.createActionURL({
+      name: 'data-embed@v2',
+    });
+    const url = appendURLParams(actionUrl, {
       ...params,
       src: sheetURL,
     });

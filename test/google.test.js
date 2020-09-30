@@ -54,7 +54,7 @@ describe('Google Integration Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.body, '# This is nothing\n\n...yet\n');
-    assert.equal(result.headers['x-source-location'], 'https://adobeioruntime.net/api/v1/web/helix/helix-services/gdocs2md@v1?path=%2Fnothing&rootId=1bH7_28a1-Q3QEEvFhT9eTmR-D7_9F4xP&rid=&src=adobe%2Ftheblog%2Fmaster');
+    assert.equal(result.headers['x-source-location'], '1GIItS1y0YXTySslLGqJZUFxwFH1DPlSg3R7ybYY3ATE');
     assert.equal(result.headers['cache-control'], 'max-age=60');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
   }).timeout(5000);
@@ -164,7 +164,7 @@ describe('Google JSON Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.headers['x-source-location'], '1jXZBaOHP9x9-2NiYPbeyiWOHbmDRKobIeb11JdCVyUw');
-    assert.deepEqual(result.body, [{ depth: 1, name: 'deeply' },
+    assert.deepEqual(result.body.data, [{ depth: 1, name: 'deeply' },
       { depth: 2, name: 'nested' },
       { depth: 3, name: 'folder' },
       { depth: 4, name: 'structure' }]);

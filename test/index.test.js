@@ -50,19 +50,10 @@ mountpoints:
       'hlx_p.limit': 1,
       'hlx_p.offset': 1,
     });
-
     assert.equal(result.statusCode, 501);
   });
 
-  it('index returns 404 on invalid path', async function invalidPath() {
-    const { server } = this.polly;
-
-    server
-      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
-      .intercept((_, res) => res.status(200).send(`
-mountpoints:
-  /foo: https://www.example.com/`));
-
+  it('index returns 404 on invalid path', async () => {
     const result = await main({
       owner: 'adobe',
       repo: 'theblog',
@@ -71,6 +62,32 @@ mountpoints:
     });
 
     assert.equal(result.statusCode, 404);
+  });
+
+  it('index respects version lock header', async function invalidPath() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/db8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(`
+mountpoints:
+  /foo: onedrive:/drives/1234/items/5678`));
+    server
+      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@ci112233')
+      .intercept((_, res) => res.status(200).send('## Welcome'));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'db8a0dc5d9d89b800835166783e4130451d3c6a4',
+      path: '/foo/index.md',
+      __ow_headers: {
+        'x-ow-version-lock': 'word2md=word2md@ci112233',
+      },
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body, '## Welcome');
   });
 
   it('index returns 404 if no reverse handler can process the lookup', async function noReverse() {

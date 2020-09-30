@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { URL } = require('url');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./google-json');
 const { fetch, getFetchOptions } = require('./utils');
@@ -23,12 +22,15 @@ const { fetch, getFetchOptions } = require('./utils');
  * @param {string} opts.ref the GitHub ref
  * @param {object} opts.log a Helix-Log instance
  * @param {object} opts.options Helix Fetch options
+ * @param {VersionLock} opts.lock Version lock helper
  */
 async function handle(opts) {
   const {
-    mp, owner, repo, ref, log, options,
+    mp, owner, repo, ref, log, options, lock,
   } = opts;
-  const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/gdocs2md@v1`);
+  const url = lock.createActionURL({
+    name: 'gdocs2md@v2',
+  });
 
   url.searchParams.append('path', mp.relPath);
   url.searchParams.append('rootId', mp.id);
@@ -39,14 +41,16 @@ async function handle(opts) {
   const response = await fetch(url.href, getFetchOptions(options));
   const body = await response.text();
   if (response.ok) {
+    /* istanbul ignore next */
+    const sourceLocation = response.headers.get('x-source-location') || url.href;
     return {
       body,
       statusCode: 200,
       headers: {
         'content-type': 'text/plain',
         // if the backend does not provide a source location, use the URL
-        'x-source-location': response.headers.get('x-source-location') || url.href,
-        'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location') || url.href),
+        'x-source-location': sourceLocation,
+        'surrogate-key': utils.computeSurrogateKey(sourceLocation),
         // cache for Runtime (non-flushable) – 1 minute
         'cache-control': 'max-age=60',
         // cache for Fastly (flushable) – endless

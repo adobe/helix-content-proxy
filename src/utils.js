@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  */
 /* eslint-disable no-param-reassign */
-const { URL } = require('url');
 const fetchAPI = require('@adobe/helix-fetch');
 
 function createFetchContext() {

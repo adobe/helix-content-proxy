@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { wrap } = require('@adobe/openwhisk-action-utils');
+const { wrap, VersionLock } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { wrap: status } = require('@adobe/helix-status');
 const { epsagon } = require('@adobe/helix-epsagon');
@@ -68,6 +68,10 @@ async function main(mainopts) {
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
   // eslint-disable-next-line no-underscore-dangle
   const namespace = process.env.__OW_NAMESPACE || 'helix';
+  const lock = new VersionLock(mainopts, {
+    namespace,
+    packageName: 'helix-services',
+  });
 
   const qboptions = Object.entries(mainopts)
     .filter(([key]) => key.startsWith('hlx_'))
@@ -170,6 +174,7 @@ async function main(mainopts) {
         ref,
         path,
         log,
+        lock,
         options: externalOptions,
       }, dataOptions);
     }
@@ -182,6 +187,7 @@ async function main(mainopts) {
       ref,
       path,
       log,
+      lock,
       options: mp ? externalOptions : githubOptions,
     });
   } catch (e) {
