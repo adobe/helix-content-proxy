@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/adobe/helix-content-proxy/compare/v1.13.29...v2.0.0) (2020-09-30)
+
+
+### Features
+
+* **ci:** make use of ow-version-lock utility ([c67e4b8](https://github.com/adobe/helix-content-proxy/commit/c67e4b8bbabe575ced4558242d005998daa87dff))
+* **deps:** update to data-embed-v2 and gdocs-v2 ([a07c47f](https://github.com/adobe/helix-content-proxy/commit/a07c47fa277684e83c6a7b03feedab4a1337fbac))
+
+
+### BREAKING CHANGES
+
+* **deps:** requests to json now returns an object instead of and array [0]
+                 gdocs2md now has a different table handling [1]
+                 gdocs2md supports author friendly names [2]
+
+[0] https://github.com/adobe/helix-data-embed/commit/9d1e924acc3aa6488b464a3cdc4a3bf68e3843bc
+[1] https://github.com/adobe/helix-gdocs2md/commit/e4befdbaed4a5319b2cca4be8507f153bedcc68a
+[2] https://github.com/adobe/helix-gdocs2md/commit/3aca7b387bbee977f84e61ce823ff6271b1b0a8d
+
 ## [1.13.29](https://github.com/adobe/helix-content-proxy/compare/v1.13.28...v1.13.29) (2020-09-30)
 
 
