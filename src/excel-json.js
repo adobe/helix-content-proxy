@@ -42,7 +42,7 @@ async function handleJSON(opts, params) {
     const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
     const itemUri = OneDrive.driveItemToURL(item);
     const actionUrl = lock.createActionURL({
-      name: 'data-embed@v1',
+      name: 'data-embed@v2',
     });
     const url = appendURLParams(actionUrl, {
       ...params,

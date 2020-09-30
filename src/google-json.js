@@ -33,7 +33,7 @@ async function handleJSON(opts, params) {
 
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
     const actionUrl = lock.createActionURL({
-      name: 'data-embed@v1',
+      name: 'data-embed@v2',
     });
     const url = appendURLParams(actionUrl, {
       ...params,

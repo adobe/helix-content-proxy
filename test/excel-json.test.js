@@ -172,7 +172,7 @@ describe('Excel JSON Integration tests', () => {
       'surrogate-key': 'uZNkzznjLFRdaoIc',
       'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
     });
-    assert.deepEqual(res.body, [
+    assert.deepEqual(res.body.data, [
       {
         'import date': '2020-07-22T13:35:27.404Z',
         url: 'https://theblog.adobe.com/adobe-ibm-and-red-hat-partner-to-advance-customer-experience-transformation/',
@@ -234,7 +234,7 @@ describe('Excel JSON Integration tests', () => {
         OneDrive: FakeOneDrive,
       },
     });
-    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept((req, res) => res
         .sendStatus(404));
 
@@ -269,7 +269,7 @@ describe('Excel JSON Integration tests', () => {
         OneDrive: FakeOneDrive,
       },
     });
-    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept((req, res) => res
         .status(200)
         .send('no json'));
@@ -305,7 +305,7 @@ describe('Excel JSON Integration tests', () => {
     });
 
     const { server } = this.polly;
-    server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v1?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+    server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept(async (req, res) => {
         await server.timeout(1000);
         res.status(200).send([]);
