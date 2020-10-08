@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/adobe/helix-content-proxy/compare/v2.0.3...v2.0.4) (2020-10-08)
+
+
+### Bug Fixes
+
+* **json:** forward sheet and table params to data-embed ([#187](https://github.com/adobe/helix-content-proxy/issues/187)) ([0916a1c](https://github.com/adobe/helix-content-proxy/commit/0916a1c12ed8a3f8ed20f6abe5d9b9efe6dc4c66)), closes [#186](https://github.com/adobe/helix-content-proxy/issues/186)
+
 ## [2.0.3](https://github.com/adobe/helix-content-proxy/compare/v2.0.2...v2.0.3) (2020-10-06)
 
 
