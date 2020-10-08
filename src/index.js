@@ -49,7 +49,7 @@ async function main(mainopts) {
     AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
     AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
     __ow_headers: originalHeaders = {}, __ow_logger: log,
-    limit, offset,
+    limit, offset, sheet, table,
   } = mainopts;
   if (!(owner && repo && ref && path)) {
     return {
@@ -118,6 +118,8 @@ async function main(mainopts) {
     ...qboptions,
     'hlx_p.limit': limit,
     'hlx_p.offset': offset,
+    sheet,
+    table,
   };
 
   try {
