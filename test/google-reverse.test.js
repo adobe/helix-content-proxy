@@ -104,7 +104,7 @@ describe('Google Reverse Lookup Tests', () => {
     });
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/Helix Hackathon Part V.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
   }).timeout(50000);
 
   it('Returns redirect for google document (main branch)', async function googleSheet() {
@@ -122,7 +122,7 @@ describe('Google Reverse Lookup Tests', () => {
     });
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/Helix Hackathon Part V.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
   }).timeout(50000);
 
   it('Returns redirect for google document (non default branch)', async function googleSheet() {
@@ -140,7 +140,7 @@ describe('Google Reverse Lookup Tests', () => {
     });
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://stage--theblog--adobe.hlx.page/gdocs/Helix Hackathon Part V.html');
+    assert.equal(result.headers.location, 'https://stage--theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
   }).timeout(50000);
 
   it('Returns redirect for google document (custom prefix)', async function googleSheet() {
@@ -158,7 +158,7 @@ describe('Google Reverse Lookup Tests', () => {
     });
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://blog.adobe.com/gdocs/Helix Hackathon Part V.html');
+    assert.equal(result.headers.location, 'https://blog.adobe.com/gdocs/helix-hackathon-part-v.html');
   }).timeout(50000);
 
   it('Returns 404 for google document (no matching mountpoint)', async function googleSheet() {
@@ -226,6 +226,6 @@ describe('Google Reverse Lookup Tests', () => {
     });
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/Helix Hackathon Part V.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
   }).timeout(50000);
 });
