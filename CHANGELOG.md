@@ -1,3 +1,10 @@
+## [2.0.7](https://github.com/adobe/helix-content-proxy/compare/v2.0.6...v2.0.7) (2020-10-23)
+
+
+### Bug Fixes
+
+* **reverse:** google drive revese lookup not sanitized ([#193](https://github.com/adobe/helix-content-proxy/issues/193)) ([1c59179](https://github.com/adobe/helix-content-proxy/commit/1c59179064d2bb6324242a9d5fba4d5483dc2d6f)), closes [#192](https://github.com/adobe/helix-content-proxy/issues/192)
+
 ## [2.0.6](https://github.com/adobe/helix-content-proxy/compare/v2.0.5...v2.0.6) (2020-10-19)
 
 
