@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const { getPathFromId } = require('./google-helpers.js');
+const { filename2url } = require('./filename-to-url.js');
 
 function test(uri) {
   return uri.hostname === 'drive.google.com'
@@ -54,7 +55,9 @@ async function reverseLookup(opts) {
     return '';
   }
   const ext = type === 'spreadsheets' ? '.json' : '.html';
-  return `${path}${ext}`;
+
+  // make author un-friendly
+  return encodeURI(filename2url(decodeURI(`${path}${ext}`)));
 }
 
 module.exports = {
