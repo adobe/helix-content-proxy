@@ -1,3 +1,10 @@
+## [2.0.8](https://github.com/adobe/helix-content-proxy/compare/v2.0.7...v2.0.8) (2020-10-23)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([#194](https://github.com/adobe/helix-content-proxy/issues/194)) ([63d49c8](https://github.com/adobe/helix-content-proxy/commit/63d49c88f118f4c34c38b139bfa9e1bffc35458f))
+
 ## [2.0.7](https://github.com/adobe/helix-content-proxy/compare/v2.0.6...v2.0.7) (2020-10-23)
 
 
