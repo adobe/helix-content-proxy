@@ -15,6 +15,7 @@ const { wrap: status } = require('@adobe/helix-status');
 const { epsagon } = require('@adobe/helix-epsagon');
 const { AbortError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
+const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
 
@@ -214,6 +215,7 @@ async function main(mainopts) {
 }
 
 module.exports.main = wrap(main)
+  .with(vary)
   .with(epsagon)
   .with(status)
   .with(logger.trace)

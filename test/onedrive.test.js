@@ -48,6 +48,7 @@ describe('OneDrive Integration Tests', () => {
     assert.equal(result.headers['x-source-location'], '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW44UHM362CKX5GYMQO2F4JIHSEV');
     assert.equal(result.headers['cache-control'], 'max-age=60');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
+    assert.equal(result.headers.vary, 'x-ow-version-lock');
   }).timeout(5000);
 
   it('Retrieves Document mounted md from Word', async function okOnedrive() {
