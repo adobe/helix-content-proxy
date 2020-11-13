@@ -57,6 +57,7 @@ describe('Google Integration Tests', () => {
     assert.equal(result.headers['x-source-location'], '1GIItS1y0YXTySslLGqJZUFxwFH1DPlSg3R7ybYY3ATE');
     assert.equal(result.headers['cache-control'], 'max-age=60');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
+    assert.equal(result.headers.vary, 'x-ow-version-lock');
   }).timeout(5000);
 
   it('Retrieves Document mounted md from Google Docs', async function okGoogle() {

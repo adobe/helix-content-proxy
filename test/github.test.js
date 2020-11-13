@@ -36,6 +36,7 @@ describe('GitHub Integration Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.body.indexOf('# Markdown Features in Project Helix'), 0);
+    assert.equal(result.headers.vary, 'x-ow-version-lock');
   });
 
   it('Retrieves Markdown from GitHub with Token from Headers', async function staticToken() {
