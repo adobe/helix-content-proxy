@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/adobe/helix-content-proxy/compare/v2.0.12...v2.1.0) (2020-11-13)
+
+
+### Features
+
+* **caching:** add x-ow-version-lock to vary response header ([#206](https://github.com/adobe/helix-content-proxy/issues/206)) ([e10c5a3](https://github.com/adobe/helix-content-proxy/commit/e10c5a3f8e96bb41b796dd9fe886b8f2f26311e1)), closes [#205](https://github.com/adobe/helix-content-proxy/issues/205)
+
 ## [2.0.12](https://github.com/adobe/helix-content-proxy/compare/v2.0.11...v2.0.12) (2020-11-12)
 
 
