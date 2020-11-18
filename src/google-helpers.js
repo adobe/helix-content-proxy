@@ -117,7 +117,12 @@ async function getPathFromId(fileId, roots, options) {
     version: 'v3',
     auth,
   });
-  return getFilePath(log, drive, fileId, roots);
+  try {
+    return await getFilePath(log, drive, fileId, roots);
+  } catch (e) {
+    log.warn(`unable to get file path for ${fileId}. ${e}`);
+    return '';
+  }
 }
 
 module.exports = {
