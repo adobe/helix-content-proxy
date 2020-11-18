@@ -22,4 +22,4 @@ async function getEditUrl(opts) {
   return `https://github.com/${owner}/${repo}/blob/${ref}${resourcePath}.md`;
 }
 
-module.exports = { getEditUrl, test };
+module.exports = { name: 'github', getEditUrl, test };

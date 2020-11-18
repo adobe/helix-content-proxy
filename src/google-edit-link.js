@@ -21,8 +21,11 @@ async function getEditUrl(opts) {
   } = opts;
 
   const docId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
+  if (!docId) {
+    return '';
+  }
   const type = ext === 'json' ? 'spreadsheets' : 'document';
   return `https://docs.google.com/${type}/d/${docId}/edit`;
 }
 
-module.exports = { getEditUrl, test };
+module.exports = { name: 'google', getEditUrl, test };

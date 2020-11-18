@@ -112,7 +112,7 @@ describe('Excel JSON Integration tests', () => {
   });
 
   it('Do not get sharelink from path with invalid credentials', async () => {
-    const { handleJSON } = require('../src/excel-json');
+    const { handleJSON } = require('../src/onedrive-json');
 
     const res = await handleJSON({
       mp: {

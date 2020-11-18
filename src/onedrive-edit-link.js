@@ -50,4 +50,4 @@ async function getEditUrl(opts) {
   return item.webUrl;
 }
 
-module.exports = { getEditUrl, test };
+module.exports = { name: 'onedrive', getEditUrl, test };
