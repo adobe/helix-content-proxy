@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const { utils } = require('@adobe/helix-shared');
-const { handleJSON } = require('./excel-json');
+const { handleJSON } = require('./onedrive-json.js');
 const { fetch, getFetchOptions } = require('./utils');
 
 /**

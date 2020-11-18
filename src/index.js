@@ -18,6 +18,7 @@ const { MountConfig } = require('@adobe/helix-shared');
 const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
+const lookupEditLink = require('./lookup-edit-link.js');
 
 const github = require('./github');
 const google = require('./google');
@@ -145,6 +146,17 @@ async function main(mainopts) {
           repo,
           ref,
           options: externalOptions,
+          log,
+        });
+      }
+      if (mainopts.edit) {
+        return lookupEditLink({
+          mount,
+          uri: new URL(mainopts.edit),
+          options: externalOptions,
+          owner,
+          repo,
+          ref,
           log,
         });
       }
