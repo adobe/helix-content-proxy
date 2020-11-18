@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/adobe/helix-content-proxy/compare/v2.1.3...v2.1.4) (2020-11-18)
+
+
+### Bug Fixes
+
+* **lookup:** catch gaxios errors ([#213](https://github.com/adobe/helix-content-proxy/issues/213)) ([8cde2b8](https://github.com/adobe/helix-content-proxy/commit/8cde2b8baf7da3c4970a24df0add57f695cd826e)), closes [#211](https://github.com/adobe/helix-content-proxy/issues/211)
+
 ## [2.1.3](https://github.com/adobe/helix-content-proxy/compare/v2.1.2...v2.1.3) (2020-11-17)
 
 
