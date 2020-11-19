@@ -1,3 +1,31 @@
+## [2.1.7](https://github.com/adobe/helix-content-proxy/compare/v2.1.6...v2.1.7) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v8.2.2 ([#218](https://github.com/adobe/helix-content-proxy/issues/218)) ([232ca49](https://github.com/adobe/helix-content-proxy/commit/232ca499a3f5eb52a3949eb34c7dccbf7f37f337))
+
+## [2.1.6](https://github.com/adobe/helix-content-proxy/compare/v2.1.5...v2.1.6) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.3.2 ([#217](https://github.com/adobe/helix-content-proxy/issues/217)) ([b078b5f](https://github.com/adobe/helix-content-proxy/commit/b078b5fb200cabb97b292e565a632bce22ce8a92))
+
+## [2.1.5](https://github.com/adobe/helix-content-proxy/compare/v2.1.4...v2.1.5) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.2.2 ([#215](https://github.com/adobe/helix-content-proxy/issues/215)) ([a40427d](https://github.com/adobe/helix-content-proxy/commit/a40427d445503cbc5f0d870d131287c61b7c8aa1))
+
+## [2.1.4](https://github.com/adobe/helix-content-proxy/compare/v2.1.3...v2.1.4) (2020-11-18)
+
+
+### Bug Fixes
+
+* **lookup:** catch gaxios errors ([#213](https://github.com/adobe/helix-content-proxy/issues/213)) ([8cde2b8](https://github.com/adobe/helix-content-proxy/commit/8cde2b8baf7da3c4970a24df0add57f695cd826e)), closes [#211](https://github.com/adobe/helix-content-proxy/issues/211)
+
 ## [2.1.3](https://github.com/adobe/helix-content-proxy/compare/v2.1.2...v2.1.3) (2020-11-17)
 
 

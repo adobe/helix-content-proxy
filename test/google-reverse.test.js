@@ -228,4 +228,20 @@ describe('Google Reverse Lookup Tests', () => {
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
   }).timeout(50000);
+
+  it('Returns 404 for not existent google document', async function googleSheet() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      lookup: 'gdrive:1nbKakMrsdfsdfsdfsfhEYuxU30cdUmyZPv1kuRCKXiho',
+    });
+
+    assert.equal(result.statusCode, 404);
+  }).timeout(50000);
 });
