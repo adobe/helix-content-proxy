@@ -166,5 +166,4 @@ describe('Google Edit Link Tests', () => {
 
     assert.equal(result.statusCode, 404);
   }).timeout(50000);
-
 });

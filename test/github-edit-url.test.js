@@ -37,7 +37,6 @@ const DEFAULT_PARAMS = {
 };
 
 describe('Github Edit Link Tests', () => {
-
   setupPolly({
     recordIfMissing: false,
   });
