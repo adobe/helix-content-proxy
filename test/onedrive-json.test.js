@@ -112,7 +112,7 @@ describe('Excel JSON Integration tests', () => {
   });
 
   it('Do not get sharelink from path with invalid credentials', async () => {
-    const { handleJSON } = require('../src/excel-json');
+    const { handleJSON } = require('../src/onedrive-json');
 
     const res = await handleJSON({
       mp: {
@@ -134,7 +134,7 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get JSON', async () => {
-    const { handleJSON } = proxyquire('../src/excel-json', {
+    const { handleJSON } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
@@ -197,7 +197,7 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get missing JSON', async () => {
-    const { handleJSON } = proxyquire('../src/excel-json', {
+    const { handleJSON } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
@@ -229,7 +229,7 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get missing JSON from data-embed', async function test() {
-    const { handleJSON } = proxyquire('../src/excel-json', {
+    const { handleJSON } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
@@ -264,7 +264,7 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get bad JSON', async function test() {
-    const { handleJSON } = proxyquire('../src/excel-json', {
+    const { handleJSON } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
@@ -298,7 +298,7 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get timeout', async function test() {
-    const { handleJSON } = proxyquire('../src/excel-json', {
+    const { handleJSON } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },

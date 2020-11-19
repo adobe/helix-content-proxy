@@ -21,6 +21,8 @@ const { main } = require('../src/index.js');
 const { setupPolly } = require('./utils.js');
 const cache = require('../src/cache.js');
 
+// require('dotenv').config();
+
 const fstab = `
 mountpoints:
   /ms: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
