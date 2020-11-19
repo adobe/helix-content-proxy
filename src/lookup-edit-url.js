@@ -31,12 +31,15 @@ async function lookupEditUrl(opts) {
   const { pathname } = uri;
   const idxLastSlash = pathname.lastIndexOf('/');
   const idx = pathname.indexOf('.', idxLastSlash + 1);
-  const resourcePath = pathname.substring(0, idx);
-  const ext = pathname.substring(idx + 1);
+  let resourcePath = idx < 0 ? pathname : pathname.substring(0, idx);
+  let ext = idx < 0 ? '' : pathname.substring(idx + 1);
+  if (idxLastSlash === pathname.length - 1) {
+    resourcePath += 'index';
+    ext = 'html';
+  }
 
   // mountpoint
   const mp = mount.match(resourcePath);
-
   const handler = HANDLERS.find(({ test }) => test && test(mp));
   if (!handler) {
     log.error(`No handler found for document ${uri}.`);

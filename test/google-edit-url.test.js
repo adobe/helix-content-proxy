@@ -22,17 +22,16 @@ const cache = require('../src/cache.js');
 
 const { setupPolly } = require('./utils.js');
 
-require('dotenv').config();
+// require('dotenv').config();
 
 const fstab = `
 mountpoints:
-  /ms: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
-  /gdocs: https://drive.google.com/drive/u/0/folders/1DS-ZKyRuwZkMPIDeuKxNMQnKDrcw1_aw
+  /: https://drive.google.com/drive/u/0/folders/1DS-ZKyRuwZkMPIDeuKxNMQnKDrcw1_aw
 `;
 
 const DEFAULT_PARAMS = {
   owner: 'adobe',
-  repo: 'theblog',
+  repo: 'pages',
   ref: 'master',
   path: '/',
   GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
@@ -65,7 +64,7 @@ describe('Google Edit Link Tests', () => {
   });
 
   setupPolly({
-    recordIfMissing: true,
+    recordIfMissing: false,
     matchRequestsBy: {
       method: true,
       headers: false,
@@ -89,16 +88,83 @@ describe('Google Edit Link Tests', () => {
     scramble(server);
 
     server
-      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
       .intercept((_, res) => res.status(200).send(fstab));
 
     const result = await main({
       ...DEFAULT_PARAMS,
-      edit: 'https://pages.adobe.com/gdocs/creativecloud/en/ete/how-adobe-apps-work-together/index.html',
+      edit: 'https://pages.adobe.com/creativecloud/en/ete/how-adobe-apps-work-together/index.html',
     });
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
+  }).timeout(50000);
+
+  it('Returns redirect for google based page (no extension)', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://pages.adobe.com/creativecloud/en/ete/how-adobe-apps-work-together/index',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
+  }).timeout(50000);
+
+  it('Returns redirect for google based page (directory)', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://pages.adobe.com/creativecloud/en/ete/how-adobe-apps-work-together/',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
+  }).timeout(50000);
+
+  it('Returns redirect for google based spreadsheet', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://pages.adobe.com/redirects.json',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://docs.google.com/spreadsheets/d/1TizK03uKRn2bP_n69U8qCRcaCIkLEFF95rKBZWWKrew/edit');
+  }).timeout(50000);
+
+  it('Returns 404 for non existent document', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://pages.adobe.com/foo/bar.html',
+    });
+
+    assert.equal(result.statusCode, 404);
   }).timeout(50000);
 
 });

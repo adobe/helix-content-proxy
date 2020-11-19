@@ -39,13 +39,9 @@ async function getEditUrl(opts) {
   log.debug(`resolving sharelink to ${mp.url}`);
   const rootItem = await drive.getDriveItemFromShareLink(mp.url);
   log.debug(`retrieving item for ${mp.relPath}`);
-  let [item] = await drive.fuzzyGetDriveItem(rootItem, mp.relPath);
+  const [item] = await drive.fuzzyGetDriveItem(rootItem, mp.relPath);
   if (!item) {
     return '';
-  }
-  if (!item.webUrl) {
-    // temporary workaround until fuzzyGetDriveItem returns webUrl
-    item = await drive.getDriveItem(item);
   }
   return item.webUrl;
 }
