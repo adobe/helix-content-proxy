@@ -74,7 +74,7 @@ describe('Onedrive Edit Link Tests', () => {
   // const { main } = require('../src/index');
 
   setupPolly({
-    recordIfMissing: true,
+    recordIfMissing: false,
   });
 
   it('Returns redirect for onedrive document', async function test() {

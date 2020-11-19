@@ -30,10 +30,6 @@ const DEFAULT_PARAMS = {
   repo: 'theblog',
   ref: 'master',
   path: '/',
-  AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'dummy',
-  AZURE_WORD2MD_CLIENT_SECRET: process.env.AZURE_WORD2MD_CLIENT_SECRET || 'dummy',
-  AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'dummy',
-  AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'dummy',
 };
 
 describe('Github Edit Link Tests', () => {
