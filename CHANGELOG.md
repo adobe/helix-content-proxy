@@ -1,3 +1,10 @@
+## [2.1.7](https://github.com/adobe/helix-content-proxy/compare/v2.1.6...v2.1.7) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v8.2.2 ([#218](https://github.com/adobe/helix-content-proxy/issues/218)) ([232ca49](https://github.com/adobe/helix-content-proxy/commit/232ca499a3f5eb52a3949eb34c7dccbf7f37f337))
+
 ## [2.1.6](https://github.com/adobe/helix-content-proxy/compare/v2.1.5...v2.1.6) (2020-11-19)
 
 
