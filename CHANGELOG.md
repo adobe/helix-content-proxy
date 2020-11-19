@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/adobe/helix-content-proxy/compare/v2.1.7...v2.2.0) (2020-11-19)
+
+
+### Features
+
+* **resolve:** implement redirect to edit url ([#214](https://github.com/adobe/helix-content-proxy/issues/214)) ([5883e35](https://github.com/adobe/helix-content-proxy/commit/5883e35545d3feb7f0b1c297293457c93665e837)), closes [#212](https://github.com/adobe/helix-content-proxy/issues/212)
+
 ## [2.1.7](https://github.com/adobe/helix-content-proxy/compare/v2.1.6...v2.1.7) (2020-11-19)
 
 
