@@ -60,6 +60,12 @@ class FakeOneDrive {
         webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B0F371509-EA33-49C1-A916-00F99214776F%7D&file=adobe-to-acquire-workfront.docx&action=default&mobileredirect=true',
       }];
     }
+    if (path === '/word2md-unit-tests/adobe-stock-team') {
+      return [{
+        id: '01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
+        webUrl: 'https://adobe.sharepoint.com/sites/cg-helix/Shared%20Documents/word2md-unit-tests/adobe-stock-team.md',
+      }];
+    }
     return [];
   }
 }
@@ -107,6 +113,22 @@ describe('Onedrive Edit Link Tests', () => {
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B9B11CF85-2856-4434-A536-3B1C13699D0F%7D&file=query-index.xlsx&action=default&mobileredirect=true');
+  }).timeout(20000);
+
+  it('Returns redirect for onedrive md', async function test() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://blog.adobe.com/word2md-unit-tests/adobe-stock-team.md',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://adobe.sharepoint.com/sites/cg-helix/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Fcg-helix%2FShared+Documents%2Fword2md-unit-tests%2Fadobe-stock-team.md&parent=%2Fsites%2Fcg-helix%2FShared+Documents%2Fword2md-unit-tests&p=5');
   }).timeout(20000);
 
   it('Returns 404 for non existent document', async function test() {

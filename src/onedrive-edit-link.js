@@ -43,6 +43,19 @@ async function getEditUrl(opts) {
   if (!item) {
     return '';
   }
+  if (item.webUrl.endsWith('.md')) {
+    // the sharepoint url looks like: /sites/<site>/<list><filePath>
+    const url = new URL(decodeURIComponent(item.webUrl));
+    const segs = decodeURI(url.pathname).split(/\/+/);
+    const prefix = segs.slice(0, 4).join('/');
+    const parentPath = segs.slice(0, segs.length - 1).join('/');
+
+    const newUrl = new URL(`${prefix}/Forms/AllItems.aspx`, url);
+    newUrl.searchParams.append('id', decodeURI(url.pathname));
+    newUrl.searchParams.append('parent', parentPath);
+    newUrl.searchParams.append('p', 5);
+    return newUrl.href;
+  }
   return item.webUrl;
 }
 
