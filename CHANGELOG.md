@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/adobe/helix-content-proxy/compare/v2.2.0...v2.2.1) (2020-11-27)
+
+
+### Bug Fixes
+
+* **edit:** fix edit link for md ([#224](https://github.com/adobe/helix-content-proxy/issues/224)) ([10ec36a](https://github.com/adobe/helix-content-proxy/commit/10ec36ae01102b67714bad28fd918c4baac5efb7)), closes [#223](https://github.com/adobe/helix-content-proxy/issues/223)
+
 # [2.2.0](https://github.com/adobe/helix-content-proxy/compare/v2.1.7...v2.2.0) (2020-11-19)
 
 
