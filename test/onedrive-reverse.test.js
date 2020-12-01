@@ -92,6 +92,29 @@ describe('Onedrive Reverse Lookup Tests', () => {
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test.json');
   });
 
+  it('Returns redirect for onedrive taxonomy spreadsheet', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/565E00D2-2D27-44B2-9DDA-35D182F0F698')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/topics/_taxonomy.xlsx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      lookup: 'https://adobe.sharepoint.com/:x:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B565E00D2-2D27-44B2-9DDA-35D182F0F698%7D&file=_taxonomy.xlsx&action=default&mobileredirect=true',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/topics/taxonomy.json');
+  });
+
   it('Returns redirect for onedrive document w/o extension', async function test() {
     const { server } = this.polly;
     server

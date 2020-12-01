@@ -39,7 +39,12 @@ async function handleJSON(opts, params) {
     log.debug(`resolving sharelink to ${mp.url}`);
     const rootItem = await drive.getDriveItemFromShareLink(mp.url);
     log.debug(`retrieving item-id for ${mp.relPath}.xlsx`);
-    const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
+    const [item] = await drive.fuzzyGetDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
+    if (!item) {
+      const error = new Error('Not found');
+      error.statusCode = 404;
+      throw error;
+    }
     const itemUri = OneDrive.driveItemToURL(item);
     const actionUrl = lock.createActionURL({
       name: 'data-embed@v2',
