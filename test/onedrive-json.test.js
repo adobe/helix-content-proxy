@@ -20,6 +20,8 @@ const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { fetchContext } = require('../src/utils.js');
 const { setupPolly } = require('./utils.js');
 
+// require('dotenv').config();
+
 const defaultLock = new VersionLock({}, {
   namespace: 'helix',
   packageName: 'helix-services',
@@ -32,77 +34,58 @@ class FakeOneDrive {
 
   getDriveItemFromShareLink() {
     return {
-      '@odata.context':
-    'https://graph.microsoft.com/v1.0/$metadata#shares(\'u%21aHR0cHM6Ly9hZG9iZS5zaGFyZXBvaW50LmNvbS9zaXRlcy9UaGVCbG9nL1NoYXJlZCUyMERvY3VtZW50cy9hZG1pbg%3D\')/driveItem/$entity',
+      '@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#shares(\'u%21aHR0cHM6Ly9hZG9iZS5zaGFyZXBvaW50LmNvbS9zaXRlcy9UaGVCbG9nL1NoYXJlZCUyMERvY3VtZW50cy9hZG1pbg%3D\')/driveItem/$entity',
       createdDateTime: '2020-02-10T18:21:43Z',
       eTag: '"{8EE52397-D2C5-498C-B917-4BFA92337E76},2"',
       id: '01DJQLOW4XEPSY5ROSRRE3SF2L7KJDG7TW',
       lastModifiedDateTime: '2020-02-10T18:21:43Z',
       name: 'admin',
-      webUrl:
-    'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/admin',
+      webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/admin',
       cTag: '"c:{8EE52397-D2C5-498C-B917-4BFA92337E76},0"',
       size: 895505630,
-      parentReference:
-    {
-      driveId:
-       'b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH',
-      driveType: 'documentLibrary',
-      id: '01DJQLOW56Y2GOVW7725BZO354PWSELRRZ',
-      path:
-       '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/root:',
-    },
-      fileSystemInfo:
-    {
-      createdDateTime: '2020-02-10T18:21:43Z',
-      lastModifiedDateTime: '2020-02-10T18:21:43Z',
-    },
+      parentReference: {
+        driveId: 'b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH',
+        driveType: 'documentLibrary',
+        id: '01DJQLOW56Y2GOVW7725BZO354PWSELRRZ',
+        path: '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/root:',
+      },
+      fileSystemInfo: {
+        createdDateTime: '2020-02-10T18:21:43Z',
+        lastModifiedDateTime: '2020-02-10T18:21:43Z',
+      },
       folder: { childCount: 5 },
       shared: { scope: 'users' },
     };
   }
 
-  getDriveItem(_, path) {
-    if (path.endsWith('missing.xlsx')) {
-      const e = new Error('not found');
-      e.statusCode = 404;
-      throw e;
+  fuzzyGetDriveItem(_, path) {
+    if (path === '/en/topics/taxonomy.xlsx') {
+      return [{
+        extension: 'xlsx',
+        file: { mimeType: 'dummy' },
+        fuzzyDistance: 0,
+        name: '_taxonomy.xlsx',
+        id: '01DJQLOW6SABPFMJZNWJCJ3WRV2GBPB5UY',
+        parentReference: {
+          driveId: 'b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH',
+          id: '01DJQLOW2TC5HJIZTSINCYVCXDAURGV7F4',
+        },
+      }];
     }
-    return {
-      '@odata.context':
-'https://graph.microsoft.com/v1.0/$metadata#drives(\'b%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH\')/items/$entity',
-      '@microsoft.graph.downloadUrl':
-'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/download.aspx?UniqueId=28ee8cdd-211c-4b36-9f20-f2751134b342&Translate=false&tempauth=eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvYWRvYmUuc2hhcmVwb2ludC5jb21AZmE3YjFiNWEtN2IzNC00Mzg3LTk0YWUtZDJjMTc4ZGVjZWUxIiwiaXNzIjoiMDAwMDAwMDMtMDAwMC0wZmYxLWNlMDAtMDAwMDAwMDAwMDAwIiwibmJmIjoiMTU5MTcxMTg5MSIsImV4cCI6IjE1OTE3MTU0OTEiLCJlbmRwb2ludHVybCI6Ind3NGZGaHlEanozdXlYVEFCZW1PZ3N1aXV5enQyS0V5OTlxYmhBREJQNzA9IiwiZW5kcG9pbnR1cmxMZW5ndGgiOiIxMzAiLCJpc2xvb3BiYWNrIjoiVHJ1ZSIsImNpZCI6IllqY3daVE13T0dVdE9UTmlOaTAwWVRFeExXRTNabUl0TVdaaU9EWXhPVGxpTURSbSIsInZlciI6Imhhc2hlZHByb29mdG9rZW4iLCJzaXRlaWQiOiJOMkpsTkRrNU0yVXRPRFV3TWkwME5qQXdMVGd6TkdRdE1tVmhZemsyWmprMU5UaGwiLCJhcHBfZGlzcGxheW5hbWUiOiJIZWxpeCBkb2MybWFya2Rvd24gc2VydmljZSIsImdpdmVuX25hbWUiOiJQcm9qZWN0IiwiZmFtaWx5X25hbWUiOiJIZWxpeCBJbnRlZ3JhdGlvbiIsImFwcGlkIjoiODNhYjI5MjItNWYxMS00ZTRkLTk2ZjMtZDFlMGZmMTUyODU2IiwidGlkIjoiZmE3YjFiNWEtN2IzNC00Mzg3LTk0YWUtZDJjMTc4ZGVjZWUxIiwidXBuIjoiaGVsaXhAYWRvYmUuY29tIiwicHVpZCI6IjEwMDMyMDAwN0RFMTQ3NkIiLCJjYWNoZWtleSI6IjBoLmZ8bWVtYmVyc2hpcHwxMDAzMjAwMDdkZTE0NzZiQGxpdmUuY29tIiwic2NwIjoiYWxsZmlsZXMud3JpdGUgbXlmaWxlcy5yZWFkIGFsbHNpdGVzLndyaXRlIGFsbHByb2ZpbGVzLnJlYWQiLCJ0dCI6IjIiLCJ1c2VQZXJzaXN0ZW50Q29va2llIjpudWxsfQ.NkpwZTdmZXZIbjA2NXV1Z00weTBrb2RqcldGdmFMWG9rYjNVWVA2R3BSRT0&ApiVersion=2.0',
-      createdDateTime: '2020-05-11T14:48:27Z',
-      eTag: '"{28EE8CDD-211C-4B36-9F20-F2751134B342},109"',
-      id: '01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
-      lastModifiedDateTime: '2020-06-03T08:00:23Z',
-      name: 'urls.xlsx',
-      webUrl:
-'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B28EE8CDD-211C-4B36-9F20-F2751134B342%7D&file=urls.xlsx&action=default&mobileredirect=true',
-      cTag: '"c:{28EE8CDD-211C-4B36-9F20-F2751134B342},110"',
-      size: 306302,
-      parentReference:
-{
-  driveId:
-   'b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH',
-  driveType: 'documentLibrary',
-  id: '01DJQLOW2TC5HJIZTSINCYVCXDAURGV7F4',
-  path:
-   '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/root:/admin/importer',
-},
-      file:
-{
-  mimeType:
-   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  hashes: { quickXorHash: 'PvHXZY+JGybdCgGNHsa0tReqqZk=' },
-},
-      fileSystemInfo:
-{
-  createdDateTime: '2020-05-11T14:48:27Z',
-  lastModifiedDateTime: '2020-06-03T08:00:23Z',
-},
-    };
+    if (path === '/importer/urls.xlsx') {
+      return [{
+        extension: 'xlsx',
+        file: { mimeType: 'dummy' },
+        fuzzyDistance: 0,
+        name: 'urls.xlsx',
+        id: '01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
+        parentReference: {
+          driveId: 'b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH',
+          id: '01DJQLOW2TC5HJIZTSINCYVCXDAURGV7F4',
+        },
+      }];
+    }
+    return [];
   }
 }
 
@@ -125,8 +108,7 @@ describe('Excel JSON Integration tests', () => {
         warn: console.log,
         error: console.log,
       },
-      options: {
-      },
+      options: {},
       lock: new VersionLock(),
     });
 
@@ -192,6 +174,68 @@ describe('Excel JSON Integration tests', () => {
         'import date': '2020-07-22T13:35:28.111Z',
         url: 'https://theblog.adobe.com/the-emoji-year-in-review/',
         year: 44029,
+      },
+    ]);
+  }).timeout(50000);
+
+  it('Get JSON on author friendly url', async () => {
+    // const { handleJSON } = require('../src/onedrive-json');
+    const { handleJSON } = proxyquire('../src/onedrive-json', {
+      '@adobe/helix-onedrive-support': {
+        OneDrive: FakeOneDrive,
+      },
+    });
+
+    const res = await handleJSON({
+      mp: {
+        url: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog',
+        relPath: '/en/topics/taxonomy',
+      },
+      log: {
+        debug: console.log,
+        info: console.log,
+        warn: console.log,
+        error: console.log,
+      },
+      options: {
+        AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'fake',
+        AZURE_WORD2MD_CLIENT_SECRET: process.env.AZURE_WORD2MD_CLIENT_SECRET || 'fake',
+        AZURE_WORD2MD_REFRESH_TOKEN: process.env.AZURE_WORD2MD_REFRESH_TOKEN || 'fake',
+        AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
+        AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
+        namespace: 'helix',
+      },
+      lock: defaultLock,
+    }, {
+      'hlx_p.limit': 2,
+    });
+
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.headers, {
+      'cache-control': 'no-store, private, must-revalidate',
+      'content-type': 'application/json',
+      'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
+      'surrogate-key': 'IEPk2TBbQwWp8mOq',
+      'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW6SABPFMJZNWJCJ3WRV2GBPB5UY',
+    });
+    assert.deepEqual(res.body.data, [
+      {
+        ExcludeFromMetadata: '',
+        Hidden: '',
+        'Level 1': 'News',
+        'Level 2': '',
+        'Level 3': '',
+        Link: '',
+        Type: 'Categories',
+      },
+      {
+        ExcludeFromMetadata: '',
+        Hidden: 'X',
+        'Level 1': 'Insights & Inspiration',
+        'Level 2': '',
+        'Level 3': '',
+        Link: '',
+        Type: 'Categories',
       },
     ]);
   }).timeout(50000);

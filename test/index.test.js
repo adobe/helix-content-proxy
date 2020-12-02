@@ -158,12 +158,16 @@ mountpoints:
       }));
 
     server
-      .get('https://graph.microsoft.com/v1.0/drives/dummy_driveId/items/dummy_rootId:/en/drafts/query-index.xlsx')
+      .get('https://graph.microsoft.com/v1.0/drives/dummy_driveId/items/dummy_rootId:/en/drafts:/children?%24top=999&%24select=name%2CparentReference%2Cfile%2Cid%2Csize%2CwebUrl')
       .intercept((_, res) => res.status(200).send({
-        id: '1234',
-        parentReference: {
-          driveId: 'dummy_driveId',
-        },
+        value: [{
+          id: '1234',
+          name: 'query-index.xlsx',
+          file: { mimeType: 'dummy' },
+          parentReference: {
+            driveId: 'dummy_driveId',
+          },
+        }],
       }));
 
     server
