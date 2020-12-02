@@ -1,3 +1,10 @@
+## [2.2.5](https://github.com/adobe/helix-content-proxy/compare/v2.2.4...v2.2.5) (2020-12-02)
+
+
+### Bug Fixes
+
+* **json:** respect author friendly transformation for json (onedrive) ([#230](https://github.com/adobe/helix-content-proxy/issues/230)) ([c8fd470](https://github.com/adobe/helix-content-proxy/commit/c8fd470dfc6210383ae94f5a248843d5147e524e)), closes [#229](https://github.com/adobe/helix-content-proxy/issues/229)
+
 ## [2.2.4](https://github.com/adobe/helix-content-proxy/compare/v2.2.3...v2.2.4) (2020-12-01)
 
 
