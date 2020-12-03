@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
+const { filename2url } = require('./filename-to-url.js');
 const google = require('./google-reverse.js');
 const onedrive = require('./onedrive-reverse.js');
 // const github = require('./github-reverse.js');
@@ -27,6 +27,7 @@ async function reverseLookup(opts) {
     ref,
     repo,
     owner,
+    report,
   } = opts;
   const handler = HANDLERS.find(({ test }) => test(uri));
   if (!handler) {
@@ -59,7 +60,25 @@ async function reverseLookup(opts) {
     }
   }
 
-  const location = `${prefix}${documentPath}`;
+  // make author friendly
+  const friendlyPath = encodeURI(filename2url(decodeURI(documentPath)));
+  const location = `${prefix}${friendlyPath}`;
+
+  if (report) {
+    return {
+      'cache-control': 'no-store, private, must-revalidate',
+      statusCode: 200,
+      body: {
+        sourceUrl: uri.toString(),
+        webUrl: location,
+        unfriendlyWebUrl: `${prefix}${documentPath}`,
+      },
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+  }
+
   return {
     'cache-control': 'no-store, private, must-revalidate',
     statusCode: 302,

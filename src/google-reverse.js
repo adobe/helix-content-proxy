@@ -56,8 +56,7 @@ async function reverseLookup(opts) {
   }
   const ext = type === 'spreadsheets' ? '.json' : '.html';
 
-  // make author un-friendly
-  return encodeURI(filename2url(decodeURI(`${path}${ext}`)));
+  return `${path}${ext}`;
 }
 
 module.exports = {
