@@ -147,6 +147,7 @@ async function main(mainopts) {
           ref,
           options: externalOptions,
           log,
+          report: !!mainopts.report,
         });
       }
       if (mainopts.edit) {
