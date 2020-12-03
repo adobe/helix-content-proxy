@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/adobe/helix-content-proxy/compare/v2.2.6...v2.3.0) (2020-12-03)
+
+
+### Features
+
+* **lookup:** add lookup report feature ([#232](https://github.com/adobe/helix-content-proxy/issues/232)) ([287656c](https://github.com/adobe/helix-content-proxy/commit/287656c0d17d3d5b8f7c46a583b4bc655ce0feb3)), closes [#227](https://github.com/adobe/helix-content-proxy/issues/227)
+
 ## [2.2.6](https://github.com/adobe/helix-content-proxy/compare/v2.2.5...v2.2.6) (2020-12-02)
 
 
