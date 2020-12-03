@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  */
 const { getPathFromId } = require('./google-helpers.js');
-const { filename2url } = require('./filename-to-url.js');
 
 function test(uri) {
   return uri.hostname === 'drive.google.com'
