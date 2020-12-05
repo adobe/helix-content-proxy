@@ -13,10 +13,17 @@
 const { URL } = require('url');
 const fetchAPI = require('@adobe/helix-fetch');
 
+// force HTTP/1 in order to avoid issues with long-lived HTTP/2 sessions
+// on azure/kubernetes based I/O Runtime
+process.env.HELIX_FETCH_FORCE_HTTP1 = true;
+
 function createFetchContext() {
-  // force HTTP/1 in order to avoid issues with long-lived HTTP/2 sessions
-  // on azure/kubernetes based I/O Runtime
-  return fetchAPI.context({ httpsProtocols: ['http1'] });
+  /* istanbul ignore next */
+  if (process.env.HELIX_FETCH_FORCE_HTTP1) {
+    return fetchAPI.context({ httpProtocol: 'http1', httpsProtocols: ['http1'] });
+  }
+  /* istanbul ignore next */
+  return fetchAPI.context({});
 }
 const fetchContext = createFetchContext();
 const { fetch } = fetchContext;
