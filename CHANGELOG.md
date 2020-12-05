@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/adobe/helix-content-proxy/compare/v2.3.1...v2.3.2) (2020-12-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.4.0 ([#234](https://github.com/adobe/helix-content-proxy/issues/234)) ([d4ffbad](https://github.com/adobe/helix-content-proxy/commit/d4ffbad125a469606204865ef14758741adc711b))
+
 ## [2.3.1](https://github.com/adobe/helix-content-proxy/compare/v2.3.0...v2.3.1) (2020-12-04)
 
 
