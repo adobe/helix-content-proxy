@@ -1,3 +1,11 @@
+## [2.3.3](https://github.com/adobe/helix-content-proxy/compare/v2.3.2...v2.3.3) (2020-12-06)
+
+
+### Bug Fixes
+
+* address feedback ([360c0cb](https://github.com/adobe/helix-content-proxy/commit/360c0cb7b47a5d2341d0d5a37cc5a3d1edaccc49))
+* force http1 when invoking other actions (prevent http2-related issues on azure runtime env) ([53accdf](https://github.com/adobe/helix-content-proxy/commit/53accdfe9b261c91e47a80cc7632f15507dc532e)), closes [#196](https://github.com/adobe/helix-content-proxy/issues/196)
+
 ## [2.3.2](https://github.com/adobe/helix-content-proxy/compare/v2.3.1...v2.3.2) (2020-12-05)
 
 
