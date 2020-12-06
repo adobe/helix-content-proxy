@@ -25,7 +25,7 @@ function getbaseurl() {
   const package = 'helix-services';
   const name = packjson.name.replace('@adobe/helix-', '');
   let version = `${packjson.version}`;
-  if (process.env.CI && process.env.CIRCLE_BUILD_NUM && process.env.CIRCLE_BRANCH !== 'master') {
+  if (process.env.CI && process.env.CIRCLE_BUILD_NUM && process.env.CIRCLE_BRANCH !== 'main') {
     version = `ci${process.env.CIRCLE_BUILD_NUM}`;
   }
   return `api/v1/web/${namespace}/${package}/${name}@${version}`;
@@ -58,8 +58,8 @@ describe('Post-Deploy Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.be.json;
-        expect(response.body).to.be.an('array');
-        expect(response.body).to.have.a.lengthOf(1);
+        expect(response.body.data).to.be.an('array');
+        expect(response.body.data).to.have.a.lengthOf(1);
       }).catch((e) => {
         throw e;
       });
@@ -75,8 +75,8 @@ describe('Post-Deploy Tests', () => {
       .then((response) => {
         expect(response).to.have.status(200);
         expect(response).to.be.json;
-        expect(response.body).to.be.an('array');
-        expect(response.body).to.have.a.lengthOf(3);
+        expect(response.body.data).to.be.an('array');
+        expect(response.body.data).to.have.a.lengthOf(3);
       }).catch((e) => {
         throw e;
       });

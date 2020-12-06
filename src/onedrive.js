@@ -9,9 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { URL } = require('url');
 const { utils } = require('@adobe/helix-shared');
-const { handleJSON } = require('./excel-json');
+const { handleJSON } = require('./onedrive-json.js');
 const { fetch, getFetchOptions } = require('./utils');
 
 /**
@@ -23,12 +22,15 @@ const { fetch, getFetchOptions } = require('./utils');
  * @param {string} opts.ref the GitHub ref
  * @param {object} opts.log a Helix-Log instance
  * @param {object} opts.options Helix Fetch options
+ * @param {VersionLock} opts.lock Version lock helper
  */
 async function handle(opts) {
   const {
-    mp, owner, repo, ref, log, options,
+    mp, owner, repo, ref, log, options, lock,
   } = opts;
-  const url = new URL(`https://adobeioruntime.net/api/v1/web/${options.namespace}/helix-services/word2md@v1`);
+  const url = lock.createActionURL({
+    name: 'word2md@v2',
+  });
   url.searchParams.append('path', mp.relPath ? `${mp.relPath}.docx` : '');
   url.searchParams.append('shareLink', mp.url);
 

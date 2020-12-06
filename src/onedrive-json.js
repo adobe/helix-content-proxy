@@ -17,7 +17,7 @@ const { appendURLParams, fetch, getFetchOptions } = require('./utils');
 
 async function handleJSON(opts, params) {
   const {
-    mp, log, options,
+    mp, log, options, lock,
   } = opts;
 
   const {
@@ -25,7 +25,6 @@ async function handleJSON(opts, params) {
     AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
     AZURE_HELIX_USER: username,
     AZURE_HELIX_PASSWORD: password,
-    namespace,
   } = options;
 
   try {
@@ -40,16 +39,28 @@ async function handleJSON(opts, params) {
     log.debug(`resolving sharelink to ${mp.url}`);
     const rootItem = await drive.getDriveItemFromShareLink(mp.url);
     log.debug(`retrieving item-id for ${mp.relPath}.xlsx`);
-    const item = await drive.getDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
+    const [item] = await drive.fuzzyGetDriveItem(rootItem, encodeURI(`${mp.relPath}.xlsx`));
+    if (!item) {
+      const error = new Error('Not found');
+      error.statusCode = 404;
+      throw error;
+    }
     const itemUri = OneDrive.driveItemToURL(item);
-    const url = appendURLParams(`https://adobeioruntime.net/api/v1/web/${namespace}/helix-services/data-embed@v1`, {
+    const actionUrl = lock.createActionURL({
+      name: 'data-embed@v2',
+    });
+    const url = appendURLParams(actionUrl, {
       ...params,
       src: itemUri.toString(),
     });
 
     try {
       log.debug(`fetching data from ${url}`);
-      const response = await fetch(url, getFetchOptions(options));
+
+      const fopts = getFetchOptions(options);
+      fopts.headers['cache-control'] = 'no-cache'; // respected by runtime
+
+      const response = await fetch(url, fopts);
       const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
       if (response.ok) {
         return {

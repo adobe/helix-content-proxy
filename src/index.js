@@ -9,14 +9,16 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { wrap } = require('@adobe/openwhisk-action-utils');
+const { wrap, VersionLock } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { wrap: status } = require('@adobe/helix-status');
 const { epsagon } = require('@adobe/helix-epsagon');
 const { AbortError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
+const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
+const lookupEditUrl = require('./lookup-edit-url.js');
 
 const github = require('./github');
 const google = require('./google');
@@ -49,7 +51,7 @@ async function main(mainopts) {
     AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
     AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
     __ow_headers: originalHeaders = {}, __ow_logger: log,
-    limit, offset,
+    limit, offset, sheet, table,
   } = mainopts;
   if (!(owner && repo && ref && path)) {
     return {
@@ -60,7 +62,7 @@ async function main(mainopts) {
   // validate path parameter
   if (path.indexOf('//') > -1) {
     return {
-      statusCode: 400,
+      statusCode: 404,
       body: `invalid path: ${path}`,
     };
   }
@@ -68,6 +70,10 @@ async function main(mainopts) {
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
   // eslint-disable-next-line no-underscore-dangle
   const namespace = process.env.__OW_NAMESPACE || 'helix';
+  const lock = new VersionLock(mainopts, {
+    namespace,
+    packageName: 'helix-services',
+  });
 
   const qboptions = Object.entries(mainopts)
     .filter(([key]) => key.startsWith('hlx_'))
@@ -114,6 +120,8 @@ async function main(mainopts) {
     ...qboptions,
     'hlx_p.limit': limit,
     'hlx_p.offset': offset,
+    sheet,
+    table,
   };
 
   try {
@@ -138,6 +146,18 @@ async function main(mainopts) {
           repo,
           ref,
           options: externalOptions,
+          log,
+          report: !!mainopts.report,
+        });
+      }
+      if (mainopts.edit) {
+        return lookupEditUrl({
+          mount,
+          uri: new URL(mainopts.edit),
+          options: externalOptions,
+          owner,
+          repo,
+          ref,
           log,
         });
       }
@@ -170,6 +190,7 @@ async function main(mainopts) {
         ref,
         path,
         log,
+        lock,
         options: externalOptions,
       }, dataOptions);
     }
@@ -182,6 +203,7 @@ async function main(mainopts) {
       ref,
       path,
       log,
+      lock,
       options: mp ? externalOptions : githubOptions,
     });
   } catch (e) {
@@ -206,6 +228,7 @@ async function main(mainopts) {
 }
 
 module.exports.main = wrap(main)
+  .with(vary)
   .with(epsagon)
   .with(status)
   .with(logger.trace)

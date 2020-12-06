@@ -1,3 +1,400 @@
+## [2.3.2](https://github.com/adobe/helix-content-proxy/compare/v2.3.1...v2.3.2) (2020-12-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.4.0 ([#234](https://github.com/adobe/helix-content-proxy/issues/234)) ([d4ffbad](https://github.com/adobe/helix-content-proxy/commit/d4ffbad125a469606204865ef14758741adc711b))
+
+## [2.3.1](https://github.com/adobe/helix-content-proxy/compare/v2.3.0...v2.3.1) (2020-12-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.16.4 ([#233](https://github.com/adobe/helix-content-proxy/issues/233)) ([a39098a](https://github.com/adobe/helix-content-proxy/commit/a39098aafdccc5d5b5f883e9ff9426007dbddcc3))
+
+# [2.3.0](https://github.com/adobe/helix-content-proxy/compare/v2.2.6...v2.3.0) (2020-12-03)
+
+
+### Features
+
+* **lookup:** add lookup report feature ([#232](https://github.com/adobe/helix-content-proxy/issues/232)) ([287656c](https://github.com/adobe/helix-content-proxy/commit/287656c0d17d3d5b8f7c46a583b4bc655ce0feb3)), closes [#227](https://github.com/adobe/helix-content-proxy/issues/227)
+
+## [2.2.6](https://github.com/adobe/helix-content-proxy/compare/v2.2.5...v2.2.6) (2020-12-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.3.3 ([#231](https://github.com/adobe/helix-content-proxy/issues/231)) ([805024f](https://github.com/adobe/helix-content-proxy/commit/805024fcd77497ad43fc045b1847974dd31cd555))
+
+## [2.2.5](https://github.com/adobe/helix-content-proxy/compare/v2.2.4...v2.2.5) (2020-12-02)
+
+
+### Bug Fixes
+
+* **json:** respect author friendly transformation for json (onedrive) ([#230](https://github.com/adobe/helix-content-proxy/issues/230)) ([c8fd470](https://github.com/adobe/helix-content-proxy/commit/c8fd470dfc6210383ae94f5a248843d5147e524e)), closes [#229](https://github.com/adobe/helix-content-proxy/issues/229)
+
+## [2.2.4](https://github.com/adobe/helix-content-proxy/compare/v2.2.3...v2.2.4) (2020-12-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.16.3 ([#228](https://github.com/adobe/helix-content-proxy/issues/228)) ([5f3db7c](https://github.com/adobe/helix-content-proxy/commit/5f3db7c6c10ae72c516b60b914370ff4cda94715))
+
+## [2.2.3](https://github.com/adobe/helix-content-proxy/compare/v2.2.2...v2.2.3) (2020-11-28)
+
+
+### Bug Fixes
+
+* **test:** fix post deploy test ([cf6b1d2](https://github.com/adobe/helix-content-proxy/commit/cf6b1d2dfb46bef623549c47420b6bd0d0ee12e5))
+
+## [2.2.2](https://github.com/adobe/helix-content-proxy/compare/v2.2.1...v2.2.2) (2020-11-27)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#225](https://github.com/adobe/helix-content-proxy/issues/225)) ([437e638](https://github.com/adobe/helix-content-proxy/commit/437e638b593db724acc11ec8e24472e8fbfb0ac5))
+
+## [2.2.1](https://github.com/adobe/helix-content-proxy/compare/v2.2.0...v2.2.1) (2020-11-27)
+
+
+### Bug Fixes
+
+* **edit:** fix edit link for md ([#224](https://github.com/adobe/helix-content-proxy/issues/224)) ([10ec36a](https://github.com/adobe/helix-content-proxy/commit/10ec36ae01102b67714bad28fd918c4baac5efb7)), closes [#223](https://github.com/adobe/helix-content-proxy/issues/223)
+
+# [2.2.0](https://github.com/adobe/helix-content-proxy/compare/v2.1.7...v2.2.0) (2020-11-19)
+
+
+### Features
+
+* **resolve:** implement redirect to edit url ([#214](https://github.com/adobe/helix-content-proxy/issues/214)) ([5883e35](https://github.com/adobe/helix-content-proxy/commit/5883e35545d3feb7f0b1c297293457c93665e837)), closes [#212](https://github.com/adobe/helix-content-proxy/issues/212)
+
+## [2.1.7](https://github.com/adobe/helix-content-proxy/compare/v2.1.6...v2.1.7) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v8.2.2 ([#218](https://github.com/adobe/helix-content-proxy/issues/218)) ([232ca49](https://github.com/adobe/helix-content-proxy/commit/232ca499a3f5eb52a3949eb34c7dccbf7f37f337))
+
+## [2.1.6](https://github.com/adobe/helix-content-proxy/compare/v2.1.5...v2.1.6) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.3.2 ([#217](https://github.com/adobe/helix-content-proxy/issues/217)) ([b078b5f](https://github.com/adobe/helix-content-proxy/commit/b078b5fb200cabb97b292e565a632bce22ce8a92))
+
+## [2.1.5](https://github.com/adobe/helix-content-proxy/compare/v2.1.4...v2.1.5) (2020-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.2.2 ([#215](https://github.com/adobe/helix-content-proxy/issues/215)) ([a40427d](https://github.com/adobe/helix-content-proxy/commit/a40427d445503cbc5f0d870d131287c61b7c8aa1))
+
+## [2.1.4](https://github.com/adobe/helix-content-proxy/compare/v2.1.3...v2.1.4) (2020-11-18)
+
+
+### Bug Fixes
+
+* **lookup:** catch gaxios errors ([#213](https://github.com/adobe/helix-content-proxy/issues/213)) ([8cde2b8](https://github.com/adobe/helix-content-proxy/commit/8cde2b8baf7da3c4970a24df0add57f695cd826e)), closes [#211](https://github.com/adobe/helix-content-proxy/issues/211)
+
+## [2.1.3](https://github.com/adobe/helix-content-proxy/compare/v2.1.2...v2.1.3) (2020-11-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v65 ([#210](https://github.com/adobe/helix-content-proxy/issues/210)) ([bee9bc9](https://github.com/adobe/helix-content-proxy/commit/bee9bc94c32ccbc7ee86a6c15a91696d8e14f2b6))
+
+## [2.1.2](https://github.com/adobe/helix-content-proxy/compare/v2.1.1...v2.1.2) (2020-11-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v3.1.2 ([#209](https://github.com/adobe/helix-content-proxy/issues/209)) ([c3a6e92](https://github.com/adobe/helix-content-proxy/commit/c3a6e92fece1e15dee5acd5cce07f5cf86ebb696))
+
+## [2.1.1](https://github.com/adobe/helix-content-proxy/compare/v2.1.0...v2.1.1) (2020-11-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.5.4 ([#207](https://github.com/adobe/helix-content-proxy/issues/207)) ([3c51429](https://github.com/adobe/helix-content-proxy/commit/3c5142956b8da3f0185bf7b39294dd3aac14dd9a))
+
+# [2.1.0](https://github.com/adobe/helix-content-proxy/compare/v2.0.12...v2.1.0) (2020-11-13)
+
+
+### Features
+
+* **caching:** add x-ow-version-lock to vary response header ([#206](https://github.com/adobe/helix-content-proxy/issues/206)) ([e10c5a3](https://github.com/adobe/helix-content-proxy/commit/e10c5a3f8e96bb41b796dd9fe886b8f2f26311e1)), closes [#205](https://github.com/adobe/helix-content-proxy/issues/205)
+
+## [2.0.12](https://github.com/adobe/helix-content-proxy/compare/v2.0.11...v2.0.12) (2020-11-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v3.1.1 ([#203](https://github.com/adobe/helix-content-proxy/issues/203)) ([803c6f0](https://github.com/adobe/helix-content-proxy/commit/803c6f088223e2e38f83dc2d5dad142de4b0d2c5))
+
+## [2.0.11](https://github.com/adobe/helix-content-proxy/compare/v2.0.10...v2.0.11) (2020-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v64 ([#201](https://github.com/adobe/helix-content-proxy/issues/201)) ([0604b25](https://github.com/adobe/helix-content-proxy/commit/0604b253573d0ec2c20cb342170d3193c40c4432))
+
+## [2.0.10](https://github.com/adobe/helix-content-proxy/compare/v2.0.9...v2.0.10) (2020-11-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v62 ([#198](https://github.com/adobe/helix-content-proxy/issues/198)) ([424e30e](https://github.com/adobe/helix-content-proxy/commit/424e30e091b26f42395ffd3a99f2f1cd72a71e4d))
+
+## [2.0.9](https://github.com/adobe/helix-content-proxy/compare/v2.0.8...v2.0.9) (2020-11-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.16.1 ([#199](https://github.com/adobe/helix-content-proxy/issues/199)) ([52067e6](https://github.com/adobe/helix-content-proxy/commit/52067e65bb7c997737962c45f8992354075ff76f))
+
+## [2.0.8](https://github.com/adobe/helix-content-proxy/compare/v2.0.7...v2.0.8) (2020-10-23)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([#194](https://github.com/adobe/helix-content-proxy/issues/194)) ([63d49c8](https://github.com/adobe/helix-content-proxy/commit/63d49c88f118f4c34c38b139bfa9e1bffc35458f))
+
+## [2.0.7](https://github.com/adobe/helix-content-proxy/compare/v2.0.6...v2.0.7) (2020-10-23)
+
+
+### Bug Fixes
+
+* **reverse:** google drive revese lookup not sanitized ([#193](https://github.com/adobe/helix-content-proxy/issues/193)) ([1c59179](https://github.com/adobe/helix-content-proxy/commit/1c59179064d2bb6324242a9d5fba4d5483dc2d6f)), closes [#192](https://github.com/adobe/helix-content-proxy/issues/192)
+
+## [2.0.6](https://github.com/adobe/helix-content-proxy/compare/v2.0.5...v2.0.6) (2020-10-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v3.0.1 ([#191](https://github.com/adobe/helix-content-proxy/issues/191)) ([2166dee](https://github.com/adobe/helix-content-proxy/commit/2166dee9d05d9dee6354c511c210cc8f770c75c2))
+
+## [2.0.5](https://github.com/adobe/helix-content-proxy/compare/v2.0.4...v2.0.5) (2020-10-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.2.1 ([#189](https://github.com/adobe/helix-content-proxy/issues/189)) ([42c593e](https://github.com/adobe/helix-content-proxy/commit/42c593e09ea3cf3d24ddb6a566847d813ad3be69))
+
+## [2.0.4](https://github.com/adobe/helix-content-proxy/compare/v2.0.3...v2.0.4) (2020-10-08)
+
+
+### Bug Fixes
+
+* **json:** forward sheet and table params to data-embed ([#187](https://github.com/adobe/helix-content-proxy/issues/187)) ([0916a1c](https://github.com/adobe/helix-content-proxy/commit/0916a1c12ed8a3f8ed20f6abe5d9b9efe6dc4c66)), closes [#186](https://github.com/adobe/helix-content-proxy/issues/186)
+
+## [2.0.3](https://github.com/adobe/helix-content-proxy/compare/v2.0.2...v2.0.3) (2020-10-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.16.0 ([#184](https://github.com/adobe/helix-content-proxy/issues/184)) ([a48c25b](https://github.com/adobe/helix-content-proxy/commit/a48c25b10b2959a6a5732ef23371f7989a40e9ad))
+
+## [2.0.2](https://github.com/adobe/helix-content-proxy/compare/v2.0.1...v2.0.2) (2020-10-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v61 ([#185](https://github.com/adobe/helix-content-proxy/issues/185)) ([87933bb](https://github.com/adobe/helix-content-proxy/commit/87933bbd97bd4130d48472c1582cb1ebb189b2c7))
+
+## [2.0.1](https://github.com/adobe/helix-content-proxy/compare/v2.0.0...v2.0.1) (2020-10-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.15.0 ([#182](https://github.com/adobe/helix-content-proxy/issues/182)) ([7b94873](https://github.com/adobe/helix-content-proxy/commit/7b948730c6b401caefd5c4979bd71317fd2b19dd))
+
+# [2.0.0](https://github.com/adobe/helix-content-proxy/compare/v1.13.29...v2.0.0) (2020-09-30)
+
+
+### Features
+
+* **ci:** make use of ow-version-lock utility ([c67e4b8](https://github.com/adobe/helix-content-proxy/commit/c67e4b8bbabe575ced4558242d005998daa87dff))
+* **deps:** update to data-embed-v2 and gdocs-v2 ([a07c47f](https://github.com/adobe/helix-content-proxy/commit/a07c47fa277684e83c6a7b03feedab4a1337fbac))
+
+
+### BREAKING CHANGES
+
+* **deps:** requests to json now returns an object instead of and array [0]
+                 gdocs2md now has a different table handling [1]
+                 gdocs2md supports author friendly names [2]
+
+[0] https://github.com/adobe/helix-data-embed/commit/9d1e924acc3aa6488b464a3cdc4a3bf68e3843bc
+[1] https://github.com/adobe/helix-gdocs2md/commit/e4befdbaed4a5319b2cca4be8507f153bedcc68a
+[2] https://github.com/adobe/helix-gdocs2md/commit/3aca7b387bbee977f84e61ce823ff6271b1b0a8d
+
+## [1.13.29](https://github.com/adobe/helix-content-proxy/compare/v1.13.28...v1.13.29) (2020-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v8.2.1 ([#179](https://github.com/adobe/helix-content-proxy/issues/179)) ([5e1227f](https://github.com/adobe/helix-content-proxy/commit/5e1227f8b3cf5f3f829594ed0456f1e640e241a8))
+
+## [1.13.28](https://github.com/adobe/helix-content-proxy/compare/v1.13.27...v1.13.28) (2020-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.3.1 ([#178](https://github.com/adobe/helix-content-proxy/issues/178)) ([d7d143c](https://github.com/adobe/helix-content-proxy/commit/d7d143c24e100252d5ff4f52be398830fc9d3aeb))
+
+## [1.13.27](https://github.com/adobe/helix-content-proxy/compare/v1.13.26...v1.13.27) (2020-09-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v60 ([#176](https://github.com/adobe/helix-content-proxy/issues/176)) ([418d2e0](https://github.com/adobe/helix-content-proxy/commit/418d2e03378b7e761435c1942010270461c8ae2e))
+
+## [1.13.26](https://github.com/adobe/helix-content-proxy/compare/v1.13.25...v1.13.26) (2020-09-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.5.3 ([#175](https://github.com/adobe/helix-content-proxy/issues/175)) ([02aa40d](https://github.com/adobe/helix-content-proxy/commit/02aa40db2b91e4062d8020f0717017af5997b7af))
+
+## [1.13.25](https://github.com/adobe/helix-content-proxy/compare/v1.13.24...v1.13.25) (2020-09-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v3 ([#173](https://github.com/adobe/helix-content-proxy/issues/173)) ([39bb5ab](https://github.com/adobe/helix-content-proxy/commit/39bb5ab11208d5b3ea414673ea1de1c377be1d05))
+
+## [1.13.24](https://github.com/adobe/helix-content-proxy/compare/v1.13.23...v1.13.24) (2020-09-21)
+
+
+### Bug Fixes
+
+* **resolve:** respect author friendly url mapping and use word2md V2 ([#169](https://github.com/adobe/helix-content-proxy/issues/169)) ([07ff921](https://github.com/adobe/helix-content-proxy/commit/07ff921f7f8614e2177e60d8033439e9de2d7756)), closes [#168](https://github.com/adobe/helix-content-proxy/issues/168)
+
+## [1.13.23](https://github.com/adobe/helix-content-proxy/compare/v1.13.22...v1.13.23) (2020-09-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-status to v8.2.0 ([#172](https://github.com/adobe/helix-content-proxy/issues/172)) ([051f6b3](https://github.com/adobe/helix-content-proxy/commit/051f6b321bd71673887bd961c3ff3848b3801b21))
+
+## [1.13.22](https://github.com/adobe/helix-content-proxy/compare/v1.13.21...v1.13.22) (2020-09-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v2.12.2 ([#167](https://github.com/adobe/helix-content-proxy/issues/167)) ([8606ef1](https://github.com/adobe/helix-content-proxy/commit/8606ef11ade571d22bec1720897b67352e88cae1))
+
+## [1.13.21](https://github.com/adobe/helix-content-proxy/compare/v1.13.20...v1.13.21) (2020-09-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v2.12.1 ([#166](https://github.com/adobe/helix-content-proxy/issues/166)) ([7d684be](https://github.com/adobe/helix-content-proxy/commit/7d684beec490b09b76dda062274dc04e78352e4d))
+
+## [1.13.20](https://github.com/adobe/helix-content-proxy/compare/v1.13.19...v1.13.20) (2020-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.5.2 ([#165](https://github.com/adobe/helix-content-proxy/issues/165)) ([27012ff](https://github.com/adobe/helix-content-proxy/commit/27012ff6d38f0feaf7cfcb40154b9ce67775419c))
+
+## [1.13.19](https://github.com/adobe/helix-content-proxy/compare/v1.13.18...v1.13.19) (2020-09-11)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) fixes ([#162](https://github.com/adobe/helix-content-proxy/issues/162)) ([fd23443](https://github.com/adobe/helix-content-proxy/commit/fd234435d7f250aee3f4813b88b5652169128288))
+
+## [1.13.18](https://github.com/adobe/helix-content-proxy/compare/v1.13.17...v1.13.18) (2020-09-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v2.11.0 ([#161](https://github.com/adobe/helix-content-proxy/issues/161)) ([9ffc0d1](https://github.com/adobe/helix-content-proxy/commit/9ffc0d1d7ec74a9736747c701b7f10f5b33f5112))
+
+## [1.13.17](https://github.com/adobe/helix-content-proxy/compare/v1.13.16...v1.13.17) (2020-09-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v2.10.1 ([#160](https://github.com/adobe/helix-content-proxy/issues/160)) ([c6d5493](https://github.com/adobe/helix-content-proxy/commit/c6d549374bf763256418ac003f0e709c64da5fd4))
+
+## [1.13.16](https://github.com/adobe/helix-content-proxy/compare/v1.13.15...v1.13.16) (2020-09-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.12.0 ([#159](https://github.com/adobe/helix-content-proxy/issues/159)) ([600650f](https://github.com/adobe/helix-content-proxy/commit/600650f5d49b3d849c371d08f23ca40e2b8b159d))
+
+## [1.13.15](https://github.com/adobe/helix-content-proxy/compare/v1.13.14...v1.13.15) (2020-09-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-utils to v4.3.0 ([#157](https://github.com/adobe/helix-content-proxy/issues/157)) ([ea5a96b](https://github.com/adobe/helix-content-proxy/commit/ea5a96ba9e509366a39d75ce496c9a3309ba47fd))
+
+## [1.13.14](https://github.com/adobe/helix-content-proxy/compare/v1.13.13...v1.13.14) (2020-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.5.1 ([#156](https://github.com/adobe/helix-content-proxy/issues/156)) ([38fabe5](https://github.com/adobe/helix-content-proxy/commit/38fabe5f1845632fe6143ec4d367d20ae7b80d64))
+
+## [1.13.13](https://github.com/adobe/helix-content-proxy/compare/v1.13.12...v1.13.13) (2020-08-27)
+
+
+### Bug Fixes
+
+* **json:** request fresh data from helix-data-embed ([acece23](https://github.com/adobe/helix-content-proxy/commit/acece232720e6ef3f6cd0c13dbbcc17e317f535c))
+
+## [1.13.12](https://github.com/adobe/helix-content-proxy/compare/v1.13.11...v1.13.12) (2020-08-27)
+
+
+### Bug Fixes
+
+* **request:** return 404 for paths with double slashes ([#153](https://github.com/adobe/helix-content-proxy/issues/153)) ([53b9328](https://github.com/adobe/helix-content-proxy/commit/53b932841a88961999f5b7dd4e4e5ce8b543aa37)), closes [#152](https://github.com/adobe/helix-content-proxy/issues/152)
+
+## [1.13.11](https://github.com/adobe/helix-content-proxy/compare/v1.13.10...v1.13.11) (2020-08-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.11.0 ([#150](https://github.com/adobe/helix-content-proxy/issues/150)) ([6146383](https://github.com/adobe/helix-content-proxy/commit/6146383c8432673be9b7fc0fbdb86a15d23f65ef))
+
+## [1.13.10](https://github.com/adobe/helix-content-proxy/compare/v1.13.9...v1.13.10) (2020-08-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.5.0 ([#149](https://github.com/adobe/helix-content-proxy/issues/149)) ([23ae574](https://github.com/adobe/helix-content-proxy/commit/23ae574bb0f6cdd8a0dddb4bc1616caac9f70581))
+
+## [1.13.9](https://github.com/adobe/helix-content-proxy/compare/v1.13.8...v1.13.9) (2020-08-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-epsagon to v1.4.0 ([#148](https://github.com/adobe/helix-content-proxy/issues/148)) ([7dcbf3e](https://github.com/adobe/helix-content-proxy/commit/7dcbf3e9a8060c47863ee77dfccb1697974ff43a))
+
+## [1.13.8](https://github.com/adobe/helix-content-proxy/compare/v1.13.7...v1.13.8) (2020-08-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v59 ([#143](https://github.com/adobe/helix-content-proxy/issues/143)) ([cc39a05](https://github.com/adobe/helix-content-proxy/commit/cc39a051b00bb7b600b7fdbb1e08cfca52505e42))
+
+## [1.13.7](https://github.com/adobe/helix-content-proxy/compare/v1.13.6...v1.13.7) (2020-08-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v2.10.0 ([#140](https://github.com/adobe/helix-content-proxy/issues/140)) ([c4e6011](https://github.com/adobe/helix-content-proxy/commit/c4e6011ecb71378eb84f01f3b562f0e7e7708007))
+
+## [1.13.6](https://github.com/adobe/helix-content-proxy/compare/v1.13.5...v1.13.6) (2020-08-14)
+
+
+### Bug Fixes
+
+* **index:** return 400 on invalid path ([eb04d47](https://github.com/adobe/helix-content-proxy/commit/eb04d471b6d9462722099e78ee9e990394398b24)), closes [#138](https://github.com/adobe/helix-content-proxy/issues/138)
+
 ## [1.13.5](https://github.com/adobe/helix-content-proxy/compare/v1.13.4...v1.13.5) (2020-08-11)
 
 

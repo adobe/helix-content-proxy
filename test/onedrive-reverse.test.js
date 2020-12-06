@@ -92,6 +92,29 @@ describe('Onedrive Reverse Lookup Tests', () => {
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test.json');
   });
 
+  it('Returns redirect for onedrive taxonomy spreadsheet', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/565E00D2-2D27-44B2-9DDA-35D182F0F698')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/topics/_taxonomy.xlsx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      lookup: 'https://adobe.sharepoint.com/:x:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B565E00D2-2D27-44B2-9DDA-35D182F0F698%7D&file=_taxonomy.xlsx&action=default&mobileredirect=true',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/topics/taxonomy.json');
+  });
+
   it('Returns redirect for onedrive document w/o extension', async function test() {
     const { server } = this.polly;
     server
@@ -113,6 +136,57 @@ describe('Onedrive Reverse Lookup Tests', () => {
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test.html');
+  });
+
+  it('Returns redirect for onedrive document with author friendly name', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/31F3BD97-BD06-455B-939F-C594D1D92371')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/drafts/My%201.%20D%C3%B6cument!.docx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document.html');
+  });
+
+  it('Returns resolve report for onedrive document with author friendly name', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/31F3BD97-BD06-455B-939F-C594D1D92371')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/drafts/My%201.%20D%C3%B6cument!.docx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      report: 'true',
+      lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.deepEqual(result.body, {
+      sourceUrl: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
+      webUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document.html',
+      unfriendlyWebUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!.html',
+    });
   });
 
   it('Returns redirect for onedrive file', async function test() {

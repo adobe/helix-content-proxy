@@ -50,19 +50,10 @@ mountpoints:
       'hlx_p.limit': 1,
       'hlx_p.offset': 1,
     });
-
     assert.equal(result.statusCode, 501);
   });
 
-  it('index returns 400 on invalid path', async function invalidPath() {
-    const { server } = this.polly;
-
-    server
-      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
-      .intercept((_, res) => res.status(200).send(`
-mountpoints:
-  /foo: https://www.example.com/`));
-
+  it('index returns 404 on invalid path', async () => {
     const result = await main({
       owner: 'adobe',
       repo: 'theblog',
@@ -70,7 +61,33 @@ mountpoints:
       path: '//foo/index.md',
     });
 
-    assert.equal(result.statusCode, 400);
+    assert.equal(result.statusCode, 404);
+  });
+
+  it('index respects version lock header', async function invalidPath() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/db8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(`
+mountpoints:
+  /foo: onedrive:/drives/1234/items/5678`));
+    server
+      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@ci112233')
+      .intercept((_, res) => res.status(200).send('## Welcome'));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'db8a0dc5d9d89b800835166783e4130451d3c6a4',
+      path: '/foo/index.md',
+      __ow_headers: {
+        'x-ow-version-lock': 'word2md=word2md@ci112233',
+      },
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body, '## Welcome');
   });
 
   it('index returns 404 if no reverse handler can process the lookup', async function noReverse() {
@@ -120,5 +137,85 @@ mountpoints:
     delete process.env.__OW_NAMESPACE;
 
     assert.equal(result.statusCode, 504);
+  });
+
+  it('index forwards sheet and table params to data-embed', async function test() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/foo-branch/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(`
+mountpoints:
+  /: onedrive:/drives/dummy_driveId/items/dummy_rootId`));
+
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send({
+        token_type: 'Bearer',
+        refresh_token: 'dummy',
+        access_token: 'dummy',
+        expires_in: 81000,
+      }));
+
+    server
+      .get('https://graph.microsoft.com/v1.0/drives/dummy_driveId/items/dummy_rootId:/en/drafts:/children?%24top=999&%24select=name%2CparentReference%2Cfile%2Cid%2Csize%2CwebUrl')
+      .intercept((_, res) => res.status(200).send({
+        value: [{
+          id: '1234',
+          name: 'query-index.xlsx',
+          file: { mimeType: 'dummy' },
+          parentReference: {
+            driveId: 'dummy_driveId',
+          },
+        }],
+      }));
+
+    server
+      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?sheet=all&table=test&src=onedrive%3A%2Fdrives%2Fdummy_driveId%2Fitems%2F1234')
+      .intercept((req, res) => {
+        assert.deepEqual(req.query, {
+          sheet: 'all',
+          table: 'test',
+          src: 'onedrive:/drives/dummy_driveId/items/1234',
+        });
+        res.status(200).send({
+          data: [
+            { name: 'test', value: '1234' },
+          ],
+        });
+      });
+
+    const result = await main({
+      AZURE_WORD2MD_CLIENT_ID: 'fake',
+      AZURE_WORD2MD_CLIENT_SECRET: 'fake',
+      AZURE_WORD2MD_REFRESH_TOKEN: 'dummy',
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'foo-branch',
+      path: '/en/drafts/query-index.json',
+      sheet: 'all',
+      table: 'test',
+      'hlx_p.limit': 1,
+      'hlx_p.offset': 1,
+    });
+    assert.deepStrictEqual(result, {
+      body: {
+        data: [
+          {
+            name: 'test',
+            value: '1234',
+          },
+        ],
+      },
+      headers: {
+        'cache-control': null,
+        'content-type': 'application/json',
+        'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
+        'surrogate-key': 'ERUhf9+V6/T5sTc/',
+        'x-source-location': '/drives/dummy_driveId/items/1234',
+        vary: 'x-ow-version-lock',
+      },
+      statusCode: 200,
+    });
   });
 });

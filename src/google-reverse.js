@@ -50,10 +50,11 @@ async function reverseLookup(opts) {
     ...options,
   });
   // ignore documents outside a mountpoint
-  if (path.startsWith('/root:/')) {
+  if (!path || path.startsWith('/root:/')) {
     return '';
   }
   const ext = type === 'spreadsheets' ? '.json' : '.html';
+
   return `${path}${ext}`;
 }
 

@@ -55,7 +55,7 @@ async function getUncachedIdFromPath(path, parentId, log, options) {
     `and name = ${JSON.stringify(name)}`,
     'and trashed=false',
     // folder if path continues, sheet otherwise
-    `and mimeType = '${rest.length ? 'application/vnd.google-apps.folder' : 'application/vnd.google-apps.spreadsheet'}'`].join(' ');
+    `and mimeType ${rest.length ? '=' : '!='} 'application/vnd.google-apps.folder'`].join(' ');
   log.debug(query);
 
   const res = await drive.files.list({
@@ -117,7 +117,12 @@ async function getPathFromId(fileId, roots, options) {
     version: 'v3',
     auth,
   });
-  return getFilePath(log, drive, fileId, roots);
+  try {
+    return await getFilePath(log, drive, fileId, roots);
+  } catch (e) {
+    log.warn(`unable to get file path for ${fileId}. ${e}`);
+    return '';
+  }
 }
 
 module.exports = {

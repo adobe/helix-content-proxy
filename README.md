@@ -5,14 +5,14 @@
 ## Status
 [![codecov](https://img.shields.io/codecov/c/github/adobe/helix-content-proxy.svg)](https://codecov.io/gh/adobe/helix-content-proxy)
 [![CircleCI](https://img.shields.io/circleci/project/github/adobe/helix-content-proxy.svg)](https://circleci.com/gh/adobe/helix-content-proxy)
-[![GitHub license](https://img.shields.io/github/license/adobe/helix-content-proxy.svg)](https://github.com/adobe/helix-content-proxy/blob/master/LICENSE.txt)
+[![GitHub license](https://img.shields.io/github/license/adobe/helix-content-proxy.svg)](https://github.com/adobe/helix-content-proxy/blob/main/LICENSE.txt)
 [![GitHub issues](https://img.shields.io/github/issues/adobe/helix-content-proxy.svg)](https://github.com/adobe/helix-content-proxy/issues)
 [![LGTM Code Quality Grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/adobe/helix-content-proxy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adobe/helix-content-proxy)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
 
 ## Purpose
 
-`helix-content-proxy` serves Markdown documents (later JSON tables, too) from data sources supported by Project Helix (GitHub, Google Docs, OneDrive) and applies transparent resolution of an [`fstab.yaml`](https://github.com/adobe/helix-shared/blob/master/docs/fstab.md) configuration files, so that all kinds of content can be retrieved just by knowing `owner`, `repo`, `ref`, and `path`. `helix-content-proxy` is intended to be used by [`helix-pipeline`](https://github.com/adobe/helix-pipeline), where it will replace the existing logic for fetching external content from Google Docs and OneDrive and behave like a drop-in-replacement to `raw.githubusercontent.com`.
+`helix-content-proxy` serves Markdown documents (later JSON tables, too) from data sources supported by Project Helix (GitHub, Google Docs, OneDrive) and applies transparent resolution of an [`fstab.yaml`](https://github.com/adobe/helix-shared/blob/main/docs/fstab.md) configuration files, so that all kinds of content can be retrieved just by knowing `owner`, `repo`, `ref`, and `path`. `helix-content-proxy` is intended to be used by [`helix-pipeline`](https://github.com/adobe/helix-pipeline), where it will replace the existing logic for fetching external content from Google Docs and OneDrive and behave like a drop-in-replacement to `raw.githubusercontent.com`.
 
 ### Limitations
 
@@ -55,4 +55,4 @@ For more, see the [API documentation](docs/API.md).
 
 Deploying Helix Content Proxy requires the `wsk` command line client, authenticated to a namespace of your choice. For Project Helix, we use the `helix` namespace.
 
-All commits to master that pass the testing will be deployed automatically. All commits to branches that will pass the testing will get commited as `/helix-services/content-proxy@ci<num>` and tagged with the CI build number.
+All commits to main that pass the testing will be deployed automatically. All commits to branches that will pass the testing will get commited as `/helix-services/content-proxy@ci<num>` and tagged with the CI build number.
