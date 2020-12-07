@@ -1,3 +1,10 @@
+## [2.3.4](https://github.com/adobe/helix-content-proxy/compare/v2.3.3...v2.3.4) (2020-12-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.17.0 ([#237](https://github.com/adobe/helix-content-proxy/issues/237)) ([28ed684](https://github.com/adobe/helix-content-proxy/commit/28ed6848f5503c609cf5d30a01da98a765b1d7cb))
+
 ## [2.3.3](https://github.com/adobe/helix-content-proxy/compare/v2.3.2...v2.3.3) (2020-12-06)
 
 
