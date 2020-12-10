@@ -33,10 +33,10 @@
   "homepage": "https://github.com/adobe/helix-content-proxy#readme",
   "dependencies": {
     "@adobe/helix-epsagon": "1.5.5",
-    "@adobe/helix-fetch": "1.9.1",
+    "@adobe/helix-fetch": "1.9.2",
     "@adobe/helix-onedrive-support": "3.1.5",
     "@adobe/helix-shared": "7.18.0",
-    "@adobe/helix-status": "8.2.2",
+    "@adobe/helix-status": "8.2.3",
     "@adobe/openwhisk-action-logger": "2.2.2",
     "@adobe/openwhisk-action-utils": "4.4.0",
     "googleapis": "66.0.0",
