@@ -1,3 +1,10 @@
+## [2.3.8](https://github.com/adobe/helix-content-proxy/compare/v2.3.7...v2.3.8) (2020-12-10)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#242](https://github.com/adobe/helix-content-proxy/issues/242)) ([eadcb6b](https://github.com/adobe/helix-content-proxy/commit/eadcb6be91c51948818a9601e798005e9df16711))
+
 ## [2.3.7](https://github.com/adobe/helix-content-proxy/compare/v2.3.6...v2.3.7) (2020-12-10)
 
 
