@@ -1,3 +1,10 @@
+## [2.3.9](https://github.com/adobe/helix-content-proxy/compare/v2.3.8...v2.3.9) (2020-12-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/openwhisk-action-logger to v2.3.0 ([90ce927](https://github.com/adobe/helix-content-proxy/commit/90ce927d57fa92c9cc8579a5d9f1db9f5e3c07d5))
+
 ## [2.3.8](https://github.com/adobe/helix-content-proxy/compare/v2.3.7...v2.3.8) (2020-12-10)
 
 
