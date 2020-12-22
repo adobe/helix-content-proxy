@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/adobe/helix-content-proxy/compare/v2.3.10...v2.4.0) (2020-12-22)
+
+
+### Features
+
+* forward last-modified header in response ([#249](https://github.com/adobe/helix-content-proxy/issues/249)) ([9eafe15](https://github.com/adobe/helix-content-proxy/commit/9eafe15a43a6466ff35fc3b3273904c24872016d))
+
 ## [2.3.10](https://github.com/adobe/helix-content-proxy/compare/v2.3.9...v2.3.10) (2020-12-17)
 
 
