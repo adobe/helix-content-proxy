@@ -63,20 +63,25 @@ async function handleJSON(opts, params) {
       const response = await fetch(url, fopts);
       const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
       if (response.ok) {
+        const headers = {
+          'content-type': 'application/json',
+          // if the backend does not provide a source location, use the URL
+          'x-source-location': sourceLocation,
+          // enable fine-grained cache invalidation
+          'surrogate-key': utils.computeSurrogateKey(sourceLocation),
+          // cache for Runtime (non-flushable)
+          'cache-control': response.headers.get('cache-control'),
+          // cache for Fastly (flushable) – endless
+          'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
+        };
+        const lastModified = response.headers.get('last-modified');
+        if (lastModified) {
+          headers['last-modified'] = lastModified;
+        }
         return {
           body: await response.json(),
           statusCode: 200,
-          headers: {
-            'content-type': 'application/json',
-            // if the backend does not provide a source location, use the URL
-            'x-source-location': sourceLocation,
-            // enable fine-grained cache invalidation
-            'surrogate-key': utils.computeSurrogateKey(sourceLocation),
-            // cache for Runtime (non-flushable)
-            'cache-control': response.headers.get('cache-control'),
-            // cache for Fastly (flushable) – endless
-            'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
-          },
+          headers,
         };
       }
 

@@ -150,6 +150,7 @@ describe('Excel JSON Integration tests', () => {
     assert.deepEqual(res.headers, {
       'cache-control': 'no-store, private, must-revalidate',
       'content-type': 'application/json',
+      'last-modified': 'Mon, 14 Dec 2020 20:14:25 GMT',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       'surrogate-key': 'uZNkzznjLFRdaoIc',
       'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
