@@ -29,7 +29,7 @@ describe('Index Tests', () => {
   });
 
   it('index function returns an object', async () => {
-    const result = await main();
+    const result = await main({});
     assert.equal(typeof result, 'object');
   });
 
