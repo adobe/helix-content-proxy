@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+const { Response } = require('node-fetch');
 const { filename2url } = require('./filename-to-url.js');
 const google = require('./google-reverse.js');
 const onedrive = require('./onedrive-reverse.js');
@@ -32,22 +33,24 @@ async function reverseLookup(opts) {
   const handler = HANDLERS.find(({ test }) => test(uri));
   if (!handler) {
     log.error(`No handler found document ${uri}.`);
-    return {
-      'cache-control': 'no-store, private, must-revalidate',
-      body: 'not found',
-      statusCode: 404,
-    };
+    return new Response('not found', {
+      headers: {
+        'cache-control': 'no-store, private, must-revalidate',
+      },
+      status: 404,
+    });
   }
 
   const documentPath = await handler.lookup(opts);
 
   if (!documentPath) {
     log.error(`Handler ${handler.name} could not lookup ${uri}.`);
-    return {
-      'cache-control': 'no-store, private, must-revalidate',
-      body: 'not found',
-      statusCode: 404,
-    };
+    return new Response('not found', {
+      headers: {
+        'cache-control': 'no-store, private, must-revalidate',
+      },
+      status: 404,
+    });
   }
 
   let { prefix } = opts;
@@ -65,28 +68,27 @@ async function reverseLookup(opts) {
   const location = `${prefix}${friendlyPath}`;
 
   if (report) {
-    return {
-      'cache-control': 'no-store, private, must-revalidate',
-      statusCode: 200,
-      body: {
-        sourceUrl: uri.toString(),
-        webUrl: location,
-        unfriendlyWebUrl: `${prefix}${documentPath}`,
-      },
+    const body = JSON.stringify({
+      sourceUrl: uri.toString(),
+      webUrl: location,
+      unfriendlyWebUrl: `${prefix}${documentPath}`,
+    });
+    return new Response(body, {
+      status: 200,
       headers: {
+        'cache-control': 'no-store, private, must-revalidate',
         'content-type': 'application/json',
       },
-    };
+    });
   }
 
-  return {
-    'cache-control': 'no-store, private, must-revalidate',
-    statusCode: 302,
-    body: location,
+  return new Response(location, {
+    status: 302,
     headers: {
+      'cache-control': 'no-store, private, must-revalidate',
       location,
     },
-  };
+  });
 }
 
 module.exports = reverseLookup;

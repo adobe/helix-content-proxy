@@ -17,12 +17,13 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
 const z = require('zlib');
-const { main } = require('../src/index.js');
+const { main: universalMain } = require('../src/index.js');
 const cache = require('../src/cache.js');
 
-const { setupPolly } = require('./utils.js');
+const { setupPolly, retrofit } = require('./utils.js');
 
 // require('dotenv').config();
+const main = retrofit(universalMain);
 
 const fstab = `
 mountpoints:
@@ -34,6 +35,9 @@ const DEFAULT_PARAMS = {
   repo: 'pages',
   ref: 'master',
   path: '/',
+};
+
+const DEFAULT_ENV = {
   GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
   GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
   GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
@@ -94,7 +98,7 @@ describe('Google Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://pages.adobe.com/creativecloud/en/ete/how-adobe-apps-work-together/index.html',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
@@ -111,7 +115,7 @@ describe('Google Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://pages.adobe.com/creativecloud/en/ete/how-adobe-apps-work-together/index',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
@@ -128,7 +132,7 @@ describe('Google Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://pages.adobe.com/creativecloud/en/ete/how-adobe-apps-work-together/',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
@@ -145,7 +149,7 @@ describe('Google Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://pages.adobe.com/redirects.json',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://docs.google.com/spreadsheets/d/1TizK03uKRn2bP_n69U8qCRcaCIkLEFF95rKBZWWKrew/edit');
@@ -162,7 +166,7 @@ describe('Google Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://pages.adobe.com/foo/bar.html',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 404);
   }).timeout(50000);

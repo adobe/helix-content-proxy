@@ -15,8 +15,10 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
-const { main } = require('../src/index.js');
-const { setupPolly } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
+const { setupPolly, retrofit } = require('./utils.js');
+
+const main = retrofit(universalMain);
 
 describe('GitHub Integration Tests', () => {
   setupPolly({
@@ -98,6 +100,7 @@ describe('GitHub Integration Tests', () => {
       __ow_headers: {
         'x-request-id': 'fake',
       },
+    }, {
       GITHUB_TOKEN: 'fake-token',
     });
 

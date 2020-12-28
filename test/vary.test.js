@@ -15,64 +15,38 @@ const vary = require('../src/vary.js');
 
 describe('Vary unit tests', () => {
   it('Sets vary header', async () => {
-    const result = await vary(() => ({}))();
-    assert.deepEqual(result, {
-      headers: {
-        vary: 'x-ow-version-lock',
-      },
-    });
+    const result = await vary(() => ({
+      headers: new Map(),
+    }))();
+    assert.equal(result.headers.get('vary'), 'x-ow-version-lock');
   });
 
   it('Adds vary header', async () => {
     const result = await vary(() => ({
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: new Map([['content-type', 'application/json']]),
     }))();
-    assert.deepEqual(result, {
-      headers: {
-        'content-type': 'application/json',
-        vary: 'x-ow-version-lock',
-      },
-    });
+    assert.equal(result.headers.get('content-type'), 'application/json');
+    assert.equal(result.headers.get('vary'), 'x-ow-version-lock');
   });
 
   it('Appends vary header', async () => {
     const result = await vary(() => ({
-      headers: {
-        vary: 'host',
-      },
+      headers: new Map([['vary', 'host']]),
     }))();
-    assert.deepEqual(result, {
-      headers: {
-        vary: 'host,x-ow-version-lock',
-      },
-    });
+    assert.equal(result.headers.get('vary'), 'host,x-ow-version-lock');
   });
 
   it('Ignores vary header', async () => {
     const result = await vary(() => ({
-      headers: {
-        vary: 'x-ow-version-lock',
-      },
+      headers: new Map([['vary', 'x-ow-version-lock']]),
     }))();
-    assert.deepEqual(result, {
-      headers: {
-        vary: 'x-ow-version-lock',
-      },
-    });
+    assert.equal(result.headers.get('vary'), 'x-ow-version-lock');
   });
 
   it('Ignores vary header (mixed case)', async () => {
     const result = await vary(() => ({
-      headers: {
-        vary: 'X-OW-Version-Lock',
-      },
+      headers: new Map([['vary', 'X-OW-Version-Lock']]),
     }))();
-    assert.deepEqual(result, {
-      headers: {
-        vary: 'X-OW-Version-Lock',
-      },
-    });
+    assert.equal(result.headers.get('vary'), 'X-OW-Version-Lock');
   });
 });

@@ -12,17 +12,13 @@
 const VARY_HDR_VERSION_LOCK = 'x-ow-version-lock';
 
 function vary(func) {
-  return async (params) => {
-    const ret = await func(params);
-    if (!ret.headers) {
-      ret.headers = {};
+  return async (req, context) => {
+    const resp = await func(req, context);
+    const v = resp.headers.get('vary') || '';
+    if (v.toLowerCase().indexOf(VARY_HDR_VERSION_LOCK) < 0) {
+      resp.headers.set('vary', v ? `${v},${VARY_HDR_VERSION_LOCK}` : VARY_HDR_VERSION_LOCK);
     }
-    if (!ret.headers.vary) {
-      ret.headers.vary = VARY_HDR_VERSION_LOCK;
-    } else if (ret.headers.vary.toLowerCase().indexOf(VARY_HDR_VERSION_LOCK) < 0) {
-      ret.headers.vary = `${ret.headers.vary},${VARY_HDR_VERSION_LOCK}`;
-    }
-    return ret;
+    return resp;
   };
 }
 

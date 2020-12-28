@@ -17,12 +17,13 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
 const z = require('zlib');
-const { main } = require('../src/index.js');
+const { main: universalMain } = require('../src/index.js');
 const cache = require('../src/cache.js');
 
-const { setupPolly } = require('./utils.js');
+const { setupPolly, retrofit } = require('./utils.js');
 
 // require('dotenv').config();
+const main = retrofit(universalMain);
 
 const fstab = `
 mountpoints:
@@ -41,6 +42,9 @@ const DEFAULT_PARAMS = {
   repo: 'theblog',
   ref: 'master',
   path: '/',
+};
+
+const DEFAULT_ENV = {
   GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
   GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
   GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
@@ -101,7 +105,7 @@ describe('Google Reverse Lookup Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
@@ -119,7 +123,7 @@ describe('Google Reverse Lookup Tests', () => {
       ...DEFAULT_PARAMS,
       ref: 'main',
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
@@ -137,7 +141,7 @@ describe('Google Reverse Lookup Tests', () => {
       ...DEFAULT_PARAMS,
       ref: 'stage',
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://stage--theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
@@ -155,7 +159,7 @@ describe('Google Reverse Lookup Tests', () => {
       ...DEFAULT_PARAMS,
       prefix: 'https://blog.adobe.com',
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://blog.adobe.com/gdocs/helix-hackathon-part-v.html');
@@ -173,7 +177,7 @@ describe('Google Reverse Lookup Tests', () => {
       ...DEFAULT_PARAMS,
       repo: 'another',
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 404);
   }).timeout(50000);
@@ -190,7 +194,7 @@ describe('Google Reverse Lookup Tests', () => {
       ...DEFAULT_PARAMS,
       repo: 'nonpages',
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 404);
   }).timeout(50000);
@@ -206,7 +210,7 @@ describe('Google Reverse Lookup Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       lookup: 'https://docs.google.com/spreadsheets/d/1IDFZH5HVoYIg9siz1rK7d3hqAOeUpVc4WsgCdf2IMyA/view',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/country-codes.json');
@@ -223,7 +227,7 @@ describe('Google Reverse Lookup Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       lookup: 'gdrive:1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v.html');
@@ -240,7 +244,7 @@ describe('Google Reverse Lookup Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       lookup: 'gdrive:1nbKakMrsdfsdfsdfsfhEYuxU30cdUmyZPv1kuRCKXiho',
-    });
+    }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 404);
   }).timeout(50000);

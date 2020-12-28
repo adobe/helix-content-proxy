@@ -17,11 +17,12 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
 const z = require('zlib');
-const { main } = require('../src/index.js');
-const { setupPolly } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
+const { setupPolly, retrofit } = require('./utils.js');
 const cache = require('../src/cache.js');
 
 // require('dotenv').config();
+const main = retrofit(universalMain);
 
 const fstab = `
 mountpoints:

@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+const { Response } = require('node-fetch');
 const google = require('./google-edit-link.js');
 const onedrive = require('./onedrive-edit-link.js');
 const github = require('./github-edit-link.js');
@@ -43,11 +44,12 @@ async function lookupEditUrl(opts) {
   const handler = HANDLERS.find(({ test }) => test && test(mp));
   if (!handler) {
     log.error(`No handler found for document ${uri}.`);
-    return {
-      'cache-control': 'no-store, private, must-revalidate',
-      body: 'not found',
-      statusCode: 404,
-    };
+    return new Response('not found', {
+      status: 404,
+      headers: {
+        'cache-control': 'no-store, private, must-revalidate',
+      },
+    });
   }
 
   const location = await handler.getEditUrl({
@@ -59,21 +61,21 @@ async function lookupEditUrl(opts) {
 
   if (!location) {
     log.error(`Handler ${handler.name} could not lookup ${uri}.`);
-    return {
-      'cache-control': 'no-store, private, must-revalidate',
-      body: 'not found',
-      statusCode: 404,
-    };
+    return new Response('not found', {
+      status: 404,
+      headers: {
+        'cache-control': 'no-store, private, must-revalidate',
+      },
+    });
   }
 
-  return {
-    'cache-control': 'no-store, private, must-revalidate',
-    statusCode: 302,
-    body: location,
+  return new Response(location, {
+    status: 302,
     headers: {
+      'cache-control': 'no-store, private, must-revalidate',
       location,
     },
-  };
+  });
 }
 
 module.exports = lookupEditUrl;

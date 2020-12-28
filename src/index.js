@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const { Response } = require('node-fetch');
-const { wrap, VersionLock } = require('@adobe/openwhisk-action-utils');
+const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { wrap: helixStatus } = require('@adobe/helix-status');
 const { AbortError } = require('@adobe/helix-fetch');
@@ -41,7 +41,7 @@ const HANDLERS = [
  * @returns {Response} the response
  */
 async function main(req, context) {
-  const { env, log } = context;
+  const { env, log, resolver } = context;
   const {
     REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
     GOOGLE_DOCS2MD_CLIENT_ID, GOOGLE_DOCS2MD_CLIENT_SECRET,
@@ -77,10 +77,6 @@ async function main(req, context) {
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
   // eslint-disable-next-line no-underscore-dangle
   const namespace = process.env.__OW_NAMESPACE || 'helix';
-  const lock = new VersionLock(mainopts, {
-    namespace,
-    packageName: 'helix-services',
-  });
 
   const qboptions = Object.entries(params)
     .filter(([key]) => key.startsWith('hlx_'))
@@ -196,7 +192,7 @@ async function main(req, context) {
         ref,
         path,
         log,
-        lock,
+        resolver,
         options: externalOptions,
       }, dataOptions);
     }
@@ -209,7 +205,7 @@ async function main(req, context) {
       ref,
       path,
       log,
-      lock,
+      resolver,
       options: mp ? externalOptions : githubOptions,
     });
   } catch (e) {

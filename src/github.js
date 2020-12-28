@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const URL = require('url');
+const { Response } = require('node-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { fetch, getFetchOptions } = require('./utils');
 const cache = require('./cache');
@@ -93,9 +94,8 @@ async function handle(opts) {
   const body = await response.text();
   if (response.ok) {
     const immutable = isImmutable(ref);
-    return {
-      statusCode: 200,
-      body,
+    return new Response(body, {
+      status: 200,
       headers: {
         'content-type': 'text/plain',
         'x-source-location': uri,
@@ -103,13 +103,12 @@ async function handle(opts) {
         'cache-control': immutable ? 'max-age=30758400' : 'max-age=60',
         'surrogate-control': immutable ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
       },
-    };
+    });
   }
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${uri} (${response.status}) from GitHub`);
-  return {
-    statusCode: utils.propagateStatusCode(response.status),
-    body,
-  };
+  return new Response(body, {
+    status: utils.propagateStatusCode(response.status),
+  });
 }
 
 function canhandle(mp) {
