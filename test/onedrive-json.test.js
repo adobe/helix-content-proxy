@@ -15,7 +15,6 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const proxyquire = require('proxyquire');
-const { VersionLock } = require('@adobe/openwhisk-action-utils');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { fetchContext } = require('../src/utils.js');
 const { setupPolly } = require('./utils.js');
@@ -134,7 +133,6 @@ describe('Excel JSON Integration tests', () => {
         error: console.log,
       },
       options: {},
-      lock: new VersionLock(),
     });
 
     assert.equal(res.statusCode, 500);
