@@ -61,17 +61,15 @@ async function main(req, context) {
   } = params;
 
   if (!(owner && repo && ref && path)) {
-    return {
-      statusCode: 400,
-      body: 'owner, repo, ref, and path parameters are required',
-    };
+    return new Response('owner, repo, ref, and path parameters are required', {
+      status: 400,
+    });
   }
   // validate path parameter
   if (path.indexOf('//') > -1) {
-    return {
-      statusCode: 404,
-      body: `invalid path: ${path}`,
-    };
+    return new Response(`invalid path: ${path}`, {
+      status: 404,
+    });
   }
   const gitHubToken = GITHUB_TOKEN || req.headers.get('x-github-token');
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';

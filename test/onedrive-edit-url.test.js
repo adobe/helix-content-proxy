@@ -15,7 +15,7 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const proxyquire = require('proxyquire');
-const { setupPolly } = require('./utils.js');
+const { setupPolly, retrofit } = require('./utils.js');
 
 // require('dotenv').config();
 
@@ -71,13 +71,13 @@ class FakeOneDrive {
 }
 
 describe('Onedrive Edit Link Tests', () => {
-  const { main } = proxyquire('../src/index', {
+  const { main: universalMain } = proxyquire('../src/index', {
     '@adobe/helix-onedrive-support': {
       OneDrive: FakeOneDrive,
       '@global': true,
     },
   });
-  // const { main } = require('../src/index');
+  const main = retrofit(universalMain);
 
   setupPolly({
     recordIfMissing: false,

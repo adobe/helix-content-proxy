@@ -15,8 +15,10 @@
 'use strict';
 
 const assert = require('assert');
-const { main } = require('../src/index.js');
-const { setupPolly } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
+const { setupPolly, retrofit } = require('./utils.js');
+
+const main = retrofit(universalMain);
 
 describe('Index Tests', () => {
   setupPolly({
@@ -64,32 +66,6 @@ mountpoints:
     assert.equal(result.statusCode, 404);
   });
 
-  it('index respects version lock header', async function invalidPath() {
-    const { server } = this.polly;
-
-    server
-      .get('https://raw.githubusercontent.com/adobe/theblog/db8a0dc5d9d89b800835166783e4130451d3c6a4/fstab.yaml')
-      .intercept((_, res) => res.status(200).send(`
-mountpoints:
-  /foo: onedrive:/drives/1234/items/5678`));
-    server
-      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@ci112233')
-      .intercept((_, res) => res.status(200).send('## Welcome'));
-
-    const result = await main({
-      owner: 'adobe',
-      repo: 'theblog',
-      ref: 'db8a0dc5d9d89b800835166783e4130451d3c6a4',
-      path: '/foo/index.md',
-      __ow_headers: {
-        'x-ow-version-lock': 'word2md=word2md@ci112233',
-      },
-    });
-
-    assert.equal(result.statusCode, 200);
-    assert.equal(result.body, '## Welcome');
-  });
-
   it('index returns 404 if no reverse handler can process the lookup', async function noReverse() {
     const { server } = this.polly;
 
@@ -128,9 +104,10 @@ mountpoints:
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a3',
       path: '/foo/index.md',
-      HTTP_TIMEOUT: 10,
       limit: 1,
       offset: 1,
+    }, {
+      HTTP_TIMEOUT: 10,
     });
 
     // eslint-disable-next-line no-underscore-dangle
@@ -186,9 +163,6 @@ mountpoints:
       });
 
     const result = await main({
-      AZURE_WORD2MD_CLIENT_ID: 'fake',
-      AZURE_WORD2MD_CLIENT_SECRET: 'fake',
-      AZURE_WORD2MD_REFRESH_TOKEN: 'dummy',
       owner: 'adobe',
       repo: 'theblog',
       ref: 'foo-branch',
@@ -197,7 +171,12 @@ mountpoints:
       table: 'test',
       'hlx_p.limit': 1,
       'hlx_p.offset': 1,
+    }, {
+      AZURE_WORD2MD_CLIENT_ID: 'fake',
+      AZURE_WORD2MD_CLIENT_SECRET: 'fake',
+      AZURE_WORD2MD_REFRESH_TOKEN: 'dummy',
     });
+    result.body = JSON.parse(result.body);
     assert.deepStrictEqual(result, {
       body: {
         data: [
@@ -208,7 +187,7 @@ mountpoints:
         ],
       },
       headers: {
-        'cache-control': null,
+        'cache-control': 'null',
         'content-type': 'application/json',
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
         'surrogate-key': 'ERUhf9+V6/T5sTc/',

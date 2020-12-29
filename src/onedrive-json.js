@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
+const { Response } = require('node-fetch');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
 const { AbortError } = require('@adobe/helix-fetch');
@@ -17,7 +18,7 @@ const { appendURLParams, fetch, getFetchOptions } = require('./utils');
 
 async function handleJSON(opts, params) {
   const {
-    mp, log, options, lock,
+    mp, log, options, resolver,
   } = opts;
 
   const {
@@ -46,8 +47,10 @@ async function handleJSON(opts, params) {
       throw error;
     }
     const itemUri = OneDrive.driveItemToURL(item);
-    const actionUrl = lock.createActionURL({
-      name: 'data-embed@v2',
+    const actionUrl = resolver.createURL({
+      package: 'helix-services',
+      name: 'data-embed',
+      version: 'v2',
     });
     const url = appendURLParams(actionUrl, {
       ...params,
@@ -62,6 +65,7 @@ async function handleJSON(opts, params) {
 
       const response = await fetch(url, fopts);
       const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
+      const body = await response.text();
       if (response.ok) {
         const headers = {
           'content-type': 'application/json',
@@ -78,26 +82,25 @@ async function handleJSON(opts, params) {
         if (lastModified) {
           headers['last-modified'] = lastModified;
         }
-        return {
-          body: await response.json(),
-          statusCode: 200,
+        // ensure json
+        JSON.parse(body);
+        return new Response(body, {
+          status: 200,
           headers,
-        };
+        });
       }
 
       log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from data-embed`);
-      return {
-        statusCode: utils.propagateStatusCode(response.status),
-        body: await response.text(),
+      return new Response(body, {
+        status: utils.propagateStatusCode(response.status),
         headers: {
           'cache-control': 'max-age=60',
         },
-      };
+      });
     } catch (gatewayerror) {
       log.error(`error fetching data from ${url}: ${gatewayerror}`);
-      return {
-        body: gatewayerror.toString(),
-        statusCode: gatewayerror instanceof AbortError ? 504 : 502, // no JSON = bad gateway
+      return new Response(gatewayerror.toString(), {
+        status: gatewayerror instanceof AbortError ? 504 : 502, // no JSON = bad gateway
         headers: {
           'content-type': 'text/plain',
           // if the backend does not provide a source location, use the URL
@@ -105,30 +108,28 @@ async function handleJSON(opts, params) {
           // cache for Runtime (non-flushable)
           'cache-control': 'max-age=60',
         },
-      };
+      });
     }
   } catch (servererror) {
     if (servererror.statusCode) {
       log[utils.logLevelForStatusCode(servererror.statusCode)](`Unable to fetch spreadsheet from onedrive (${servererror.statusCode}) - ${servererror.message}`);
-      return {
-        statusCode: utils.propagateStatusCode(servererror.statusCode),
-        body: servererror.message,
+      return new Response(servererror.message, {
+        status: utils.propagateStatusCode(servererror.statusCode),
         headers: {
           'cache-control': 'max-age=60',
         },
-      };
+      });
     }
 
     log.error(servererror);
-    return {
-      body: servererror.toString(),
-      statusCode: 500, // no config = servererror
+    return new Response(servererror.toString(), {
+      status: 500, // no config = servererror
       headers: {
         'content-type': 'text/plain',
         // cache for Runtime (non-flushable)
         'cache-control': 'max-age=60',
       },
-    };
+    });
   }
 }
 
