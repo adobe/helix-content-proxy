@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/adobe/helix-content-proxy/compare/v2.4.1...v2.5.0) (2020-12-30)
+
+
+### Features
+
+* migrate to helix-deploy ([8a8f944](https://github.com/adobe/helix-content-proxy/commit/8a8f944cad36fe6434ff9b23b3f75c6eb382cfd1)), closes [#248](https://github.com/adobe/helix-content-proxy/issues/248)
+
 ## [2.4.1](https://github.com/adobe/helix-content-proxy/compare/v2.4.0...v2.4.1) (2020-12-28)
 
 
