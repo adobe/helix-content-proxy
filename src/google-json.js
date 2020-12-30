@@ -9,31 +9,33 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+const { Response } = require('node-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { appendURLParams, fetch, getFetchOptions } = require('./utils');
 const { getIdFromPath } = require('./google-helpers.js');
 
 async function handleJSON(opts, params) {
   const {
-    mp, log, options, lock,
+    mp, log, options, resolver,
   } = opts;
 
   try {
     const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
 
     if (!sheetId) {
-      return {
-        statusCode: 404,
-        body: 'spreadsheet not found',
+      return new Response('spreadsheet not found', {
+        status: 404,
         headers: {
           'cache-control': 'no-store, private, must-revalidate',
         },
-      };
+      });
     }
 
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
-    const actionUrl = lock.createActionURL({
-      name: 'data-embed@v2',
+    const actionUrl = resolver.createURL({
+      package: 'helix-services',
+      name: 'data-embed',
+      version: 'v2',
     });
     const url = appendURLParams(actionUrl, {
       ...params,
@@ -44,13 +46,12 @@ async function handleJSON(opts, params) {
     fopts.headers['cache-control'] = 'no-cache'; // respected by runtime
 
     const response = await fetch(url, fopts);
-    const body = await response.json();
+    const body = await response.text();
     if (response.ok) {
       // if the backend does not provide a source location, use the sheetId
       const sourceLocation = response.headers.get('x-source-location') || sheetId;
-      return {
-        body,
-        statusCode: 200,
+      return new Response(body, {
+        status: 200,
         headers: {
           'content-type': 'application/json',
           'x-source-location': sourceLocation,
@@ -60,28 +61,26 @@ async function handleJSON(opts, params) {
           // cache for Fastly (flushable) – endless
           'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
         },
-      };
+      });
     }
 
     log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from gdocs2md`);
-    return {
-      statusCode: utils.propagateStatusCode(response.status),
-      body,
+    return new Response(body, {
+      status: utils.propagateStatusCode(response.status),
       headers: {
         'cache-control': 'max-age=60',
       },
-    };
+    });
   } catch (e) {
     log.error(`error fetching data: ${e.message} (${e.code})`);
-    return {
-      body: '',
-      statusCode: 502, // no JSON = bad gateway
+    return new Response('', {
+      status: 502, // no JSON = bad gateway
       headers: {
         'content-type': 'text/plain',
         // cache for Runtime (non-flushable)
         'cache-control': 'no-store, private, must-revalidate',
       },
-    };
+    });
   }
 }
 

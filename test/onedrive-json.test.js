@@ -15,17 +15,40 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const proxyquire = require('proxyquire');
-const { VersionLock } = require('@adobe/openwhisk-action-utils');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { fetchContext } = require('../src/utils.js');
 const { setupPolly } = require('./utils.js');
 
 // require('dotenv').config();
 
-const defaultLock = new VersionLock({}, {
-  namespace: 'helix',
-  packageName: 'helix-services',
-});
+function retrofit(fn) {
+  const resolver = {
+    createURL({ package, name, version }) {
+      return new URL(`https://adobeioruntime.net/api/v1/web/helix/${package}/${name}@${version}`);
+    },
+  };
+  return async (opts, params) => {
+    const resp = await fn({
+      resolver,
+      ...opts,
+    }, params);
+    let { body } = resp;
+    try {
+      body = JSON.parse(body);
+    } catch {
+      // ignore
+    }
+    return {
+      statusCode: resp.status,
+      body,
+      headers: [...resp.headers.keys()].reduce((result, key) => {
+        // eslint-disable-next-line no-param-reassign
+        result[key] = resp.headers.get(key);
+        return result;
+      }, {}),
+    };
+  };
+}
 
 class FakeOneDrive {
   static driveItemToURL(driveItem) {
@@ -95,7 +118,8 @@ describe('Excel JSON Integration tests', () => {
   });
 
   it('Do not get sharelink from path with invalid credentials', async () => {
-    const { handleJSON } = require('../src/onedrive-json');
+    const { handleJSON: original } = require('../src/onedrive-json');
+    const handleJSON = retrofit(original);
 
     const res = await handleJSON({
       mp: {
@@ -109,18 +133,18 @@ describe('Excel JSON Integration tests', () => {
         error: console.log,
       },
       options: {},
-      lock: new VersionLock(),
     });
 
     assert.equal(res.statusCode, 500);
   }).timeout(50000);
 
   it('Get JSON', async () => {
-    const { handleJSON } = proxyquire('../src/onedrive-json', {
+    const { handleJSON: original } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
     });
+    const handleJSON = retrofit(original);
 
     const res = await handleJSON({
       mp: {
@@ -141,7 +165,6 @@ describe('Excel JSON Integration tests', () => {
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
         namespace: 'helix',
       },
-      lock: defaultLock,
     }, {
       'hlx_p.limit': 4,
     });
@@ -181,11 +204,12 @@ describe('Excel JSON Integration tests', () => {
 
   it('Get JSON on author friendly url', async () => {
     // const { handleJSON } = require('../src/onedrive-json');
-    const { handleJSON } = proxyquire('../src/onedrive-json', {
+    const { handleJSON: original } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
     });
+    const handleJSON = retrofit(original);
 
     const res = await handleJSON({
       mp: {
@@ -206,7 +230,6 @@ describe('Excel JSON Integration tests', () => {
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
         namespace: 'helix',
       },
-      lock: defaultLock,
     }, {
       'hlx_p.limit': 2,
     });
@@ -242,11 +265,12 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get missing JSON', async () => {
-    const { handleJSON } = proxyquire('../src/onedrive-json', {
+    const { handleJSON: original } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
     });
+    const handleJSON = retrofit(original);
 
     const res = await handleJSON({
       mp: {
@@ -267,18 +291,19 @@ describe('Excel JSON Integration tests', () => {
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
         namespace: 'helix',
       },
-      lock: defaultLock,
     });
 
     assert.equal(res.statusCode, 404);
   }).timeout(50000);
 
   it('Get missing JSON from data-embed', async function test() {
-    const { handleJSON } = proxyquire('../src/onedrive-json', {
+    const { handleJSON: original } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
     });
+    const handleJSON = retrofit(original);
+
     this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept((req, res) => res
         .sendStatus(404));
@@ -302,18 +327,19 @@ describe('Excel JSON Integration tests', () => {
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
         namespace: 'helix',
       },
-      lock: defaultLock,
     });
 
     assert.equal(res.statusCode, 404);
   }).timeout(50000);
 
   it('Get bad JSON', async function test() {
-    const { handleJSON } = proxyquire('../src/onedrive-json', {
+    const { handleJSON: original } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
     });
+    const handleJSON = retrofit(original);
+
     this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept((req, res) => res
         .status(200)
@@ -336,18 +362,18 @@ describe('Excel JSON Integration tests', () => {
         AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
       },
-      lock: defaultLock,
     });
 
     assert.equal(res.statusCode, 502);
   }).timeout(50000);
 
   it('Get timeout', async function test() {
-    const { handleJSON } = proxyquire('../src/onedrive-json', {
+    const { handleJSON: original } = proxyquire('../src/onedrive-json', {
       '@adobe/helix-onedrive-support': {
         OneDrive: FakeOneDrive,
       },
     });
+    const handleJSON = retrofit(original);
 
     const { server } = this.polly;
     server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
@@ -375,7 +401,6 @@ describe('Excel JSON Integration tests', () => {
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
         signal: fetchContext.timeoutSignal(100),
       },
-      lock: defaultLock,
     });
 
     assert.equal(res.statusCode, 504);

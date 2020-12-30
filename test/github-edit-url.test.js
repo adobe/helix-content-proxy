@@ -14,8 +14,8 @@
 /* eslint-disable global-require, class-methods-use-this, no-console,no-param-reassign */
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
-const { main } = require('../src/index');
-const { setupPolly } = require('./utils.js');
+const { main: universalMain } = require('../src/index');
+const { setupPolly, retrofit } = require('./utils.js');
 
 // require('dotenv').config();
 
@@ -31,6 +31,8 @@ const DEFAULT_PARAMS = {
   ref: 'master',
   path: '/',
 };
+
+const main = retrofit(universalMain);
 
 describe('Github Edit Link Tests', () => {
   setupPolly({

@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+const { Response } = require('node-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./google-json');
 const { fetch, getFetchOptions } = require('./utils');
@@ -22,14 +23,16 @@ const { fetch, getFetchOptions } = require('./utils');
  * @param {string} opts.ref the GitHub ref
  * @param {object} opts.log a Helix-Log instance
  * @param {object} opts.options Helix Fetch options
- * @param {VersionLock} opts.lock Version lock helper
+ * @param {Resolver} opts.resolver Action name resolver
  */
 async function handle(opts) {
   const {
-    mp, owner, repo, ref, log, options, lock,
+    mp, owner, repo, ref, log, options, resolver,
   } = opts;
-  const url = lock.createActionURL({
-    name: 'gdocs2md@v2',
+  const url = resolver.createURL({
+    package: 'helix-services',
+    name: 'gdocs2md',
+    version: 'v2',
   });
 
   url.searchParams.append('path', mp.relPath);
@@ -43,9 +46,8 @@ async function handle(opts) {
   if (response.ok) {
     /* istanbul ignore next */
     const sourceLocation = response.headers.get('x-source-location') || url.href;
-    return {
-      body,
-      statusCode: 200,
+    return new Response(body, {
+      status: 200,
       headers: {
         'content-type': 'text/plain',
         // if the backend does not provide a source location, use the URL
@@ -56,16 +58,15 @@ async function handle(opts) {
         // cache for Fastly (flushable) – endless
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       },
-    };
+    });
   }
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md`);
-  return {
-    statusCode: utils.propagateStatusCode(response.status),
-    body,
+  return new Response(body, {
+    status: utils.propagateStatusCode(response.status),
     headers: {
       'cache-control': 'max-age=60',
     },
-  };
+  });
 }
 
 function canhandle(mp) {

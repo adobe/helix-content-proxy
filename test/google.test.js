@@ -17,11 +17,12 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
 const z = require('zlib');
-const { main } = require('../src/index.js');
-const { setupPolly } = require('./utils.js');
+const { main: universalMain } = require('../src/index.js');
+const { setupPolly, retrofit } = require('./utils.js');
 const cache = require('../src/cache.js');
 
 // require('dotenv').config();
+const main = retrofit(universalMain);
 
 const fstab = `
 mountpoints:
@@ -160,6 +161,7 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/deeply/nested/folder/structure.json',
+    }, {
       GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
       GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
       GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
@@ -167,6 +169,7 @@ describe('Google JSON Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.headers['x-source-location'], '1jXZBaOHP9x9-2NiYPbeyiWOHbmDRKobIeb11JdCVyUw');
+    result.body = JSON.parse(result.body);
     assert.deepEqual(result.body.data, [{ depth: 1, name: 'deeply' },
       { depth: 2, name: 'nested' },
       { depth: 3, name: 'folder' },
@@ -186,6 +189,7 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/deeply/nested/folder/missing.json',
+    }, {
       GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
       GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
       GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
@@ -213,6 +217,7 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/data.json',
+    }, {
       GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
       GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
       GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
@@ -240,6 +245,7 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/data.json',
+    }, {
       GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
       GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
       GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',
@@ -267,6 +273,7 @@ describe('Google JSON Tests', () => {
       repo: 'theblog',
       ref: 'master',
       path: '/g/data.json',
+    }, {
       GOOGLE_DOCS2MD_CLIENT_ID: process.env.GOOGLE_DOCS2MD_CLIENT_ID || 'fake',
       GOOGLE_DOCS2MD_CLIENT_SECRET: process.env.GOOGLE_DOCS2MD_CLIENT_SECRET || 'fake',
       GOOGLE_DOCS2MD_REFRESH_TOKEN: process.env.GOOGLE_DOCS2MD_REFRESH_TOKEN || 'fake',

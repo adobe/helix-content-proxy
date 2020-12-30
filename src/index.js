@@ -9,10 +9,10 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { wrap, VersionLock } = require('@adobe/openwhisk-action-utils');
+const { Response } = require('node-fetch');
+const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
-const { wrap: status } = require('@adobe/helix-status');
-const { epsagon } = require('@adobe/helix-epsagon');
+const { wrap: helixStatus } = require('@adobe/helix-status');
 const { AbortError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
 const vary = require('./vary.js');
@@ -36,46 +36,47 @@ const HANDLERS = [
 
 /**
  * Retrieves content from a content repository
- * @param {string} mainopts.owner github org or username
- * @param {string} mainopts.repo repository name
- * @param {string} mainopts.ref branch or tag name
- * @param {string} mainopts.path file path
- * @returns {object} a greeting
+ * @param {Request} req request object
+ * @param {Context} context request context
+ * @returns {Response} the response
  */
-async function main(mainopts) {
+async function main(req, context) {
+  const { env, log, resolver } = context;
   const {
-    owner, repo, ref, path,
     REPO_RAW_ROOT, HTTP_TIMEOUT, GITHUB_TOKEN, HTTP_TIMEOUT_EXTERNAL,
     GOOGLE_DOCS2MD_CLIENT_ID, GOOGLE_DOCS2MD_CLIENT_SECRET,
     GOOGLE_DOCS2MD_REFRESH_TOKEN,
     AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
     AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
-    __ow_headers: originalHeaders = {}, __ow_logger: log,
+  } = env;
+  const { searchParams } = new URL(req.url);
+  const params = Array.from(searchParams.entries()).reduce((p, [key, value]) => {
+    // eslint-disable-next-line no-param-reassign
+    p[key] = value;
+    return p;
+  }, {});
+  const {
+    owner, repo, ref, path,
     limit, offset, sheet, table,
-  } = mainopts;
+  } = params;
+
   if (!(owner && repo && ref && path)) {
-    return {
-      statusCode: 400,
-      body: 'owner, repo, ref, and path parameters are required',
-    };
+    return new Response('owner, repo, ref, and path parameters are required', {
+      status: 400,
+    });
   }
   // validate path parameter
   if (path.indexOf('//') > -1) {
-    return {
-      statusCode: 404,
-      body: `invalid path: ${path}`,
-    };
+    return new Response(`invalid path: ${path}`, {
+      status: 404,
+    });
   }
-  const gitHubToken = GITHUB_TOKEN || originalHeaders['x-github-token'];
+  const gitHubToken = GITHUB_TOKEN || req.headers.get('x-github-token');
   const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
   // eslint-disable-next-line no-underscore-dangle
   const namespace = process.env.__OW_NAMESPACE || 'helix';
-  const lock = new VersionLock(mainopts, {
-    namespace,
-    packageName: 'helix-services',
-  });
 
-  const qboptions = Object.entries(mainopts)
+  const qboptions = Object.entries(params)
     .filter(([key]) => key.startsWith('hlx_'))
     .reduce((p, [key, value]) => {
       // eslint-disable-next-line no-param-reassign
@@ -88,9 +89,9 @@ async function main(mainopts) {
     fetchTimeout: HTTP_TIMEOUT || 1000,
     headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
       // copy whitelisted headers
-      if (originalHeaders[header.toLocaleLowerCase()]) {
+      if (req.headers.has(header)) {
         // eslint-disable-next-line no-param-reassign
-        headers[header.toLocaleLowerCase()] = originalHeaders[header.toLowerCase()];
+        headers[header.toLocaleLowerCase()] = req.headers.get(header);
       }
       return headers;
     }, {
@@ -109,9 +110,9 @@ async function main(mainopts) {
     AZURE_HELIX_PASSWORD,
     cache: 'no-store',
     fetchTimeout: HTTP_TIMEOUT_EXTERNAL || 20000,
-    requestId: originalHeaders['x-request-id']
-    || originalHeaders['x-cdn-request-id']
-    || originalHeaders['x-openwhisk-activation-id']
+    requestId: req.headers.get('x-request-id')
+    || req.headers.get('x-cdn-request-id')
+    || req.headers.get('x-openwhisk-activation-id')
     || '',
     namespace,
   };
@@ -137,23 +138,23 @@ async function main(mainopts) {
       });
       const mount = await new MountConfig().withSource(fstab).init();
 
-      if (mainopts.lookup) {
+      if (params.lookup) {
         return reverse({
           mount,
-          uri: new URL(mainopts.lookup),
-          prefix: mainopts.prefix,
+          uri: new URL(params.lookup),
+          prefix: params.prefix,
           owner,
           repo,
           ref,
           options: externalOptions,
           log,
-          report: !!mainopts.report,
+          report: !!params.report,
         });
       }
-      if (mainopts.edit) {
+      if (params.edit) {
         return lookupEditUrl({
           mount,
-          uri: new URL(mainopts.edit),
+          uri: new URL(params.edit),
           options: externalOptions,
           owner,
           repo,
@@ -175,10 +176,9 @@ async function main(mainopts) {
 
     if (!handler) {
       log.error(`No handler found for type ${mp.type} at path ${path} (${owner}/${repo})`);
-      return {
-        body: 'Invalid mount configuration',
-        statusCode: 501, // not implemented
-      };
+      return new Response('Invalid mount configuration', {
+        status: 501, // not implemented
+      });
     }
 
     if (path.endsWith('.json') && handler.handleJSON) {
@@ -190,7 +190,7 @@ async function main(mainopts) {
         ref,
         path,
         log,
-        lock,
+        resolver,
         options: externalOptions,
       }, dataOptions);
     }
@@ -203,33 +203,29 @@ async function main(mainopts) {
       ref,
       path,
       log,
-      lock,
+      resolver,
       options: mp ? externalOptions : githubOptions,
     });
   } catch (e) {
     if (e instanceof AbortError) {
-      return {
-        statusCode: 504,
-        body: e.message,
-      };
+      return new Response(e.message, {
+        status: 504,
+      });
     }
-    log.error('Unhandled error', e,
     /* istanbul ignore next */
-      (e && e.stack) || 'no stack');
-    return {
-      body:
-      /* istanbul ignore next */
-      (e && e.message) || 'no message',
-      statusCode:
-      /* istanbul ignore next */
-      (e && e.status) || 500,
-    };
+    const stack = (e && e.stack) || 'no stack';
+    log.error('Unhandled error', e, stack);
+
+    /* istanbul ignore next */
+    const body = (e && e.message) || 'no message';
+    /* istanbul ignore next */
+    const status = (e && e.status) || 500;
+    return new Response(body, { status });
   }
 }
 
 module.exports.main = wrap(main)
   .with(vary)
-  .with(epsagon)
-  .with(status)
+  .with(helixStatus)
   .with(logger.trace)
   .with(logger);

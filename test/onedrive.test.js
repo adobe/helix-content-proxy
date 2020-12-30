@@ -15,14 +15,16 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
-const index = require('../src/index.js').main;
-const { setupPolly } = require('./utils.js');
+const { main } = require('../src/index.js');
+const { setupPolly, retrofit } = require('./utils.js');
 
 const fstab = `
 mountpoints:
   /onedrive-index.md: "onedrive:/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW44UHM362CKX5GYMQO2F4JIHSEV"
   /: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
 `;
+
+const index = retrofit(main);
 
 describe('OneDrive Integration Tests', () => {
   setupPolly({
