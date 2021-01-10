@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/adobe/helix-content-proxy/compare/v2.5.1...v2.5.2) (2021-01-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.18.2 ([#261](https://github.com/adobe/helix-content-proxy/issues/261)) ([f08055e](https://github.com/adobe/helix-content-proxy/commit/f08055e835d1a5a594ee31d7fb289d3b47c074a0))
+
 ## [2.5.1](https://github.com/adobe/helix-content-proxy/compare/v2.5.0...v2.5.1) (2021-01-05)
 
 
