@@ -86,7 +86,7 @@ async function main(req, context) {
 
   const githubOptions = {
     cache: 'no-store',
-    fetchTimeout: HTTP_TIMEOUT || 1000,
+    fetchTimeout: HTTP_TIMEOUT || 5000,
     headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
       // copy whitelisted headers
       if (req.headers.has(header)) {

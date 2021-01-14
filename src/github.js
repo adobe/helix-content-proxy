@@ -15,7 +15,22 @@ const { utils } = require('@adobe/helix-shared');
 const { fetch, getFetchOptions } = require('./utils');
 const cache = require('./cache');
 
-function computeGithubURI(root, owner, repo, ref, path) {
+async function computeGithubURI(root, owner, repo, ref, path, resolver) {
+  if (!ref && !!resolver) {
+    // look up the default branch instead
+    const url = resolver.createURL({
+      package: 'helix-services',
+      name: 'resolve-git-ref',
+      version: 'v1',
+    });
+
+    url.searchParams.append('owner', owner);
+    url.searchParams.append('repo', repo);
+
+    const res = await fetch(url.href);
+    ref = (await res.json()).sha;
+  }
+
   const rootURI = URL.parse(root);
   const rootPath = rootURI.path;
   // remove double slashes
@@ -43,7 +58,7 @@ async function fetchFSTabUncached(opts) {
   const {
     root, owner, repo, ref, log, options,
   } = opts;
-  const response = await fetch(computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), getFetchOptions(options));
+  const response = await fetch(await computeGithubURI(root, owner, repo, ref, 'fstab.yaml'), getFetchOptions(options));
   const text = await response.text();
   if (response.ok) {
     return text;
@@ -87,9 +102,9 @@ function isImmutable(ref) {
  */
 async function handle(opts) {
   const {
-    githubRootPath, owner, repo, ref, path, log, options,
+    mp, githubRootPath, owner, repo, ref, path, log, options, resolver,
   } = opts;
-  const uri = computeGithubURI(githubRootPath, owner, repo, ref, path);
+  const uri = mp ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, (mp.basePath || '') + mp.relPath + '.md', resolver) : await computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, getFetchOptions(options));
   const body = await response.text();
   if (response.ok) {
@@ -113,7 +128,7 @@ async function handle(opts) {
 
 function canhandle(mp) {
   // only handle non-existing mount points
-  return !mp;
+  return !mp || mp.type === 'github';
 }
 
 module.exports = { canhandle, handle, fetchFSTab: fetchFSTabCached };
