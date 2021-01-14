@@ -28,6 +28,7 @@ async function computeGithubURI(root, owner, repo, ref, path, resolver) {
     url.searchParams.append('repo', repo);
 
     const res = await fetch(url.href);
+    // eslint-disable-next-line no-param-reassign
     ref = (await res.json()).sha;
   }
 
@@ -104,7 +105,7 @@ async function handle(opts) {
   const {
     mp, githubRootPath, owner, repo, ref, path, log, options, resolver,
   } = opts;
-  const uri = mp ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, (mp.basePath || '') + mp.relPath + '.md', resolver) : await computeGithubURI(githubRootPath, owner, repo, ref, path);
+  const uri = mp ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, `${(mp.basePath || '') + mp.relPath}.md`, resolver) : await computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, getFetchOptions(options));
   const body = await response.text();
   if (response.ok) {

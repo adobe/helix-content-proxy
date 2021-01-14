@@ -159,7 +159,6 @@ describe('GitHub Integration Tests', () => {
 
     assert.equal(result2.statusCode, 200);
     assert.ok(result2.body.indexOf('rewriting of JavaScript module and CSS files to enhance cachability'));
-
   }).timeout(5000);
 
   it('Fails to retrieve Markdown from GitHub is malfunctioning', async function badGitHub() {
