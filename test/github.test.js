@@ -139,6 +139,38 @@ describe('GitHub Integration Tests', () => {
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
   });
 
+  it('Retrieves Markdown from mounted GitHub repo using FSTab.yaml is present', async () => {
+    const result1 = await main({
+      owner: 'trieloff',
+      repo: 'hlxdemo',
+      ref: '218a0cf464bf07516e2c5486127f1b6e990004fa',
+      path: '/index.md',
+    });
+
+    assert.equal(result1.statusCode, 200);
+    assert.ok(result1.body.indexOf('/home/docs/architecture.md'));
+
+    const result2 = await main({
+      owner: 'trieloff',
+      repo: 'hlxdemo',
+      ref: '218a0cf464bf07516e2c5486127f1b6e990004fa',
+      path: '/home/docs/architecture.md',
+    });
+
+    assert.equal(result2.statusCode, 200);
+    assert.ok(result2.body.indexOf('rewriting of JavaScript module and CSS files to enhance cachability'));
+
+    const result3 = await main({
+      owner: 'trieloff',
+      repo: 'hlxdemo',
+      ref: '7637349beadd0c35686a59dd441f4fe17dc2356f',
+      path: '/home/docs/architecture.md',
+    });
+
+    assert.equal(result3.statusCode, 200);
+    assert.ok(result3.body.indexOf('rewriting of JavaScript module and CSS files to enhance cachability'));
+  }).timeout(5000);
+
   it('Fails to retrieve Markdown from GitHub is malfunctioning', async function badGitHub() {
     const { server } = this.polly;
 
