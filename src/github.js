@@ -16,8 +16,8 @@ const { fetch, getFetchOptions } = require('./utils');
 const cache = require('./cache');
 
 async function computeGithubURI(root, owner, repo, ref, path, resolver) {
-  if (!ref && !!resolver) {
-    // look up the default branch instead
+  if ((!ref || !ref.match(/^[a-f0-9]{40}$/)) && !!resolver) {
+    // look up the sha or default branch branch instead
     const url = resolver.createURL({
       package: 'helix-services',
       name: 'resolve-git-ref',
@@ -26,6 +26,9 @@ async function computeGithubURI(root, owner, repo, ref, path, resolver) {
 
     url.searchParams.append('owner', owner);
     url.searchParams.append('repo', repo);
+    if (!!ref && !ref.match(/^[a-f0-9]{40}$/)) {
+      url.searchParams.append('ref', ref);
+    }
 
     const res = await fetch(url.href);
     // eslint-disable-next-line no-param-reassign
