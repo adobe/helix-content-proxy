@@ -1,3 +1,15 @@
+# [2.6.0](https://github.com/adobe/helix-content-proxy/compare/v2.5.5...v2.6.0) (2021-01-15)
+
+
+### Bug Fixes
+
+* **github:** always resolve ref ([9d5df14](https://github.com/adobe/helix-content-proxy/commit/9d5df14bea39ede1925458fb0fc465edf77b2521))
+
+
+### Features
+
+* **github:** add support for mounting github repos ([bdb7e19](https://github.com/adobe/helix-content-proxy/commit/bdb7e191187ffd2803e27b8709742bc3e515fb08)), closes [#265](https://github.com/adobe/helix-content-proxy/issues/265)
+
 ## [2.5.5](https://github.com/adobe/helix-content-proxy/compare/v2.5.4...v2.5.5) (2021-01-14)
 
 
