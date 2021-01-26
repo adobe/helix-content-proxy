@@ -60,7 +60,7 @@ async function reverseLookup(opts) {
 
   const segs = uri.pathname.substring(1)
     .split('/')
-    .filter((s) => s !== 'r' && s !== ':w:');
+    .filter((s) => s !== 'r' && s !== ':w:' && s !== ':x:');
   const sourceDoc = uri.searchParams.get('sourcedoc');
   const id = uri.searchParams.get('id');
 
