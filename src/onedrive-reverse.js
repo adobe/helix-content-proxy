@@ -58,7 +58,9 @@ async function reverseLookup(opts) {
     log,
   });
 
-  const segs = uri.pathname.substring(1).split('/');
+  const segs = uri.pathname.substring(1)
+    .split('/')
+    .filter((s) => s !== 'r' && s !== ':w:');
   const sourceDoc = uri.searchParams.get('sourcedoc');
   const id = uri.searchParams.get('id');
 
@@ -67,8 +69,9 @@ async function reverseLookup(opts) {
   if (sourceDoc) {
     // for documents and sheets, the uri only contains a sharepoint id. so we need to get the
     // path via the webUrl of the list item.
-    const site = segs[2];
-    const subSite = segs[3];
+    const idx = Math.max(segs.indexOf('_layouts'), 2);
+    const site = segs[idx - 2];
+    const subSite = segs[idx - 1];
     const list = uri.searchParams.get('ListId') || 'documents';
     const itemId = sourceDoc.replace(/[{}]/g, '');
     const listUri = `/sites/${uri.hostname}:/${site}/${subSite}:/lists/${list}/items/${itemId}`;
