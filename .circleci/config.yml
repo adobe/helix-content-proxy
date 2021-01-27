@@ -1,8 +1,8 @@
 version: 2.1
 executors:
-  node10:
+  nod12:
     docker:
-      - image: circleci/node:10-buster
+      - image: circleci/node:12
         environment:
           NPM_CONFIG_PREFIX: "~/.npm-global"
     working_directory: ~/repo
@@ -34,7 +34,7 @@ commands:
 
 jobs:
   build:
-    executor: node10
+    executor: nod12
     steps:
       - setup
       - run: mkdir junit
@@ -50,7 +50,7 @@ jobs:
           path: junit
 
   semantic-release:
-    executor: node10
+    executor: nod12
     steps:
       - setup
       - run:
@@ -77,7 +77,7 @@ jobs:
           newrelic_group_policy: Delivery Repeated Failure
 
   branch-deploy:
-    executor: node10
+    executor: nod12
     steps:
       - setup
       - run:
