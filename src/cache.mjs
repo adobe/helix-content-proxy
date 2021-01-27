@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-const QuickLRU = require('quick-lru');
+import QuickLRU from 'quick-lru';
 
-let lru = new QuickLRU({ maxSize: 1000 });
+let lru = new QuickLRU({ maxSize: 1000, maxAge: 60000 });
 
 /**
  * Returns a memoized version of the function `fn`.
