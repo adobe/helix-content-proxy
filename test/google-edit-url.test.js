@@ -18,7 +18,7 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const z = require('zlib');
 const { main: universalMain } = require('../src/index.js');
-const cache = require('../src/cache.mjs');
+const cache = require('../src/cache.js');
 
 const { setupPolly, retrofit } = require('./utils.js');
 

@@ -19,7 +19,7 @@ const assert = require('assert');
 const z = require('zlib');
 const { main: universalMain } = require('../src/index.js');
 const { setupPolly, retrofit } = require('./utils.js');
-const cache = require('../src/cache.mjs');
+const cache = require('../src/cache.js');
 
 // require('dotenv').config();
 const main = retrofit(universalMain);

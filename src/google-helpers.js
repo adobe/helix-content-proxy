@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const { google } = require('googleapis');
-const cache = require('./cache.mjs');
+const cache = require('./cache.js');
 
 /**
  * Remember the access token for future action invocations.

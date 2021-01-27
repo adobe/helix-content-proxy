@@ -13,7 +13,7 @@ const URL = require('url');
 const { Response } = require('node-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { fetch, getFetchOptions } = require('./utils');
-const cache = require('./cache.mjs');
+const cache = require('./cache.js');
 
 async function computeGithubURI(root, owner, repo, ref, path, resolver) {
   if ((!ref || !ref.match(/^[a-f0-9]{40}$/)) && !!resolver) {
