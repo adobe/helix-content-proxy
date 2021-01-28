@@ -30,6 +30,11 @@ const countfn = () => {
 };
 
 describe('Cache Tests', () => {
+  after(() => {
+    // reset cache for other tests
+    Cache.options({ maxSize: 1000, maxAge: 60000 });
+  });
+
   it('Errors do not get cached by default', async () => {
     errcounter = 0;
     const cached = cache(errfn);
