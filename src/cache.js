@@ -9,10 +9,9 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+const LRU = require('lru-cache');
 
-const QuickLRU = require('quick-lru');
-
-let lru = new QuickLRU({ maxSize: 1000 });
+let lru = new LRU({ maxSize: 1000, maxAge: 60000 });
 
 /**
  * Returns a memoized version of the function `fn`.
@@ -39,7 +38,7 @@ function cache(fn, opts = {}) {
   } = opts;
   return async function cached(...args) {
     const key = hash(fn, ...args);
-    if (lru.has(key)) {
+    if (lru.get(key)) {
       // if it's cached, just return it
       const result = lru.get(key);
       if (result.ok !== undefined) {
@@ -74,7 +73,7 @@ function cache(fn, opts = {}) {
  * @param {integer} opts.maxSize maximum size of the cache
  */
 cache.options = (opts) => {
-  lru = new QuickLRU(opts);
+  lru = new LRU(opts);
 
   return cache;
 };

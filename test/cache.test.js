@@ -13,7 +13,9 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
-const cache = require('../src/cache').options({ maxSize: 10 });
+const Cache = require('../src/cache');
+
+const cache = Cache.options({ maxSize: 10 });
 
 let errcounter = 0;
 const errfn = () => {
@@ -28,6 +30,11 @@ const countfn = () => {
 };
 
 describe('Cache Tests', () => {
+  after(() => {
+    // reset cache for other tests
+    Cache.options({ maxSize: 1000, maxAge: 60000 });
+  });
+
   it('Errors do not get cached by default', async () => {
     errcounter = 0;
     const cached = cache(errfn);
@@ -113,5 +120,16 @@ describe('Cache Tests', () => {
 
     assert.equal(await cached(), false);
     assert.equal(await cached(), false, 'flip got called again');
+  });
+
+  it('evicts items after maxAge time', async () => {
+    const quick = Cache.options({ maxSize: 10, maxAge: 50 });
+    counter = 0;
+    const cached = quick(countfn);
+    assert.equal(await cached(), 1);
+    assert.equal(await cached(), 1);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    assert.equal(await cached(), 2);
+    assert.equal(await cached(), 2);
   });
 });

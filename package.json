@@ -41,7 +41,7 @@
     "@adobe/openwhisk-action-utils": "4.4.0",
     "googleapis": "67.0.0",
     "node-fetch": "2.6.1",
-    "quick-lru": "5.1.1"
+    "lru-cache": "6.0.0"
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.3",
