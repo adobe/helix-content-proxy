@@ -1,3 +1,11 @@
+## [2.6.3](https://github.com/adobe/helix-content-proxy/compare/v2.6.2...v2.6.3) (2021-01-28)
+
+
+### Bug Fixes
+
+* **cache:** replace quick-lru with lru-cache ([6e8ebbe](https://github.com/adobe/helix-content-proxy/commit/6e8ebbe93f12ee77b65678de1c56a656bca5ea06)), closes [#277](https://github.com/adobe/helix-content-proxy/issues/277)
+* **cache:** set cache max age to one minute ([bd46641](https://github.com/adobe/helix-content-proxy/commit/bd46641e995991450715146f46d2aee705fbf8b7)), closes [#277](https://github.com/adobe/helix-content-proxy/issues/277)
+
 ## [2.6.2](https://github.com/adobe/helix-content-proxy/compare/v2.6.1...v2.6.2) (2021-01-26)
 
 
