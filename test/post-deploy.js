@@ -68,5 +68,18 @@ createTargets().forEach((target) => {
           throw e;
         });
     }).timeout(20000);
+
+    it('Compute Edit Lookup', async () => {
+      const url = `${target.urlPath()}?owner=adobe&repo=theblog&ref=master&path=%2F&edit=https%3A%2F%2Fblog.adobe.com%2Fen%2F2020%2F12%2F01%2Fwhat-does-the-cmo50-tell-us-about-modern-marketing.html%23gs.re0ega`;
+      await chai
+        .request(target.host())
+        .get(url)
+        .then((response) => {
+          expect(response).to.have.status(404);
+        }).catch((e) => {
+          e.message = `At ${target.host()}${url}\n      ${e.message}`;
+          throw e;
+        });
+    }).timeout(20000);
   });
 });

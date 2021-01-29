@@ -53,11 +53,7 @@ function retrofit(fn) {
     return {
       statusCode: resp.status,
       body: String(resp.body),
-      headers: [...resp.headers.keys()].reduce((result, key) => {
-        // eslint-disable-next-line no-param-reassign
-        result[key] = resp.headers.get(key);
-        return result;
-      }, {}),
+      headers: Object.fromEntries(resp.headers),
     };
   };
 }

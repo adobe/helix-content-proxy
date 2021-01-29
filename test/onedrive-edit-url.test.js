@@ -21,6 +21,7 @@ const { setupPolly, retrofit } = require('./utils.js');
 
 const fstab = `
 mountpoints:
+  /invalid: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/invalid
   /: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
 `;
 
@@ -36,7 +37,10 @@ const DEFAULT_PARAMS = {
 };
 
 class FakeOneDrive {
-  getDriveItemFromShareLink() {
+  getDriveItemFromShareLink(url) {
+    if (url === 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/invalid') {
+      throw new Error('item not found');
+    }
     return {
       id: '01DJQLOW4XEPSY5ROSRRE3SF2L7KJDG7TW',
       webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents',
@@ -141,6 +145,21 @@ describe('Onedrive Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://blog.adobe.com/foo/bar.html',
+    });
+
+    assert.equal(result.statusCode, 404);
+  }).timeout(20000);
+
+  it('Returns 404 for non existent sharelink', async function test() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://blog.adobe.com/invalid/en/2020/11/09/adobe-to-acquire-workfront.html',
     });
 
     assert.equal(result.statusCode, 404);

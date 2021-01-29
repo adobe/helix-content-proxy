@@ -52,12 +52,17 @@ async function lookupEditUrl(opts) {
     });
   }
 
-  const location = await handler.getEditUrl({
-    mp,
-    resourcePath,
-    ext,
-    ...opts,
-  });
+  let location;
+  try {
+    location = await handler.getEditUrl({
+      mp,
+      resourcePath,
+      ext,
+      ...opts,
+    });
+  } catch (e) {
+    log.warn(`Handler ${handler.name} threw an error:`, e);
+  }
 
   if (!location) {
     log.error(`Handler ${handler.name} could not lookup ${uri}.`);
