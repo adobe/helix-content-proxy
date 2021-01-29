@@ -1,3 +1,10 @@
+## [2.6.4](https://github.com/adobe/helix-content-proxy/compare/v2.6.3...v2.6.4) (2021-01-29)
+
+
+### Bug Fixes
+
+* **edit:** edit lookup fails with 500 for non existent sharelink ([#280](https://github.com/adobe/helix-content-proxy/issues/280)) ([115520c](https://github.com/adobe/helix-content-proxy/commit/115520c69787ca22165fe35dd122eb6e7721dc83)), closes [#279](https://github.com/adobe/helix-content-proxy/issues/279)
+
 ## [2.6.3](https://github.com/adobe/helix-content-proxy/compare/v2.6.2...v2.6.3) (2021-01-28)
 
 
