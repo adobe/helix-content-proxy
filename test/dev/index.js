@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-const { Request } = require('node-fetch');
+const { Request } = require('@adobe/helix-fetch');
 const { main } = require('../../src/index.js');
 
 require('dotenv').config();

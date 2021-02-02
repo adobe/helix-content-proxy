@@ -52,8 +52,8 @@ function retrofit(fn) {
     });
     return {
       statusCode: resp.status,
-      body: String(resp.body),
-      headers: Object.fromEntries(resp.headers),
+      body: await resp.text(),
+      headers: resp.headers.plain(),
     };
   };
 }

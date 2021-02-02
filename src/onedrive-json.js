@@ -10,10 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-const { Response } = require('node-fetch');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
-const { AbortError } = require('@adobe/helix-fetch');
+const { AbortError, Response } = require('@adobe/helix-fetch');
 const { appendURLParams, fetch, getFetchOptions } = require('./utils');
 
 async function handleJSON(opts, params) {
