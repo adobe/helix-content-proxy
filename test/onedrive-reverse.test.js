@@ -74,6 +74,54 @@ describe('Onedrive Reverse Lookup Tests', () => {
     assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article.html');
   });
 
+  it('Returns redirect for onedrive document via sharelink', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/shares/u!aHR0cHM6Ly9hZG9iZS5zaGFyZXBvaW50LmNvbS86dzovci9zaXRlcy9UaGVCbG9oL19sYXlvdXRzLzE1L2d1ZXN0YWNjZXNzLmFzcHg_ZT00JTNBeFNNN3BhJmF0PTkmd2RMT1I9YzY0RUY1OEFFLUNFQkItMDU0MC1CNDQ0LTA0NDA2MjY0OEExNyZzaGFyZT1FUk1RVnVDcjdTNUZxSUJndkNKZXpPMEJVVXhwemhlcmJlS1NTUFlDaW5mODR3/driveItem')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B09BFA93A-78BC-49F6-B93D-990A0ED4D55C&file=Frictionless%20Resize.docx&action=default&mobileredirect=true',
+      }));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/09BFA93A-78BC-49F6-B93D-990A0ED4D55C')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/drafs/article.docx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBloh/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84w',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article.html');
+  });
+
+  it('Returns not found for onedrive document via invalid sharelink', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/shares/u!aHR0cHM6Ly9hZG9iZS5zaGFyZXBvaW50LmNvbS86dzovci9zaXRlcy9UaGVCbG9oL19sYXlvdXRzLzE1L2d1ZXN0YWNjZXNzLmFzcHg_ZT00JTNBeFNNN3BhJmF0PTkmd2RMT1I9YzY0RUY1OEFFLUNFQkItMDU0MC1CNDQ0LTA0NDA2MjY0OEExNyZzaGFyZT1FUk1RVnVDcjdTNUZxSUJndkNKZXpPMEJVVXhwemhlcmJlS1NTUFlDaW5mODR4/driveItem')
+      .intercept((_, res) => res.status(404).send());
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBloh/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84x',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 404);
+  });
+
   it('Returns redirect for onedrive document with no edit mode markers', async function test() {
     const { server } = this.polly;
     server

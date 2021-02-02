@@ -32,16 +32,19 @@ function test(uri) {
  * Markdown files (on different tenants):
  * - https://{tenant}/{site}/{subsite}/{drive}/Forms/AllItems.aspx?listurl={listurl}&id={filePath}&parent={parentPath}
  *
+ * Documents on share links:
+ * - https://{tennat}/:w:/r/{site}/{subsite}/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84w
+ *
  * @param opts
  * @returns {Promise<string>}
  */
 async function reverseLookup(opts) {
   const {
     mount,
-    uri,
     options,
     log,
   } = opts;
+  let { uri } = opts;
 
   const {
     AZURE_WORD2MD_CLIENT_ID: clientId,
@@ -57,6 +60,18 @@ async function reverseLookup(opts) {
     password,
     log,
   });
+
+  // if uri is sharelink, resolve it first
+  if (uri.searchParams.get('share')) {
+    try {
+      const driveItem = await drive.getDriveItemFromShareLink(uri.href);
+      const { webUrl } = driveItem;
+      uri = new URL(webUrl);
+    } catch (e) {
+      log.error('error while lookup sharelink', e.message);
+      return '';
+    }
+  }
 
   const segs = uri.pathname.substring(1)
     .split('/')
