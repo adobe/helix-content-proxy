@@ -32,7 +32,7 @@ function retrofit(fn) {
       resolver,
       ...opts,
     }, params);
-    let { body } = resp;
+    let body = await resp.text();
     try {
       body = JSON.parse(body);
     } catch {
@@ -41,11 +41,7 @@ function retrofit(fn) {
     return {
       statusCode: resp.status,
       body,
-      headers: [...resp.headers.keys()].reduce((result, key) => {
-        // eslint-disable-next-line no-param-reassign
-        result[key] = resp.headers.get(key);
-        return result;
-      }, {}),
+      headers: resp.headers.plain(),
     };
   };
 }

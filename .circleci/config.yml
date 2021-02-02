@@ -75,6 +75,7 @@ jobs:
           statuspage_name: Helix Content Proxy
           statuspage_group: Delivery
           newrelic_group_policy: Delivery Repeated Failure
+          aws: true
 
   branch-deploy:
     executor: nod12
