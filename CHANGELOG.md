@@ -1,3 +1,15 @@
+# [2.7.0](https://github.com/adobe/helix-content-proxy/compare/v2.6.4...v2.7.0) (2021-02-02)
+
+
+### Bug Fixes
+
+* **resolve:** resolve items via sharelink ([ad91e66](https://github.com/adobe/helix-content-proxy/commit/ad91e66f7e0c332c88ce5a4128a45e16dd6d8fbd)), closes [#282](https://github.com/adobe/helix-content-proxy/issues/282)
+
+
+### Features
+
+* **deps:** upgrad to helix-fetch v2 ([99d7ef1](https://github.com/adobe/helix-content-proxy/commit/99d7ef123e7f9557fba35dd8d3dd630d6b9a5380))
+
 ## [2.6.4](https://github.com/adobe/helix-content-proxy/compare/v2.6.3...v2.6.4) (2021-01-29)
 
 
