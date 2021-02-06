@@ -64,7 +64,9 @@ async function reverseLookup(opts) {
   }
 
   // make author friendly
-  const friendlyPath = encodeURI(filename2url(decodeURI(documentPath)));
+  const friendlyPath = encodeURI(filename2url(decodeURI(documentPath), {
+    ignoreExtension: !documentPath.endsWith('.json'),
+  }));
   const location = `${prefix}${friendlyPath}`;
 
   if (report) {

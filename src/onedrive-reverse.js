@@ -134,7 +134,7 @@ async function reverseLookup(opts) {
       ext = relPath.substring(idx);
       relPath = relPath.substring(0, idx);
     }
-    ext = ext === '.xlsx' ? '.json' : '.html';
+    ext = ext === '.xlsx' ? '.json' : ''; // omit html extension
     return `${mp.path}${relPath}${ext}`;
   }, '');
 }

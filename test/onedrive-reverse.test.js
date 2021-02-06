@@ -71,7 +71,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns redirect for onedrive document via sharelink', async function test() {
@@ -99,7 +99,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns not found for onedrive document via invalid sharelink', async function test() {
@@ -142,7 +142,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns redirect for onedrive spreadsheet', async function test() {
@@ -211,7 +211,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test');
   });
 
   it('Returns redirect for onedrive document with author friendly name', async function test() {
@@ -234,7 +234,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document');
   });
 
   it('Returns resolve report for onedrive document with author friendly name', async function test() {
@@ -261,8 +261,8 @@ describe('Onedrive Reverse Lookup Tests', () => {
     result.body = JSON.parse(result.body);
     assert.deepEqual(result.body, {
       sourceUrl: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
-      webUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document.html',
-      unfriendlyWebUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!.html',
+      webUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document',
+      unfriendlyWebUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!',
     });
   });
 
@@ -278,7 +278,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/theblog-embeds.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/theblog-embeds');
   });
 
   it('Returns redirect for onedrive file on different sharepoint site', async function test() {
@@ -293,7 +293,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/publish/2020/07/28/in-complex-times-panasonic-made-its-b2b-marketing-simple.html');
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/publish/2020/07/28/in-complex-times-panasonic-made-its-b2b-marketing-simple');
   });
 
   it('Returns 404 for a document not below a mountpoint', async function test() {
