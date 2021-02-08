@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/adobe/helix-content-proxy/compare/v2.7.0...v2.8.0) (2021-02-08)
+
+
+### Features
+
+* **lookup:** omit .html extension ([#285](https://github.com/adobe/helix-content-proxy/issues/285)) ([#286](https://github.com/adobe/helix-content-proxy/issues/286)) ([87c8153](https://github.com/adobe/helix-content-proxy/commit/87c8153939403596a75dd0fd8ccffd7c41e39986))
+
 # [2.7.0](https://github.com/adobe/helix-content-proxy/compare/v2.6.4...v2.7.0) (2021-02-02)
 
 
