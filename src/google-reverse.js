@@ -53,7 +53,7 @@ async function reverseLookup(opts) {
   if (!path || path.startsWith('/root:/')) {
     return '';
   }
-  const ext = type === 'spreadsheets' ? '.json' : '.html';
+  const ext = type === 'spreadsheets' ? '.json' : ''; // omit html extension
 
   return `${path}${ext}`;
 }
