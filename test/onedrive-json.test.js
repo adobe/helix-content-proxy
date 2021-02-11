@@ -16,7 +16,7 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const proxyquire = require('proxyquire');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
-const { fetchContext } = require('../src/utils.js');
+const { timeoutSignal } = require('@adobe/helix-fetch');
 const { setupPolly } = require('./utils.js');
 
 // require('dotenv').config();
@@ -395,7 +395,7 @@ describe('Excel JSON Integration tests', () => {
         AZURE_WORD2MD_REFRESH_TOKEN: process.env.AZURE_WORD2MD_REFRESH_TOKEN || 'fake',
         AZURE_HELIX_USER: process.env.AZURE_HELIX_USER || 'fake',
         AZURE_HELIX_PASSWORD: process.env.AZURE_HELIX_PASSWORD || 'fake',
-        signal: fetchContext.timeoutSignal(100),
+        signal: timeoutSignal(100),
       },
     });
 

@@ -12,18 +12,14 @@
 /* eslint-disable no-param-reassign */
 const fetchAPI = require('@adobe/helix-fetch');
 
-// force HTTP/1 in order to avoid issues with long-lived HTTP/2 sessions
-// on azure/kubernetes based I/O Runtime
-process.env.HELIX_FETCH_FORCE_HTTP1 = true;
-
-function createFetchContext() {
-  return process.env.HELIX_FETCH_FORCE_HTTP1
-    ? fetchAPI.context({ alpnProtocols: [fetchAPI.ALPN_HTTP1_1] })
-    /* istanbul ignore next */
-    : fetchAPI.context({});
-}
-const fetchContext = createFetchContext();
-const { fetch } = fetchContext;
+const { context, ALPN_HTTP1_1 } = fetchAPI;
+const { fetch, timeoutSignal } = process.env.HELIX_FETCH_FORCE_HTTP1
+  ? context({
+    alpnProtocols: [ALPN_HTTP1_1],
+    userAgent: 'helix-fetch', // static user agent for test recordings
+  })
+  /* istanbul ignore next */
+  : fetchAPI;
 
 function appendURLParams(url, params) {
   const u = new URL(url);
@@ -51,7 +47,7 @@ function getFetchOptions(options) {
     fetchopts.headers['x-request-id'] = options.requestId;
   }
   if (options.fetchTimeout) {
-    fetchopts.signal = fetchContext.timeoutSignal(options.fetchTimeout);
+    fetchopts.signal = timeoutSignal(options.fetchTimeout);
   }
   delete fetchopts.requestId;
   // delete all secrets
@@ -67,6 +63,5 @@ function getFetchOptions(options) {
 module.exports = {
   appendURLParams,
   fetch,
-  fetchContext,
   getFetchOptions,
 };
