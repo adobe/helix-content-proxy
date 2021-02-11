@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/adobe/helix-content-proxy/compare/v2.8.0...v2.8.1) (2021-02-11)
+
+
+### Bug Fixes
+
+* **deps:** bump helix-fetch and re-enable http/2 ([c7aa3eb](https://github.com/adobe/helix-content-proxy/commit/c7aa3eb24a5b745226a66805d402ce7de0834492))
+
 # [2.8.0](https://github.com/adobe/helix-content-proxy/compare/v2.7.0...v2.8.0) (2021-02-08)
 
 
