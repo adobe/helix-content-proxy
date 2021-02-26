@@ -50,8 +50,6 @@ async function handle(opts) {
         // if the backend does not provide a source location, use the URL
         'x-source-location': response.headers.get('x-source-location'),
         'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location')),
-        // cache for Runtime (non-flushable) – 1 minute
-        'cache-control': 'max-age=60',
         // cache for Fastly (flushable) – endless
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       },
