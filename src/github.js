@@ -16,20 +16,16 @@ const { fetch, getFetchOptions } = require('./utils');
 const cache = require('./cache.js');
 
 async function computeGithubURI(root, owner, repo, ref, path, resolver) {
-  if ((!ref || !ref.match(/^[a-f0-9]{40}$/)) && !!resolver) {
+  // only load ref, if undefined
+  if (!ref && !!resolver) {
     // look up the sha or default branch branch instead
     const url = resolver.createURL({
       package: 'helix-services',
       name: 'resolve-git-ref',
       version: 'v1',
     });
-
     url.searchParams.append('owner', owner);
     url.searchParams.append('repo', repo);
-    if (!!ref && !ref.match(/^[a-f0-9]{40}$/)) {
-      url.searchParams.append('ref', ref);
-    }
-
     const res = await fetch(url.href);
     // eslint-disable-next-line no-param-reassign
     ref = (await res.json()).sha;
@@ -37,14 +33,10 @@ async function computeGithubURI(root, owner, repo, ref, path, resolver) {
 
   const rootURI = URL.parse(root);
   const rootPath = rootURI.path;
+
   // remove double slashes
-  const fullPath = `${rootPath}/${owner}/${repo}/${ref}/${path}`.replace(
-    /\/+/g,
-    '/',
-  );
-
-  rootURI.pathname = fullPath;
-
+  rootURI.pathname = `${rootPath}/${owner}/${repo}/${ref}/${path}`
+    .replace(/\/+/g, '/');
   return URL.format(rootURI);
 }
 
@@ -108,7 +100,9 @@ async function handle(opts) {
   const {
     mp, githubRootPath, owner, repo, ref, path, log, options, resolver,
   } = opts;
-  const uri = mp ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, `${(mp.basePath || '') + mp.relPath}.md`, resolver) : await computeGithubURI(githubRootPath, owner, repo, ref, path);
+  const uri = mp
+    ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, `${(mp.basePath || '') + mp.relPath}.md`, resolver)
+    : await computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, getFetchOptions(options));
   const body = await response.text();
   if (response.ok) {
