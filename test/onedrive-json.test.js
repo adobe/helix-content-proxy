@@ -167,7 +167,7 @@ describe('Excel JSON Integration tests', () => {
 
     assert.equal(res.statusCode, 200);
     assert.deepEqual(res.headers, {
-      'cache-control': 'no-store, private, must-revalidate',
+      'cache-control': 'no-store, private',
       'content-type': 'application/json',
       'last-modified': 'Mon, 14 Dec 2020 20:14:25 GMT',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
@@ -232,7 +232,7 @@ describe('Excel JSON Integration tests', () => {
 
     assert.equal(res.statusCode, 200);
     assert.deepEqual(res.headers, {
-      'cache-control': 'no-store, private, must-revalidate',
+      'cache-control': 'no-store, private',
       'content-type': 'application/json',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       'surrogate-key': 'IEPk2TBbQwWp8mOq',

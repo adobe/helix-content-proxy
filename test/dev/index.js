@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable no-console */
 
 const { Request } = require('@adobe/helix-fetch');
 const { main } = require('../../src/index.js');

@@ -120,7 +120,7 @@ describe('GitHub Integration Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.body.indexOf('# Markdown Features in Project Helix'), 0);
-    assert.equal(result.headers['cache-control'], 'max-age=60');
+    assert.equal(result.headers['cache-control'], 'no-store, private');
     assert.equal(result.headers['surrogate-control'], 'max-age=60');
   });
 
@@ -135,7 +135,7 @@ describe('GitHub Integration Tests', () => {
     assert.equal(result.statusCode, 200);
     assert.equal(result.body.indexOf('---'), 0);
     assert.equal(result.headers['x-source-location'], 'https://raw.githubusercontent.com/adobe/theblog/04f19cd404780382c5a53d0cf64fbe4b0b827eff/index.md');
-    assert.equal(result.headers['cache-control'], 'max-age=30758400');
+    assert.equal(result.headers['cache-control'], 'no-store, private');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
   });
 

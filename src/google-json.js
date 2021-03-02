@@ -57,7 +57,7 @@ async function handleJSON(opts, params) {
           'x-source-location': sourceLocation,
           'surrogate-key': utils.computeSurrogateKey(sourceLocation),
           // cache for Runtime (non-flushable)
-          'cache-control': 'no-store, private, must-revalidate',
+          'cache-control': 'no-store, private',
           // cache for Fastly (flushable) – endless
           'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
         },
@@ -78,7 +78,7 @@ async function handleJSON(opts, params) {
       headers: {
         'content-type': 'text/plain',
         // cache for Runtime (non-flushable)
-        'cache-control': 'no-store, private, must-revalidate',
+        'cache-control': 'no-store, private',
       },
     });
   }

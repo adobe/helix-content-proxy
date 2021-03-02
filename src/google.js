@@ -53,8 +53,8 @@ async function handle(opts) {
         // if the backend does not provide a source location, use the URL
         'x-source-location': sourceLocation,
         'surrogate-key': utils.computeSurrogateKey(sourceLocation),
-        // cache for Runtime (non-flushable) – 1 minute
-        'cache-control': 'max-age=60',
+        // cache for Runtime (non-flushable)
+        'cache-control': 'no-store, private',
         // cache for Fastly (flushable) – endless
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       },
@@ -64,7 +64,8 @@ async function handle(opts) {
   return new Response(body, {
     status: utils.propagateStatusCode(response.status),
     headers: {
-      'cache-control': 'max-age=60',
+      // cache for Runtime (non-flushable)
+      'cache-control': 'no-store, private',
     },
   });
 }
