@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/adobe/helix-content-proxy/compare/v2.8.3...v2.9.0) (2021-03-02)
+
+
+### Features
+
+* **github:** only resolve ref if unknown ([#299](https://github.com/adobe/helix-content-proxy/issues/299)) ([c6ec59c](https://github.com/adobe/helix-content-proxy/commit/c6ec59cd0ffeadaa150df16f1d0235a20a157d42)), closes [#297](https://github.com/adobe/helix-content-proxy/issues/297)
+
 ## [2.8.3](https://github.com/adobe/helix-content-proxy/compare/v2.8.2...v2.8.3) (2021-03-02)
 
 
