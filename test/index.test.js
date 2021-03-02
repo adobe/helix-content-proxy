@@ -187,7 +187,7 @@ mountpoints:
         ],
       },
       headers: {
-        'cache-control': 'no-cache, private',
+        'cache-control': 'no-store, private',
         'content-type': 'application/json',
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
         'surrogate-key': 'ERUhf9+V6/T5sTc/',

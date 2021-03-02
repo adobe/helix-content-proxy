@@ -51,7 +51,7 @@ async function handle(opts) {
         'x-source-location': response.headers.get('x-source-location'),
         'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location')),
         // cache for Runtime (non-flushable)
-        'cache-control': 'no-cache, private',
+        'cache-control': 'no-store, private',
         // cache for Fastly (flushable) – endless
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       },

@@ -119,7 +119,7 @@ async function handle(opts) {
         'content-type': 'text/plain',
         'x-source-location': uri,
         // cache for Runtime (non-flushable)
-        'cache-control': 'no-cache, private',
+        'cache-control': 'no-store, private',
         'surrogate-key': utils.computeSurrogateKey(uri),
         'surrogate-control': immutable ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
       },

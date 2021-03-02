@@ -98,7 +98,7 @@ describe('Google Integration Tests', () => {
 
     assert.equal(result.statusCode, 404);
     assert.equal(result.body, 'error while converting document');
-    assert.equal(result.headers['cache-control'], 'no-cache, private');
+    assert.equal(result.headers['cache-control'], 'no-store, private');
   }).timeout(5000);
 });
 
