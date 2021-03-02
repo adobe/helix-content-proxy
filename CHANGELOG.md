@@ -1,3 +1,10 @@
+## [2.8.3](https://github.com/adobe/helix-content-proxy/compare/v2.8.2...v2.8.3) (2021-03-02)
+
+
+### Bug Fixes
+
+* stop caching documents from OneDrive and Google ([#291](https://github.com/adobe/helix-content-proxy/issues/291)) ([da17a2c](https://github.com/adobe/helix-content-proxy/commit/da17a2ce80e70b9f828ab3aa0005e503574bbe19))
+
 ## [2.8.2](https://github.com/adobe/helix-content-proxy/compare/v2.8.1...v2.8.2) (2021-02-22)
 
 
