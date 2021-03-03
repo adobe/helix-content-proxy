@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/adobe/helix-content-proxy/compare/v2.9.0...v2.9.1) (2021-03-03)
+
+
+### Bug Fixes
+
+* **revers:** handle more sharelink variants ([#302](https://github.com/adobe/helix-content-proxy/issues/302)) ([b91d5c6](https://github.com/adobe/helix-content-proxy/commit/b91d5c661ef7af8be42c335d04ccd4483170449d))
+
 # [2.9.0](https://github.com/adobe/helix-content-proxy/compare/v2.8.3...v2.9.0) (2021-03-02)
 
 
