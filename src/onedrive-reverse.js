@@ -35,6 +35,10 @@ function test(uri) {
  * Documents on share links:
  * - https://{tennat}/:w:/r/{site}/{subsite}/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84w
  *
+ * Documents on share links with or w/o email:
+ * - https://{tennat}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?email={email}&e=RLSD8R
+ * - https://{tenant}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?e=YxP8QV
+ *
  * @param opts
  * @returns {Promise<string>}
  */
@@ -62,7 +66,7 @@ async function reverseLookup(opts) {
   });
 
   // if uri is sharelink, resolve it first
-  if (uri.searchParams.get('share')) {
+  if (uri.searchParams.get('share') || uri.pathname.indexOf('/s/') >= 0) {
     try {
       const driveItem = await drive.getDriveItemFromShareLink(uri.href);
       const { webUrl } = driveItem;
