@@ -43,18 +43,23 @@ async function handle(opts) {
   const response = await fetch(url.href, getFetchOptions(options));
   const body = await response.text();
   if (response.ok) {
+    const headers = {
+      'content-type': 'text/plain',
+      // if the backend does not provide a source location, use the URL
+      'x-source-location': response.headers.get('x-source-location'),
+      'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location')),
+      // cache for Runtime (non-flushable)
+      'cache-control': 'no-store, private',
+      // cache for Fastly (flushable) – endless
+      'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
+    };
+    const lastModified = response.headers.get('last-modified');
+    if (lastModified) {
+      headers['last-modified'] = lastModified;
+    }
     return new Response(body, {
       status: 200,
-      headers: {
-        'content-type': 'text/plain',
-        // if the backend does not provide a source location, use the URL
-        'x-source-location': response.headers.get('x-source-location'),
-        'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location')),
-        // cache for Runtime (non-flushable)
-        'cache-control': 'no-store, private',
-        // cache for Fastly (flushable) – endless
-        'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
-      },
+      headers,
     });
   }
   log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md: ${body}`);
