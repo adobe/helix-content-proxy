@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/adobe/helix-content-proxy/compare/v2.9.1...v2.9.2) (2021-03-04)
+
+
+### Bug Fixes
+
+* **onedrive:** pass last-modified from word2md ([#306](https://github.com/adobe/helix-content-proxy/issues/306)) ([1a3e017](https://github.com/adobe/helix-content-proxy/commit/1a3e017005915e6f7a3c1b44b4a07bc61d4ca88d))
+
 ## [2.9.1](https://github.com/adobe/helix-content-proxy/compare/v2.9.0...v2.9.1) (2021-03-03)
 
 
