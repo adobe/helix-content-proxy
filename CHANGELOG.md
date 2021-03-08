@@ -1,3 +1,10 @@
+## [2.9.3](https://github.com/adobe/helix-content-proxy/compare/v2.9.2...v2.9.3) (2021-03-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-deploy to v3.8.0 ([#311](https://github.com/adobe/helix-content-proxy/issues/311)) ([40e41ef](https://github.com/adobe/helix-content-proxy/commit/40e41ef421c051e71cd3b36bfeb68fd5400f5b50))
+
 ## [2.9.2](https://github.com/adobe/helix-content-proxy/compare/v2.9.1...v2.9.2) (2021-03-04)
 
 
