@@ -1,3 +1,10 @@
+## [2.9.5](https://github.com/adobe/helix-content-proxy/compare/v2.9.4...v2.9.5) (2021-03-09)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#313](https://github.com/adobe/helix-content-proxy/issues/313)) ([31be75d](https://github.com/adobe/helix-content-proxy/commit/31be75d597353e5393db1fd46f5fa8991218e233))
+
 ## [2.9.4](https://github.com/adobe/helix-content-proxy/compare/v2.9.3...v2.9.4) (2021-03-09)
 
 
