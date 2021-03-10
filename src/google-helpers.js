@@ -102,6 +102,27 @@ async function getFilePath(log, drive, fileId, roots) {
   }
 }
 
+async function getFile(fileId, log, options) {
+  const {
+    GOOGLE_DOCS2MD_CLIENT_ID: clientId,
+    GOOGLE_DOCS2MD_CLIENT_SECRET: clientSecret,
+    // eslint-disable-next-line camelcase
+    GOOGLE_DOCS2MD_REFRESH_TOKEN: refresh_token,
+  } = options;
+
+  const auth = await createCachedOAuthClient({ clientId, clientSecret }, { refresh_token });
+
+  const drive = google.drive({
+    version: 'v3',
+    auth,
+  });
+  const res = await drive.files.get({
+    fileId,
+    alt: 'media',
+  });
+  return res.data;
+}
+
 async function getPathFromId(fileId, roots, options) {
   const {
     GOOGLE_DOCS2MD_CLIENT_ID: clientId,
@@ -131,4 +152,5 @@ module.exports = {
   getUncachedIdFromPath,
   getIdFromPath,
   getPathFromId,
+  getFile,
 };

@@ -35,7 +35,7 @@ createTargets().forEach((target) => {
           e.message = `At ${url}\n      ${e.message}`;
           throw e;
         });
-    }).timeout(20000);
+    }).timeout(40000);
 
     it('Helix The Blog Excel', async () => {
       const url = `${target.urlPath()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json&limit=1`;
@@ -51,7 +51,7 @@ createTargets().forEach((target) => {
           e.message = `At ${url}\n      ${e.message}`;
           throw e;
         });
-    }).timeout(20000);
+    }).timeout(40000);
 
     it('Helix The Blog Excel with Query Builder', async () => {
       const url = `${target.urlPath()}?owner=adobe&repo=theblog&ref=master&path=/en/drafts/some-data-test.json&hlx_rangeproperty.property=and&hlx_rangeproperty.lowerBound=1`;
@@ -67,7 +67,7 @@ createTargets().forEach((target) => {
           e.message = `At ${url}\n      ${e.message}`;
           throw e;
         });
-    }).timeout(20000);
+    }).timeout(40000);
 
     it('Compute Edit Lookup', async () => {
       const url = `${target.urlPath()}?owner=adobe&repo=theblog&ref=master&path=%2F&edit=https%3A%2F%2Fblog.adobe.com%2Fen%2F2020%2F12%2F01%2Fwhat-does-the-cmo50-tell-us-about-modern-marketing.html%23gs.re0ega`;
@@ -80,6 +80,66 @@ createTargets().forEach((target) => {
           e.message = `At ${target.host()}${url}\n      ${e.message}`;
           throw e;
         });
-    }).timeout(20000);
+    }).timeout(40000);
+
+    it('Downloads sitemap.xml from onedrive', async () => {
+      // this is a bit a hack...better send text/xml and ensure adapter can handle it
+      const binaryParser = (res, cb) => {
+        res.setEncoding('binary');
+        res.data = '';
+        res.on('data', (chunk) => {
+          res.data += chunk;
+        });
+        res.on('end', () => {
+          cb(null, Buffer.from(res.data, 'binary'));
+        });
+      };
+
+      const url = `${target.urlPath()}?owner=adobe&repo=helix-content-proxy&ref=03d2eb05046e6e4681ff01c3a0dcd0e92ba987fe&path=/m/sitemap.xml`;
+      await chai
+        .request(target.host())
+        .get(url)
+        .buffer()
+        .parse(binaryParser)
+        .then((response) => {
+          expect(response).to.have.status(200);
+          expect(response.headers['content-type']).to.equal('application/octet-stream');
+          expect(response.body.toString('utf-8')).to.contain('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>');
+        })
+        .catch((e) => {
+          e.message = `At ${target.host()}${url}\n      ${e.message}`;
+          throw e;
+        });
+    }).timeout(40000);
+
+    it('Downloads sitemap.xml from gdrive', async () => {
+      // this is a bit a hack...better send text/xml and ensure adapter can handle it
+      const binaryParser = (res, cb) => {
+        res.setEncoding('binary');
+        res.data = '';
+        res.on('data', (chunk) => {
+          res.data += chunk;
+        });
+        res.on('end', () => {
+          cb(null, Buffer.from(res.data, 'binary'));
+        });
+      };
+
+      const url = `${target.urlPath()}?owner=adobe&repo=helix-content-proxy&ref=03d2eb05046e6e4681ff01c3a0dcd0e92ba987fe&path=/g/sitemap.xml`;
+      await chai
+        .request(target.host())
+        .get(url)
+        .buffer()
+        .parse(binaryParser)
+        .then((response) => {
+          expect(response).to.have.status(200);
+          expect(response.headers['content-type']).to.equal('application/octet-stream');
+          expect(response.body.toString('utf-8')).to.contain('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>');
+        })
+        .catch((e) => {
+          e.message = `At ${target.host()}${url}\n      ${e.message}`;
+          throw e;
+        });
+    }).timeout(40000);
   });
 });

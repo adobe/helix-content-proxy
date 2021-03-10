@@ -180,6 +180,37 @@ async function main(req, context) {
       });
     }
 
+    if (path.match(/sitemap(-[^/]+)?\.xml$/) && handler.handleSitemapXML) {
+      // be backward compatible, first check github
+      const res = await github.handle({
+        githubRootPath,
+        owner,
+        repo,
+        ref,
+        path,
+        log,
+        resolver,
+        options: githubOptions,
+        compress: true,
+      });
+      if (res.status !== 404) {
+        log.info(`deliver ${path} from github.`);
+        return res;
+      }
+
+      return await handler.handleSitemapXML({
+        mp,
+        githubRootPath,
+        owner,
+        repo,
+        ref,
+        path,
+        log,
+        resolver,
+        options: externalOptions,
+      }, dataOptions);
+    }
+
     if (path.endsWith('.json') && handler.handleJSON) {
       return await handler.handleJSON({
         mp,
