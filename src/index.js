@@ -12,7 +12,7 @@
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { wrap: helixStatus } = require('@adobe/helix-status');
-const { AbortError, Response } = require('@adobe/helix-fetch');
+const { AbortError, FetchError, Response } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
 const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
@@ -210,6 +210,15 @@ async function main(req, context) {
       return new Response(e.message, {
         status: 504,
       });
+    }
+    /* istanbul ignore next */
+    if (e instanceof FetchError) {
+      if (e.code === 'ECONNRESET') {
+        // connection reset by host: temporary network issue
+        return new Response(e.message, {
+          status: 504,
+        });
+      }
     }
     /* istanbul ignore next */
     const stack = (e && e.stack) || 'no stack';
