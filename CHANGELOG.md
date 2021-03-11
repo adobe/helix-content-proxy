@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/adobe/helix-content-proxy/compare/v2.9.8...v2.10.0) (2021-03-11)
+
+
+### Features
+
+* **content:** deliver sitemap.xml ([#317](https://github.com/adobe/helix-content-proxy/issues/317)) ([b00ccdd](https://github.com/adobe/helix-content-proxy/commit/b00ccdda7cff9c0bd0f6cf7dc1c659fd7ed9f166)), closes [#315](https://github.com/adobe/helix-content-proxy/issues/315)
+
 ## [2.9.8](https://github.com/adobe/helix-content-proxy/compare/v2.9.7...v2.9.8) (2021-03-11)
 
 
