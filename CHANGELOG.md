@@ -1,3 +1,10 @@
+## [2.9.8](https://github.com/adobe/helix-content-proxy/compare/v2.9.7...v2.9.8) (2021-03-11)
+
+
+### Bug Fixes
+
+* return 504 on ECONNRESET ([a5b8b47](https://github.com/adobe/helix-content-proxy/commit/a5b8b47dc3927f39bc7b9f1b640c49ab52ef877c))
+
 ## [2.9.7](https://github.com/adobe/helix-content-proxy/compare/v2.9.6...v2.9.7) (2021-03-11)
 
 
