@@ -68,9 +68,31 @@ class AWSTarget extends OpenwhiskTarget {
   }
 }
 
+class UniversalTarget extends OpenwhiskTarget {
+  // eslint-disable-next-line class-methods-use-this
+  title() {
+    return 'Universal';
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  host() {
+    return 'https://helix-pages.anywhere.run';
+  }
+
+  urlPath() {
+    return `/${this.package}/${this.name}@${this.version}`;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  enabled() {
+    return process.env.HLX_AWS_API && process.env.HLX_AWS_REGION;
+  }
+}
+
 const ALL_TARGETS = [
   OpenwhiskTarget,
   AWSTarget,
+  UniversalTarget,
 ];
 
 function createTargets(opts) {
