@@ -50,9 +50,13 @@ function retrofit(fn) {
       resolver,
       env,
     });
+    let body = await resp.buffer();
+    if (resp.headers.get('content-encoding') !== 'gzip') {
+      body = body.toString('utf-8');
+    }
     return {
       statusCode: resp.status,
-      body: await resp.text(),
+      body,
       headers: resp.headers.plain(),
     };
   };

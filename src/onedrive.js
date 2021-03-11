@@ -12,6 +12,7 @@
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./onedrive-json.js');
+const { handleSitemapXML } = require('./onedrive-sitemap.js');
 const { fetch, getFetchOptions } = require('./utils');
 
 /**
@@ -75,4 +76,9 @@ function canhandle(mp) {
   return mp && mp.type === 'onedrive';
 }
 
-module.exports = { canhandle, handle, handleJSON };
+module.exports = {
+  canhandle,
+  handle,
+  handleJSON,
+  handleSitemapXML,
+};
