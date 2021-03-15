@@ -15,14 +15,12 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
-const zlib = require('zlib');
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const { main } = require('../src/index.js');
 const { setupPolly, retrofit } = require('./utils.js');
 
-const unzip = promisify(zlib.unzip);
 const readFile = promisify(fs.readFile);
 
 const DUMMY_ENV = {
@@ -98,10 +96,8 @@ describe('OneDrive Integration Tests (Sitemap)', () => {
     }, DUMMY_ENV);
 
     assert.equal(result.statusCode, 200);
-    assert.equal(result.headers['content-encoding'], 'gzip');
-
-    const body = (await unzip(result.body)).toString('utf-8');
-    assert.ok(body.indexOf('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>') > 0);
+    assert.equal(result.headers['content-type'], 'application/xml');
+    assert.ok(result.body.indexOf('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>') > 0);
     assert.equal(result.headers['x-source-location'], '/drives/driveid/items/docId');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
     assert.equal(result.headers.vary, 'x-ow-version-lock');
@@ -228,10 +224,7 @@ describe('OneDrive Integration Tests (Sitemap)', () => {
     }, DUMMY_ENV);
 
     assert.equal(result.statusCode, 200);
-    assert.equal(result.headers['content-encoding'], 'gzip');
-
-    const body = (await unzip(result.body)).toString('utf-8');
-    assert.ok(body.indexOf('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>') > 0);
+    assert.ok(result.body.indexOf('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>') > 0);
     assert.equal(result.headers['x-source-location'], 'https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a5/en/drafts/tripod/sitemap.xml');
     assert.equal(result.headers['surrogate-control'], 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable');
     assert.equal(result.headers.vary, 'x-ow-version-lock');

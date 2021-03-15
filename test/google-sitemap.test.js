@@ -17,12 +17,9 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
 const zlib = require('zlib');
-const { promisify } = require('util');
 const { main: universalMain } = require('../src/index.js');
 const { setupPolly, retrofit } = require('./utils.js');
 const cache = require('../src/cache.js');
-
-const unzip = promisify(zlib.unzip);
 
 // require('dotenv').config();
 
@@ -107,9 +104,8 @@ describe('Google Sitemap Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.headers['x-source-location'], '1BTZv0jmGKbEJ3StwgG3VwCbPu4RFRH8s');
-    assert.equal(result.headers['content-encoding'], 'gzip');
-    const body = (await unzip(result.body)).toString('utf-8');
-    assert.ok(body.indexOf('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>') > 0);
+    assert.equal(result.headers['content-type'], 'application/xml');
+    assert.ok(result.body.indexOf('<loc>https://blog.adobe.com/en/publish/2021/02/23/advocates-family-life.html</loc>') > 0);
   }).timeout(50000);
 
   it('Serves 404 for missing sitemap from Google Drive', async function test() {

@@ -9,13 +9,9 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const zlib = require('zlib');
-const { promisify } = require('util');
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { getFile, getIdFromPath } = require('./google-helpers.js');
-
-const gzip = promisify(zlib.gzip);
 
 async function handleSitemapXML(opts) {
   const { mp, log, options } = opts;
@@ -32,13 +28,11 @@ async function handleSitemapXML(opts) {
         },
       });
     }
-    let file = await getFile(fileId, log, options);
-    file = await gzip(file);
+    const file = await getFile(fileId, log, options);
     return new Response(file, {
       status: 200,
       headers: {
-        'content-type': 'application/octet-stream',
-        'content-encoding': 'gzip',
+        'content-type': 'application/xml',
         'x-source-location': fileId,
         'surrogate-key': utils.computeSurrogateKey(fileId),
         // cache for Runtime (non-flushable)

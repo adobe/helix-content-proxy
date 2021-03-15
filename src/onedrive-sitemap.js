@@ -10,13 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-const zlib = require('zlib');
-const { promisify } = require('util');
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
 const { Response } = require('@adobe/helix-fetch');
-
-const gzip = promisify(zlib.gzip);
 
 async function handleSitemapXML(opts) {
   const {
@@ -48,14 +44,12 @@ async function handleSitemapXML(opts) {
       error.statusCode = 404;
       throw error;
     }
-    const result = await drive.downloadDriveItem(item);
-    const body = await gzip(result);
+    const body = await drive.downloadDriveItem(item);
     const sourceLocation = OneDrive.driveItemToURL(item).pathname;
     return new Response(body, {
       status: 200,
       headers: {
-        'content-type': 'application/octet-stream',
-        'content-encoding': 'gzip',
+        'content-type': 'application/xml',
         // if the backend does not provide a source location, use the URL
         'x-source-location': sourceLocation,
         // enable fine-grained cache invalidation
