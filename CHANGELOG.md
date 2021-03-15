@@ -1,3 +1,10 @@
+## [2.10.3](https://github.com/adobe/helix-content-proxy/compare/v2.10.2...v2.10.3) (2021-03-15)
+
+
+### Bug Fixes
+
+* **sitemap:** send sitemap with application/xml ([ff461d1](https://github.com/adobe/helix-content-proxy/commit/ff461d1e16310f9a358f04f9dbedb4e8f634681a)), closes [#325](https://github.com/adobe/helix-content-proxy/issues/325)
+
 ## [2.10.2](https://github.com/adobe/helix-content-proxy/compare/v2.10.1...v2.10.2) (2021-03-15)
 
 
