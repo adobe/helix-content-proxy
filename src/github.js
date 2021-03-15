@@ -10,14 +10,10 @@
  * governing permissions and limitations under the License.
  */
 const URL = require('url');
-const zlib = require('zlib');
-const { promisify } = require('util');
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { fetch, getFetchOptions } = require('./utils');
 const cache = require('./cache.js');
-
-const gzip = promisify(zlib.gzip);
 
 async function computeGithubURI(root, owner, repo, ref, path, resolver) {
   // only load ref, if undefined
@@ -102,28 +98,23 @@ function isImmutable(ref) {
  */
 async function handle(opts) {
   const {
-    mp, githubRootPath, owner, repo, ref, path, log, options, resolver, compress,
+    mp, githubRootPath, owner, repo, ref, path, log, options, resolver,
   } = opts;
   const uri = mp
     ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, `${(mp.basePath || '') + mp.relPath}.md`, resolver)
     : await computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, getFetchOptions(options));
-  let body = await response.text();
+  const body = await response.text();
   if (response.ok) {
     const immutable = isImmutable(ref);
     const headers = {
-      'content-type': 'text/plain',
+      'content-type': response.headers.get('content-type'),
       'x-source-location': uri,
       // cache for Runtime (non-flushable)
       'cache-control': 'no-store, private',
       'surrogate-key': utils.computeSurrogateKey(uri),
       'surrogate-control': immutable ? 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable' : 'max-age=60',
     };
-    if (compress) {
-      body = await gzip(body);
-      headers['content-type'] = 'application/octet-stream';
-      headers['content-encoding'] = 'gzip';
-    }
 
     return new Response(body, {
       status: 200,

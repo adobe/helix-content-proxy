@@ -191,7 +191,6 @@ async function main(req, context) {
         log,
         resolver,
         options: githubOptions,
-        compress: true,
       });
       if (res.status !== 404) {
         log.info(`deliver ${path} from github.`);
