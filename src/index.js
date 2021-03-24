@@ -18,6 +18,7 @@ const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
 const lookupEditUrl = require('./lookup-edit-url.js');
+const { base64 } = require('./utils.js');
 
 const github = require('./github');
 const google = require('./google');
@@ -54,6 +55,15 @@ async function main(req, context) {
     p[key] = value;
     return p;
   }, {});
+
+  // keep lookup/edit backward compatible - remove eventually
+  if (params.lookup) {
+    params.path = `/hlx_${base64(params.lookup)}.lnk`;
+  }
+  if (params.edit) {
+    params.path = `${new URL(params.edit).pathname}.lnk`;
+  }
+
   const {
     owner, repo, ref, path,
     limit, offset, sheet, table,
@@ -137,27 +147,32 @@ async function main(req, context) {
       });
       const mount = await new MountConfig().withSource(fstab).init();
 
-      if (params.lookup) {
-        return reverse({
-          mount,
-          uri: new URL(params.lookup),
-          prefix: params.prefix,
-          owner,
-          repo,
-          ref,
-          options: externalOptions,
-          log,
-          report: !!params.report,
-        });
-      }
-      if (params.edit) {
+      // check for special `.lnk` extension
+      if (path.endsWith('.lnk')) {
+        // check if edit or lookup
+        const name = path.split('/').pop();
+        const match = /^hlx_([0-9a-zA-Z=-_]+).lnk$/.exec(name);
+        if (match) {
+          return reverse({
+            mount,
+            uri: new URL(Buffer.from(match[1], 'base64').toString('utf-8')),
+            prefix: params.prefix,
+            owner,
+            repo,
+            ref,
+            options: externalOptions,
+            log,
+            report: !!params.report,
+          });
+        }
+
         return lookupEditUrl({
           mount,
-          uri: new URL(params.edit),
           options: externalOptions,
           owner,
           repo,
           ref,
+          path: path.substring(0, path.length - 4),
           log,
         });
       }
