@@ -11,7 +11,9 @@
  */
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
-const { appendURLParams, fetch, getFetchOptions } = require('./utils');
+const {
+  appendURLParams, fetch, getFetchOptions, errorResponse,
+} = require('./utils');
 const { getIdFromPath } = require('./google-helpers.js');
 
 async function handleJSON(opts, params) {
@@ -23,12 +25,7 @@ async function handleJSON(opts, params) {
     const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
 
     if (!sheetId) {
-      return new Response('spreadsheet not found', {
-        status: 404,
-        headers: {
-          'cache-control': 'no-store, private, must-revalidate',
-        },
-      });
+      return errorResponse(log, 404, 'spreadsheet not found');
     }
 
     const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetId}/view`;
@@ -63,24 +60,10 @@ async function handleJSON(opts, params) {
         },
       });
     }
-
-    log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from gdocs2md`);
-    return new Response(body, {
-      status: utils.propagateStatusCode(response.status),
-      headers: {
-        'cache-control': 'max-age=60',
-      },
-    });
+    return errorResponse(log, -response.status,
+      `Unable to fetch ${url} (${response.status}) from gdocs2md`, '', 'max-age=60');
   } catch (e) {
-    log.error(`error fetching data: ${e.message} (${e.code})`);
-    return new Response('', {
-      status: 502, // no JSON = bad gateway
-      headers: {
-        'content-type': 'text/plain',
-        // cache for Runtime (non-flushable)
-        'cache-control': 'no-store, private',
-      },
-    });
+    return errorResponse(log, 502, `error fetching data: ${e.message} (${e.code})`);
   }
 }
 

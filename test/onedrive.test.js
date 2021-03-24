@@ -87,7 +87,8 @@ describe('OneDrive Integration Tests', () => {
     });
 
     assert.equal(result.statusCode, 404);
-    assert.equal(result.body, 'no matching documents for "/not-here.docx"');
+    assert.equal(result.body, '');
+    assert.equal(result.headers['x-error'], 'Unable to fetch adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/not-here (404) from word2md: no matching documents for "/not-here.docx"');
     assert.equal(result.headers['cache-control'], 'max-age=60');
   }).timeout(5000);
 

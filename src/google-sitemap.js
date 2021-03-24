@@ -12,6 +12,7 @@
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { getFile, getIdFromPath } = require('./google-helpers.js');
+const { errorResponse } = require('./utils.js');
 
 async function handleSitemapXML(opts) {
   const { mp, log, options } = opts;
@@ -21,12 +22,7 @@ async function handleSitemapXML(opts) {
     log.info(`fetch sitemap from gdrive: ${path}`);
     const fileId = await getIdFromPath(path, mp.id, log, options);
     if (!fileId) {
-      return new Response('sitemap not found', {
-        status: 404,
-        headers: {
-          'cache-control': 'no-store, private, must-revalidate',
-        },
-      });
+      return errorResponse(log, 404, 'sitemap not found');
     }
     const file = await getFile(fileId, log, options);
     return new Response(file, {
@@ -42,13 +38,7 @@ async function handleSitemapXML(opts) {
       },
     });
   } catch (e) {
-    log.error(`error fetching data: ${e.message} (${e.code})`);
-    return new Response('', {
-      status: 502,
-      headers: {
-        'cache-control': 'no-store, private',
-      },
-    });
+    return errorResponse(log, 502, `error fetching data: ${e.message} (${e.code})`);
   }
 }
 

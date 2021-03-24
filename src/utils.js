@@ -11,8 +11,9 @@
  */
 /* eslint-disable no-param-reassign */
 const fetchAPI = require('@adobe/helix-fetch');
+const { utils } = require('@adobe/helix-shared');
 
-const { context, ALPN_HTTP1_1 } = fetchAPI;
+const { context, ALPN_HTTP1_1, Response } = fetchAPI;
 const { fetch, timeoutSignal } = process.env.HELIX_FETCH_FORCE_HTTP1
   ? context({
     alpnProtocols: [ALPN_HTTP1_1],
@@ -60,8 +61,39 @@ function getFetchOptions(options) {
   return fetchopts;
 }
 
+/**
+ * Logs and creates an error response.
+ * @param {Logger} [log] Logger.
+ * @param {number} status The HTTP status. if negative, the status will be turned into a gateway
+ *                        response.
+ * @param {string} message Error message. if empty, body is used.
+ * @param {string} [body = '']
+ * @param {string} [cacheCtl = '']
+ * @returns {Response}
+ */
+function errorResponse(log, status, message, body = '', cacheCtl = '') {
+  if (!message) {
+    message = body;
+  }
+  if (log) {
+    log[utils.logLevelForStatusCode(Math.abs(status))](message);
+  }
+  if (status < 0) {
+    status = utils.propagateStatusCode(-status);
+  }
+  return new Response(body, {
+    status,
+    headers: {
+      'content-type': 'text/plain',
+      'cache-control': cacheCtl || 'no-store, private, must-revalidate',
+      'x-error': message,
+    },
+  });
+}
+
 module.exports = {
   appendURLParams,
   fetch,
   getFetchOptions,
+  errorResponse,
 };

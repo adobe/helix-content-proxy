@@ -13,6 +13,7 @@
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
 const { Response } = require('@adobe/helix-fetch');
+const { errorResponse } = require('./utils');
 
 async function handleSitemapXML(opts) {
   const {
@@ -62,23 +63,10 @@ async function handleSitemapXML(opts) {
     });
   } catch (servererror) {
     if (servererror.statusCode) {
-      log[utils.logLevelForStatusCode(servererror.statusCode)](`Unable to fetch file from onedrive (${servererror.statusCode}) - ${servererror.message}`);
-      return new Response(servererror.message, {
-        status: utils.propagateStatusCode(servererror.statusCode),
-        headers: {
-          'cache-control': 'no-store, private',
-        },
-      });
+      return errorResponse(log, -servererror.statusCode,
+        `Unable to fetch file from onedrive (${servererror.statusCode}) - ${servererror.message}`);
     }
-
-    log.error(servererror);
-    return new Response(servererror.toString(), {
-      status: 500, // no config = servererror
-      headers: {
-        'content-type': 'text/plain',
-        'cache-control': 'no-store, private',
-      },
-    });
+    return errorResponse(log, 500, servererror.toString());
   }
 }
 

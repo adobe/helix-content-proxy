@@ -164,4 +164,20 @@ describe('Onedrive Edit Link Tests', () => {
 
     assert.equal(result.statusCode, 404);
   }).timeout(20000);
+
+  it('Returns 400 for invalid url', async function test() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: '<script>alert(document.domain)</script>',
+    });
+
+    assert.equal(result.statusCode, 400);
+    assert.equal(result.headers['x-error'], 'Invalid URL: <script>alert(document.domain)</script>');
+  }).timeout(20000);
 });

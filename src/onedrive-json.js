@@ -13,7 +13,9 @@
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
 const { AbortError, Response } = require('@adobe/helix-fetch');
-const { appendURLParams, fetch, getFetchOptions } = require('./utils');
+const {
+  appendURLParams, fetch, getFetchOptions, errorResponse,
+} = require('./utils');
 
 async function handleJSON(opts, params) {
   const {
@@ -89,46 +91,20 @@ async function handleJSON(opts, params) {
         });
       }
 
-      log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url} (${response.status}) from data-embed`);
-      return new Response(body, {
-        status: utils.propagateStatusCode(response.status),
-        headers: {
-          'cache-control': 'max-age=60',
-        },
-      });
+      return errorResponse(log, -response.status,
+        `Unable to fetch ${url} (${response.status}) from data-embed`, '', 'max-age=60');
     } catch (gatewayerror) {
-      log.error(`error fetching data from ${url}: ${gatewayerror}`);
-      return new Response(gatewayerror.toString(), {
-        status: gatewayerror instanceof AbortError ? 504 : 502, // no JSON = bad gateway
-        headers: {
-          'content-type': 'text/plain',
-          // if the backend does not provide a source location, use the URL
-          'x-source-location': url,
-          // cache for Runtime (non-flushable)
-          'cache-control': 'no-store, private',
-        },
-      });
+      return errorResponse(log, gatewayerror instanceof AbortError ? 504 : 502,
+        `error fetching data from ${url}: ${gatewayerror}`);
     }
   } catch (servererror) {
     if (servererror.statusCode) {
-      log[utils.logLevelForStatusCode(servererror.statusCode)](`Unable to fetch spreadsheet from onedrive (${servererror.statusCode}) - ${servererror.message}`);
-      return new Response(servererror.message, {
-        status: utils.propagateStatusCode(servererror.statusCode),
-        headers: {
-          'cache-control': 'max-age=60',
-        },
-      });
+      return errorResponse(log, -servererror.statusCode,
+        `Unable to fetch spreadsheet from onedrive (${servererror.statusCode}) - ${servererror.message}`,
+        '', 'max-age=60');
     }
 
-    log.error(servererror);
-    return new Response(servererror.toString(), {
-      status: 500, // no config = servererror
-      headers: {
-        'content-type': 'text/plain',
-        // cache for Runtime (non-flushable)
-        'cache-control': 'max-age=60',
-      },
-    });
+    return errorResponse(log, 500, servererror.toString(), '', 'max-age=60');
   }
 }
 

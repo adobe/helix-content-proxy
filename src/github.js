@@ -12,7 +12,7 @@
 const URL = require('url');
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
-const { fetch, getFetchOptions } = require('./utils');
+const { fetch, getFetchOptions, errorResponse } = require('./utils');
 const cache = require('./cache.js');
 
 async function computeGithubURI(root, owner, repo, ref, path, resolver) {
@@ -121,10 +121,7 @@ async function handle(opts) {
       headers,
     });
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${uri} (${response.status}) from GitHub`);
-  return new Response(body, {
-    status: utils.propagateStatusCode(response.status),
-  });
+  return errorResponse(log, -response.status, `Unable to fetch ${uri} (${response.status}) from GitHub`);
 }
 
 function canhandle(mp) {

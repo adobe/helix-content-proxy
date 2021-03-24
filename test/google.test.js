@@ -97,8 +97,8 @@ describe('Google Integration Tests', () => {
     });
 
     assert.equal(result.statusCode, 404);
-    assert.equal(result.body, 'error while converting document');
-    assert.equal(result.headers['cache-control'], 'no-store, private');
+    assert.equal(result.headers['x-error'], 'Unable to fetch adobe/theblog/master/not-here (404) from gdocs2md');
+    assert.equal(result.headers['cache-control'], 'no-store, private, must-revalidate');
   }).timeout(5000);
 });
 
