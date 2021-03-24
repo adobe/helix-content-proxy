@@ -97,8 +97,7 @@ async function reverseLookup(opts) {
     log.info(`retrieving sharepoint item with ${listUri}`);
     try {
       // eslint-disable-next-line no-await-in-loop
-      const client = await drive.getClient();
-      const { webUrl } = await client.get(listUri);
+      const { webUrl } = await drive.doFetch(listUri);
       const docUrl = new URL(webUrl);
       docPath = docUrl.pathname;
       docHost = docUrl.hostname;
