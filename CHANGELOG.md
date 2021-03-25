@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/adobe/helix-content-proxy/compare/v2.10.7...v2.11.0) (2021-03-25)
+
+
+### Features
+
+* **lookup:** add support for lnk ([#340](https://github.com/adobe/helix-content-proxy/issues/340)) ([990b5c5](https://github.com/adobe/helix-content-proxy/commit/990b5c5eab49dce96f33bdfbeeb9702e15e3e462)), closes [#328](https://github.com/adobe/helix-content-proxy/issues/328)
+
 ## [2.10.7](https://github.com/adobe/helix-content-proxy/compare/v2.10.6...v2.10.7) (2021-03-24)
 
 
