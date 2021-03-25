@@ -25,16 +25,16 @@ async function lookupEditUrl(opts) {
     mount,
     uri,
     log,
+    path,
   } = opts;
 
   // extract resource path w/o extension.
   // eg: /foo.bar/welcome.gift.md -> /foo.bar/welcome.gift
-  const { pathname } = uri;
-  const idxLastSlash = pathname.lastIndexOf('/');
-  const idx = pathname.indexOf('.', idxLastSlash + 1);
-  let resourcePath = idx < 0 ? pathname : pathname.substring(0, idx);
-  let ext = idx < 0 ? '' : pathname.substring(idx + 1);
-  if (idxLastSlash === pathname.length - 1) {
+  const idxLastSlash = path.lastIndexOf('/');
+  const idx = path.indexOf('.', idxLastSlash + 1);
+  let resourcePath = idx < 0 ? path : path.substring(0, idx);
+  let ext = idx < 0 ? '' : path.substring(idx + 1);
+  if (idxLastSlash === path.length - 1) {
     resourcePath += 'index';
     ext = 'html';
   }

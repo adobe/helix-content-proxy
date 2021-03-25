@@ -55,6 +55,22 @@ describe('Github Edit Link Tests', () => {
     assert.equal(result.headers.location, 'https://github.com/adobe/theblog/blob/master/index.md');
   });
 
+  it('Returns redirect for github document (lnk)', async function test() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      path: '/index.lnk',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://github.com/adobe/theblog/blob/master/index.md');
+  });
+
   it('Returns redirect for github document with no fstab', async function test() {
     const { server } = this.polly;
 

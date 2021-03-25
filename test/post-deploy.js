@@ -82,6 +82,19 @@ createTargets().forEach((target) => {
         });
     }).timeout(40000);
 
+    it('Compute Edit Lookup with lnk', async () => {
+      const url = `${target.urlPath()}?owner=adobe&repo=theblog&ref=master&path=%2Fen%2F2020%2F12%2F01%2Fwhat-does-the-cmo50-tell-us-about-modern-marketing.lnk`;
+      await chai
+        .request(target.host())
+        .get(url)
+        .then((response) => {
+          expect(response).to.have.status(404);
+        }).catch((e) => {
+          e.message = `At ${target.host()}${url}\n      ${e.message}`;
+          throw e;
+        });
+    }).timeout(40000);
+
     it('Downloads sitemap.xml from onedrive', async function test() {
       if (target.title() === 'OpenWhisk') {
         // this currently fails on openwhisk because the response is too large

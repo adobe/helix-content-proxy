@@ -60,8 +60,15 @@ function getFetchOptions(options) {
   return fetchopts;
 }
 
+function base64(str) {
+  return Buffer.from(str, 'utf-8').toString('base64')
+    .replace(/\+/, '-')
+    .replace(/\//, '_');
+}
+
 module.exports = {
   appendURLParams,
   fetch,
   getFetchOptions,
+  base64,
 };
