@@ -18,7 +18,7 @@ const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
 const lookupEditUrl = require('./lookup-edit-url.js');
-const { errorResponse } = require('./utils.js');
+const { errorResponse, base64 } = require('./utils.js');
 
 const github = require('./github');
 const google = require('./google');
@@ -55,73 +55,82 @@ async function main(req, context) {
     p[key] = value;
     return p;
   }, {});
-  const {
-    owner, repo, ref, path,
-    limit, offset, sheet, table,
-  } = params;
-
-  if (!(owner && repo && ref && path)) {
-    return errorResponse(log, 400, '', 'owner, repo, ref, and path parameters are required');
-  }
-  // validate path parameter
-  if (path.indexOf('//') > -1) {
-    return errorResponse(log, 404, `invalid path: ${path}`, 'invalid path');
-  }
-  const gitHubToken = GITHUB_TOKEN || req.headers.get('x-github-token');
-  const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
-  // eslint-disable-next-line no-underscore-dangle
-  const namespace = process.env.__OW_NAMESPACE || 'helix';
-
-  const qboptions = Object.entries(params)
-    .filter(([key]) => key.startsWith('hlx_'))
-    .reduce((p, [key, value]) => {
-      // eslint-disable-next-line no-param-reassign
-      p[key] = value;
-      return p;
-    }, {});
-
-  const githubOptions = {
-    cache: 'no-store',
-    fetchTimeout: HTTP_TIMEOUT || 5000,
-    headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
-      // copy whitelisted headers
-      if (req.headers.has(header)) {
-        // eslint-disable-next-line no-param-reassign
-        headers[header.toLocaleLowerCase()] = req.headers.get(header);
-      }
-      return headers;
-    }, {
-      // pass on authorization token
-      Authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
-    }),
-  };
-
-  const externalOptions = {
-    GOOGLE_DOCS2MD_CLIENT_ID,
-    GOOGLE_DOCS2MD_CLIENT_SECRET,
-    GOOGLE_DOCS2MD_REFRESH_TOKEN,
-    AZURE_WORD2MD_CLIENT_ID,
-    AZURE_WORD2MD_CLIENT_SECRET,
-    AZURE_HELIX_USER,
-    AZURE_HELIX_PASSWORD,
-    cache: 'no-store',
-    fetchTimeout: HTTP_TIMEOUT_EXTERNAL || 20000,
-    requestId: req.headers.get('x-request-id')
-    || req.headers.get('x-cdn-request-id')
-    || req.headers.get('x-openwhisk-activation-id')
-    || '',
-    namespace,
-  };
-
-  const dataOptions = {
-    ...qboptions,
-    'hlx_p.limit': limit,
-    'hlx_p.offset': offset,
-    sheet,
-    table,
-  };
 
   try {
+    // keep lookup/edit backward compatible - remove eventually
+    if (params.lookup) {
+      params.path = `/hlx_${base64(params.lookup)}.lnk`;
+    }
+    if (params.edit) {
+      params.path = `${new URL(params.edit).pathname}.lnk`;
+    }
+
+    const {
+      owner, repo, ref, path,
+      limit, offset, sheet, table,
+    } = params;
+
+    if (!(owner && repo && ref && path)) {
+      return errorResponse(log, 400, '', 'owner, repo, ref, and path parameters are required');
+    }
+    // validate path parameter
+    if (path.indexOf('//') > -1) {
+      return errorResponse(log, 404, `invalid path: ${path}`, 'invalid path');
+    }
+    const gitHubToken = GITHUB_TOKEN || req.headers.get('x-github-token');
+    const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
+    // eslint-disable-next-line no-underscore-dangle
+    const namespace = process.env.__OW_NAMESPACE || 'helix';
+
+    const qboptions = Object.entries(params)
+      .filter(([key]) => key.startsWith('hlx_'))
+      .reduce((p, [key, value]) => {
+        // eslint-disable-next-line no-param-reassign
+        p[key] = value;
+        return p;
+      }, {});
+
+    const githubOptions = {
+      cache: 'no-store',
+      fetchTimeout: HTTP_TIMEOUT || 5000,
+      headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
+        // copy whitelisted headers
+        if (req.headers.has(header)) {
+          // eslint-disable-next-line no-param-reassign
+          headers[header.toLocaleLowerCase()] = req.headers.get(header);
+        }
+        return headers;
+      }, {
+        // pass on authorization token
+        Authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
+      }),
+    };
+
+    const externalOptions = {
+      GOOGLE_DOCS2MD_CLIENT_ID,
+      GOOGLE_DOCS2MD_CLIENT_SECRET,
+      GOOGLE_DOCS2MD_REFRESH_TOKEN,
+      AZURE_WORD2MD_CLIENT_ID,
+      AZURE_WORD2MD_CLIENT_SECRET,
+      AZURE_HELIX_USER,
+      AZURE_HELIX_PASSWORD,
+      cache: 'no-store',
+      fetchTimeout: HTTP_TIMEOUT_EXTERNAL || 20000,
+      requestId: req.headers.get('x-request-id')
+      || req.headers.get('x-cdn-request-id')
+      || req.headers.get('x-openwhisk-activation-id')
+      || '',
+      namespace,
+    };
+
+    const dataOptions = {
+      ...qboptions,
+      'hlx_p.limit': limit,
+      'hlx_p.offset': offset,
+      sheet,
+      table,
+    };
+
     let handler;
     let mp;
 
@@ -134,27 +143,32 @@ async function main(req, context) {
       });
       const mount = await new MountConfig().withSource(fstab).init();
 
-      if (params.lookup) {
-        return reverse({
-          mount,
-          uri: new URL(params.lookup),
-          prefix: params.prefix,
-          owner,
-          repo,
-          ref,
-          options: externalOptions,
-          log,
-          report: !!params.report,
-        });
-      }
-      if (params.edit) {
+      // check for special `.lnk` extension
+      if (path.endsWith('.lnk')) {
+        // check if edit or lookup
+        const name = path.split('/').pop();
+        const match = /^hlx_([0-9a-zA-Z=-_]+).lnk$/.exec(name);
+        if (match) {
+          return reverse({
+            mount,
+            uri: new URL(Buffer.from(match[1], 'base64').toString('utf-8')),
+            prefix: params.prefix,
+            owner,
+            repo,
+            ref,
+            options: externalOptions,
+            log,
+            report: !!params.report,
+          });
+        }
+
         return lookupEditUrl({
           mount,
-          uri: new URL(params.edit),
           options: externalOptions,
           owner,
           repo,
           ref,
+          path: path.substring(0, path.length - 4),
           log,
         });
       }

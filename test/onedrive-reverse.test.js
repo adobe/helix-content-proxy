@@ -16,6 +16,7 @@ process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const { setupPolly, retrofit } = require('./utils.js');
 const { main: universalMain } = require('../src/index.js');
+const { base64 } = require('../src/utils.js');
 
 const main = retrofit(universalMain);
 
@@ -68,6 +69,29 @@ describe('Onedrive Reverse Lookup Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B09BFA93A-78BC-49F6-B93D-990A0ED4D55C%7D&file=article.docx&action=default&mobileredirect=true',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
+  });
+
+  it('Returns redirect for onedrive document (base64)', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/09BFA93A-78BC-49F6-B93D-990A0ED4D55C')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/drafs/article.docx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      path: `/hlx_${base64('https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B09BFA93A-78BC-49F6-B93D-990A0ED4D55C%7D&file=article.docx&action=default&mobileredirect=true')}.lnk`,
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);

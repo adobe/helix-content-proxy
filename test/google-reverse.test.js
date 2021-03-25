@@ -21,6 +21,7 @@ const { main: universalMain } = require('../src/index.js');
 const cache = require('../src/cache.js');
 
 const { setupPolly, retrofit } = require('./utils.js');
+const { base64 } = require('../src/utils.js');
 
 // require('dotenv').config();
 const main = retrofit(universalMain);
@@ -105,6 +106,23 @@ describe('Google Reverse Lookup Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       lookup: 'https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
+  }).timeout(50000);
+
+  it('Returns redirect for google document (base64)', async function googleSheet() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      path: `/foo/bar/hlx_${base64('https://docs.google.com/document/d/1nbKakMrvDhf032da2hEYuxU30cdUmyZPv1kuRCKXiho/edit')}.lnk`,
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);

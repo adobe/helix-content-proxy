@@ -104,6 +104,40 @@ describe('Google Edit Link Tests', () => {
     assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
   }).timeout(50000);
 
+  it('Returns redirect for google based page (lnk)', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      path: '/creativecloud/en/ete/how-adobe-apps-work-together/index.lnk',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
+  }).timeout(50000);
+
+  it('Returns redirect for google based page (.html.lnk)', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      path: '/creativecloud/en/ete/how-adobe-apps-work-together/index.html.lnk',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://docs.google.com/document/d/14351arsFQspbpbwYXhOPQsogHm9aTXFGHnIM1lviG5Q/edit');
+  }).timeout(50000);
+
   it('Returns redirect for google based page (no extension)', async function test() {
     const { server } = this.polly;
     scramble(server);
@@ -149,6 +183,23 @@ describe('Google Edit Link Tests', () => {
     const result = await main({
       ...DEFAULT_PARAMS,
       edit: 'https://pages.adobe.com/redirects.json',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://docs.google.com/spreadsheets/d/1TizK03uKRn2bP_n69U8qCRcaCIkLEFF95rKBZWWKrew/edit');
+  }).timeout(50000);
+
+  it('Returns redirect for google based spreadsheet (lnk)', async function test() {
+    const { server } = this.polly;
+    scramble(server);
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/pages/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      path: '/redirects.json.lnk',
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
