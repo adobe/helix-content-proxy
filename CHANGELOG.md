@@ -1,3 +1,10 @@
+## [2.11.1](https://github.com/adobe/helix-content-proxy/compare/v2.11.0...v2.11.1) (2021-03-25)
+
+
+### Bug Fixes
+
+* **error:** use text/plain to report errors ([#337](https://github.com/adobe/helix-content-proxy/issues/337)) ([5145a91](https://github.com/adobe/helix-content-proxy/commit/5145a91c43bf7b69793922ce4a92e6c26d44736b)), closes [#536](https://github.com/adobe/helix-content-proxy/issues/536)
+
 # [2.11.0](https://github.com/adobe/helix-content-proxy/compare/v2.10.7...v2.11.0) (2021-03-25)
 
 
