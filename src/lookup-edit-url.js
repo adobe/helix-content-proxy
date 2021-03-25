@@ -13,6 +13,7 @@ const { Response } = require('@adobe/helix-fetch');
 const google = require('./google-edit-link.js');
 const onedrive = require('./onedrive-edit-link.js');
 const github = require('./github-edit-link.js');
+const { errorResponse } = require('./utils.js');
 
 const HANDLERS = [
   google,
@@ -43,13 +44,7 @@ async function lookupEditUrl(opts) {
   const mp = mount.match(resourcePath);
   const handler = HANDLERS.find(({ test }) => test && test(mp));
   if (!handler) {
-    log.error(`No handler found for document ${uri}.`);
-    return new Response('not found', {
-      status: 404,
-      headers: {
-        'cache-control': 'no-store, private, must-revalidate',
-      },
-    });
+    return errorResponse(log, 404, `No handler found for document ${uri}.`, 'Not Found');
   }
 
   let location;
@@ -65,13 +60,7 @@ async function lookupEditUrl(opts) {
   }
 
   if (!location) {
-    log.error(`Handler ${handler.name} could not lookup ${uri}.`);
-    return new Response('not found', {
-      status: 404,
-      headers: {
-        'cache-control': 'no-store, private, must-revalidate',
-      },
-    });
+    return errorResponse(log, 404, `Handler ${handler.name} could not lookup ${uri}.`, 'Not Found');
   }
 
   return new Response(location, {

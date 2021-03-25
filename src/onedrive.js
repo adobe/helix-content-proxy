@@ -13,7 +13,7 @@ const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./onedrive-json.js');
 const { handleSitemapXML } = require('./onedrive-sitemap.js');
-const { fetch, getFetchOptions } = require('./utils');
+const { fetch, getFetchOptions, errorResponse } = require('./utils');
 
 /**
  * Retrieves a file from OneDrive
@@ -63,13 +63,9 @@ async function handle(opts) {
       headers,
     });
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from word2md: ${body}`);
-  return new Response(body, {
-    status: utils.propagateStatusCode(response.status),
-    headers: {
-      'cache-control': 'max-age=60',
-    },
-  });
+
+  return errorResponse(log, -response.status, `Unable to fetch ${owner}/${repo}/${ref}${mp.relPath} (${response.status}) from word2md: ${body}`,
+    '', 'max-age=60');
 }
 
 function canhandle(mp) {

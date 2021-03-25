@@ -13,7 +13,7 @@ const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./google-json');
 const { handleSitemapXML } = require('./google-sitemap');
-const { fetch, getFetchOptions } = require('./utils');
+const { fetch, getFetchOptions, errorResponse } = require('./utils');
 
 /**
  * Retrieves a file from OneDrive
@@ -61,14 +61,7 @@ async function handle(opts) {
       },
     });
   }
-  log[utils.logLevelForStatusCode(response.status)](`Unable to fetch ${url.href} (${response.status}) from gdocs2md`);
-  return new Response(body, {
-    status: utils.propagateStatusCode(response.status),
-    headers: {
-      // cache for Runtime (non-flushable)
-      'cache-control': 'no-store, private',
-    },
-  });
+  return errorResponse(log, -response.status, `Unable to fetch ${owner}/${repo}/${ref}${mp.relPath} (${response.status}) from gdocs2md`);
 }
 
 function canhandle(mp) {

@@ -12,13 +12,13 @@
 const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger } = require('@adobe/openwhisk-action-logger');
 const { wrap: helixStatus } = require('@adobe/helix-status');
-const { AbortError, FetchError, Response } = require('@adobe/helix-fetch');
+const { AbortError, FetchError } = require('@adobe/helix-fetch');
 const { MountConfig } = require('@adobe/helix-shared');
 const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
 const lookupEditUrl = require('./lookup-edit-url.js');
-const { base64 } = require('./utils.js');
+const { errorResponse, base64 } = require('./utils.js');
 
 const github = require('./github');
 const google = require('./google');
@@ -56,85 +56,81 @@ async function main(req, context) {
     return p;
   }, {});
 
-  // keep lookup/edit backward compatible - remove eventually
-  if (params.lookup) {
-    params.path = `/hlx_${base64(params.lookup)}.lnk`;
-  }
-  if (params.edit) {
-    params.path = `${new URL(params.edit).pathname}.lnk`;
-  }
-
-  const {
-    owner, repo, ref, path,
-    limit, offset, sheet, table,
-  } = params;
-
-  if (!(owner && repo && ref && path)) {
-    return new Response('owner, repo, ref, and path parameters are required', {
-      status: 400,
-    });
-  }
-  // validate path parameter
-  if (path.indexOf('//') > -1) {
-    return new Response(`invalid path: ${path}`, {
-      status: 404,
-    });
-  }
-  const gitHubToken = GITHUB_TOKEN || req.headers.get('x-github-token');
-  const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
-  // eslint-disable-next-line no-underscore-dangle
-  const namespace = process.env.__OW_NAMESPACE || 'helix';
-
-  const qboptions = Object.entries(params)
-    .filter(([key]) => key.startsWith('hlx_'))
-    .reduce((p, [key, value]) => {
-      // eslint-disable-next-line no-param-reassign
-      p[key] = value;
-      return p;
-    }, {});
-
-  const githubOptions = {
-    cache: 'no-store',
-    fetchTimeout: HTTP_TIMEOUT || 5000,
-    headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
-      // copy whitelisted headers
-      if (req.headers.has(header)) {
-        // eslint-disable-next-line no-param-reassign
-        headers[header.toLocaleLowerCase()] = req.headers.get(header);
-      }
-      return headers;
-    }, {
-      // pass on authorization token
-      Authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
-    }),
-  };
-
-  const externalOptions = {
-    GOOGLE_DOCS2MD_CLIENT_ID,
-    GOOGLE_DOCS2MD_CLIENT_SECRET,
-    GOOGLE_DOCS2MD_REFRESH_TOKEN,
-    AZURE_WORD2MD_CLIENT_ID,
-    AZURE_WORD2MD_CLIENT_SECRET,
-    AZURE_HELIX_USER,
-    AZURE_HELIX_PASSWORD,
-    cache: 'no-store',
-    fetchTimeout: HTTP_TIMEOUT_EXTERNAL || 20000,
-    requestId: req.headers.get('x-request-id')
-    || req.headers.get('x-cdn-request-id')
-    || req.headers.get('x-openwhisk-activation-id')
-    || '',
-    namespace,
-  };
-
-  const dataOptions = {
-    ...qboptions,
-    'hlx_p.limit': limit,
-    'hlx_p.offset': offset,
-    sheet,
-    table,
-  };
-
   try {
+    // keep lookup/edit backward compatible - remove eventually
+    if (params.lookup) {
+      params.path = `/hlx_${base64(params.lookup)}.lnk`;
+    }
+    if (params.edit) {
+      params.path = `${new URL(params.edit).pathname}.lnk`;
+    }
+
+    const {
+      owner, repo, ref, path,
+      limit, offset, sheet, table,
+    } = params;
+
+    if (!(owner && repo && ref && path)) {
+      return errorResponse(log, 400, '', 'owner, repo, ref, and path parameters are required');
+    }
+    // validate path parameter
+    if (path.indexOf('//') > -1) {
+      return errorResponse(log, 404, `invalid path: ${path}`, 'invalid path');
+    }
+    const gitHubToken = GITHUB_TOKEN || req.headers.get('x-github-token');
+    const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
+    // eslint-disable-next-line no-underscore-dangle
+    const namespace = process.env.__OW_NAMESPACE || 'helix';
+
+    const qboptions = Object.entries(params)
+      .filter(([key]) => key.startsWith('hlx_'))
+      .reduce((p, [key, value]) => {
+        // eslint-disable-next-line no-param-reassign
+        p[key] = value;
+        return p;
+      }, {});
+
+    const githubOptions = {
+      cache: 'no-store',
+      fetchTimeout: HTTP_TIMEOUT || 5000,
+      headers: DEFAULT_FORWARD_HEADERS.reduce((headers, header) => {
+        // copy whitelisted headers
+        if (req.headers.has(header)) {
+          // eslint-disable-next-line no-param-reassign
+          headers[header.toLocaleLowerCase()] = req.headers.get(header);
+        }
+        return headers;
+      }, {
+        // pass on authorization token
+        Authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
+      }),
+    };
+
+    const externalOptions = {
+      GOOGLE_DOCS2MD_CLIENT_ID,
+      GOOGLE_DOCS2MD_CLIENT_SECRET,
+      GOOGLE_DOCS2MD_REFRESH_TOKEN,
+      AZURE_WORD2MD_CLIENT_ID,
+      AZURE_WORD2MD_CLIENT_SECRET,
+      AZURE_HELIX_USER,
+      AZURE_HELIX_PASSWORD,
+      cache: 'no-store',
+      fetchTimeout: HTTP_TIMEOUT_EXTERNAL || 20000,
+      requestId: req.headers.get('x-request-id')
+      || req.headers.get('x-cdn-request-id')
+      || req.headers.get('x-openwhisk-activation-id')
+      || '',
+      namespace,
+    };
+
+    const dataOptions = {
+      ...qboptions,
+      'hlx_p.limit': limit,
+      'hlx_p.offset': offset,
+      sheet,
+      table,
+    };
+
     let handler;
     let mp;
 
@@ -189,10 +185,9 @@ async function main(req, context) {
     }
 
     if (!handler) {
-      log.error(`No handler found for type ${mp.type} at path ${path} (${owner}/${repo})`);
-      return new Response('Invalid mount configuration', {
-        status: 501, // not implemented
-      });
+      return errorResponse(log, 501,
+        `No handler found for type ${mp.type} at path ${path} (${owner}/${repo})`,
+        'Invalid mount configuration');
     }
 
     if (path.match(/sitemap(-[^/]+)?\.xml$/) && handler.handleSitemapXML) {
@@ -252,28 +247,32 @@ async function main(req, context) {
     });
   } catch (e) {
     if (e instanceof AbortError) {
-      return new Response(e.message, {
-        status: 504,
-      });
+      return errorResponse(log, 504, e.message);
     }
     /* istanbul ignore next */
     if (e instanceof FetchError) {
       if (e.code === 'ECONNRESET') {
         // connection reset by host: temporary network issue
-        return new Response(e.message, {
-          status: 504,
-        });
+        return errorResponse(log, 504, e.message);
       }
     }
+    if (e instanceof TypeError) {
+      /* istanbul ignore next */
+      if (e.code === 'ERR_INVALID_URL') {
+        e.status = 400;
+      }
+    }
+
     /* istanbul ignore next */
     const stack = (e && e.stack) || 'no stack';
     log.error('Unhandled error', e, stack);
 
     /* istanbul ignore next */
-    const body = (e && e.message) || 'no message';
+    const message = (e && e.message) || 'no message';
     /* istanbul ignore next */
     const status = (e && e.status) || 500;
-    return new Response(body, { status });
+
+    return errorResponse(null, status, message);
   }
 }
 

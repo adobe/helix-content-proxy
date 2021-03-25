@@ -13,7 +13,7 @@ const { Response } = require('@adobe/helix-fetch');
 const { filename2url } = require('./filename-to-url.js');
 const google = require('./google-reverse.js');
 const onedrive = require('./onedrive-reverse.js');
-// const github = require('./github-reverse.js');
+const { errorResponse } = require('./utils');
 
 const HANDLERS = [
   google,
@@ -32,25 +32,13 @@ async function reverseLookup(opts) {
   } = opts;
   const handler = HANDLERS.find(({ test }) => test(uri));
   if (!handler) {
-    log.error(`No handler found document ${uri}.`);
-    return new Response('not found', {
-      headers: {
-        'cache-control': 'no-store, private, must-revalidate',
-      },
-      status: 404,
-    });
+    return errorResponse(log, 404, `No handler found document ${uri}.`, 'Not Found');
   }
 
   const documentPath = await handler.lookup(opts);
 
   if (!documentPath) {
-    log.error(`Handler ${handler.name} could not lookup ${uri}.`);
-    return new Response('not found', {
-      headers: {
-        'cache-control': 'no-store, private, must-revalidate',
-      },
-      status: 404,
-    });
+    return errorResponse(log, 404, `Handler ${handler.name} could not lookup ${uri}.`, 'Not Found');
   }
 
   let { prefix } = opts;
