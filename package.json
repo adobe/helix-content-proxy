@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/adobe/helix-content-proxy#readme",
   "dependencies": {
-    "@adobe/helix-fetch": "2.1.9",
+    "@adobe/helix-fetch": "2.2.0",
     "@adobe/helix-onedrive-support": "4.0.3",
     "@adobe/helix-shared": "7.21.7",
     "@adobe/helix-status": "9.1.2",
