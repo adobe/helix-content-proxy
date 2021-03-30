@@ -111,6 +111,7 @@ const ALL_TARGETS = [
   OpenwhiskTarget,
   AWSTarget,
   GoogleTarget,
+  UniversalTarget,
 ];
 
 function createTargets(opts) {
