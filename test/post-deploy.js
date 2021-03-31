@@ -22,6 +22,22 @@ const { expect } = chai;
 
 createTargets().forEach((target) => {
   describe(`Post-Deploy Tests (${target.title()})`, () => {
+    it('The blog index', async () => {
+      const url = `${target.urlPath()}?owner=adobe&repo=theblog&ref=master&path=/index.md`;
+      await chai
+        .request(target.host())
+        .get(url)
+        .then((response) => {
+          expect(response).to.have.status(200);
+          expect(response).to.be.text;
+          expect(response.headers['content-type'].toLowerCase()).to.be.eql('text/plain; charset=utf-8');
+          expect(response.text).to.be.a('string').that.includes('# The Blog | Welcome to Adobe Blog');
+        }).catch((e) => {
+          e.message = `At ${url}\n      ${e.message}`;
+          throw e;
+        });
+    }).timeout(40000);
+
     it('Helix Pages README', async () => {
       const url = `${target.urlPath()}?owner=adobe&repo=helix-pages&ref=17e0aeeb8639b8dae1c9243cf9fbd0042f564750&path=index.md`;
       await chai

@@ -45,7 +45,7 @@ async function handle(opts) {
   const body = await response.text();
   if (response.ok) {
     const headers = {
-      'content-type': 'text/plain',
+      'content-type': response.headers.get('content-type'),
       // if the backend does not provide a source location, use the URL
       'x-source-location': response.headers.get('x-source-location'),
       'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location')),
