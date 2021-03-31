@@ -1,3 +1,10 @@
+## [2.11.4](https://github.com/adobe/helix-content-proxy/compare/v2.11.3...v2.11.4) (2021-03-31)
+
+
+### Bug Fixes
+
+* **md:** use correct content-type ([#353](https://github.com/adobe/helix-content-proxy/issues/353)) ([45d16be](https://github.com/adobe/helix-content-proxy/commit/45d16bece8d24f510ba73c87f5cbd2a037370007))
+
 ## [2.11.3](https://github.com/adobe/helix-content-proxy/compare/v2.11.2...v2.11.3) (2021-03-26)
 
 
