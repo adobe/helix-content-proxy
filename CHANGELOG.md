@@ -1,3 +1,10 @@
+# [2.12.0](https://github.com/adobe/helix-content-proxy/compare/v2.11.4...v2.12.0) (2021-03-31)
+
+
+### Features
+
+* **deploy:** deploy to google ([797ffb8](https://github.com/adobe/helix-content-proxy/commit/797ffb89d3937a91566126a1de8c772a939d3c99))
+
 ## [2.11.4](https://github.com/adobe/helix-content-proxy/compare/v2.11.3...v2.11.4) (2021-03-31)
 
 
