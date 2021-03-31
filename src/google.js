@@ -50,7 +50,7 @@ async function handle(opts) {
     return new Response(body, {
       status: 200,
       headers: {
-        'content-type': 'text/plain',
+        'content-type': response.headers.get('content-type'),
         // if the backend does not provide a source location, use the URL
         'x-source-location': sourceLocation,
         'surrogate-key': utils.computeSurrogateKey(sourceLocation),
