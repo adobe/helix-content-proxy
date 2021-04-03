@@ -1,3 +1,10 @@
+## [2.12.1](https://github.com/adobe/helix-content-proxy/compare/v2.12.0...v2.12.1) (2021-04-03)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#356](https://github.com/adobe/helix-content-proxy/issues/356)) ([fcb6dec](https://github.com/adobe/helix-content-proxy/commit/fcb6dec8b82ecaf15a87c9e70f6309c1c8cb72f0))
+
 # [2.12.0](https://github.com/adobe/helix-content-proxy/compare/v2.11.4...v2.12.0) (2021-03-31)
 
 
