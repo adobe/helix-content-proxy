@@ -1,3 +1,10 @@
+## [2.12.3](https://github.com/adobe/helix-content-proxy/compare/v2.12.2...v2.12.3) (2021-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v70 ([#359](https://github.com/adobe/helix-content-proxy/issues/359)) ([43513a9](https://github.com/adobe/helix-content-proxy/commit/43513a91f1ced4453d46acb8881fc2590d14fb9c))
+
 ## [2.12.2](https://github.com/adobe/helix-content-proxy/compare/v2.12.1...v2.12.2) (2021-04-05)
 
 
