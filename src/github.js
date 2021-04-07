@@ -9,35 +9,19 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const URL = require('url');
 const { Response } = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 const { fetch, getFetchOptions, errorResponse } = require('./utils');
 const cache = require('./cache.js');
 
-async function computeGithubURI(root, owner, repo, ref, path, resolver) {
-  // only load ref, if undefined
-  if (!ref && !!resolver) {
-    // look up the sha or default branch branch instead
-    const url = resolver.createURL({
-      package: 'helix-services',
-      name: 'resolve-git-ref',
-      version: 'v1',
-    });
-    url.searchParams.append('owner', owner);
-    url.searchParams.append('repo', repo);
-    const res = await fetch(url.href);
-    // eslint-disable-next-line no-param-reassign
-    ref = (await res.json()).sha;
-  }
-
-  const rootURI = URL.parse(root);
-  const rootPath = rootURI.path;
+async function computeGithubURI(root, owner, repo, ref = 'main', path) {
+  const url = new URL(root);
+  const rootPath = url.pathname;
 
   // remove double slashes
-  rootURI.pathname = `${rootPath}/${owner}/${repo}/${ref}/${path}`
+  url.pathname = `${rootPath}/${owner}/${repo}/${ref}/${path}`
     .replace(/\/+/g, '/');
-  return URL.format(rootURI);
+  return url.href;
 }
 
 /**
@@ -98,10 +82,10 @@ function isImmutable(ref) {
  */
 async function handle(opts) {
   const {
-    mp, githubRootPath, owner, repo, ref, path, log, options, resolver,
+    mp, githubRootPath, owner, repo, ref, path, log, options,
   } = opts;
   const uri = mp
-    ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, `${(mp.basePath || '') + mp.relPath}.md`, resolver)
+    ? await computeGithubURI(githubRootPath, mp.owner, mp.repo, mp.ref, `${(mp.basePath || '') + mp.relPath}.md`)
     : await computeGithubURI(githubRootPath, owner, repo, ref, path);
   const response = await fetch(uri, getFetchOptions(options));
   const body = await response.text();
