@@ -14,10 +14,6 @@
 
 `helix-content-proxy` serves Markdown documents (later JSON tables, too) from data sources supported by Project Helix (GitHub, Google Docs, OneDrive) and applies transparent resolution of an [`fstab.yaml`](https://github.com/adobe/helix-shared/blob/main/docs/fstab.md) configuration files, so that all kinds of content can be retrieved just by knowing `owner`, `repo`, `ref`, and `path`. `helix-content-proxy` is intended to be used by [`helix-pipeline`](https://github.com/adobe/helix-pipeline), where it will replace the existing logic for fetching external content from Google Docs and OneDrive and behave like a drop-in-replacement to `raw.githubusercontent.com`.
 
-### Limitations
-
-`helix-content-proxy` assumes `ref` to be an immutable sha, so use `helix-resolve-git-ref` before if you need to resolve a branch or tag name. This limitation is intentional to simplify `helix-content-proxy` and to allow serving content with immutable caching characteristics.
-
 ## Usage
 
 Try:
