@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-content-proxy",
-  "version": "2.12.3-ghpages",
+  "version": "2.12.4",
   "private": true,
   "description": "Helix Content Proxy",
   "main": "src/index.js",
@@ -34,8 +34,8 @@
   "homepage": "https://github.com/adobe/helix-content-proxy#readme",
   "dependencies": {
     "@adobe/helix-fetch": "2.2.0",
-    "@adobe/helix-onedrive-support": "4.0.4",
-    "@adobe/helix-shared": "7.21.14",
+    "@adobe/helix-onedrive-support": "4.0.5",
+    "@adobe/helix-shared": "7.23.0",
     "@adobe/helix-status": "9.1.5",
     "@adobe/openwhisk-action-logger": "2.4.3",
     "@adobe/openwhisk-action-utils": "4.4.3",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.1.4",
-    "@adobe/helix-deploy": "3.17.0",
+    "@adobe/helix-deploy": "3.18.5",
     "@pollyjs/adapter-node-http": "5.1.0",
     "@pollyjs/core": "5.1.0",
     "@pollyjs/persister-fs": "5.0.0",
@@ -57,7 +57,7 @@
     "commitizen": "4.2.3",
     "cz-conventional-changelog": "3.3.0",
     "dotenv": "8.2.0",
-    "eslint": "7.23.0",
+    "eslint": "7.24.0",
     "eslint-plugin-header": "3.1.1",
     "eslint-plugin-import": "2.22.1",
     "jsdoc-to-markdown": "7.0.1",

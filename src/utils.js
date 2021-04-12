@@ -13,6 +13,8 @@
 const fetchAPI = require('@adobe/helix-fetch');
 const { utils } = require('@adobe/helix-shared');
 
+const { cleanupHeaderValue } = utils;
+
 const { context, ALPN_HTTP1_1, Response } = fetchAPI;
 const { fetch, timeoutSignal } = process.env.HELIX_FETCH_FORCE_HTTP1
   ? context({
@@ -86,7 +88,7 @@ function errorResponse(log, status, message, body = '', cacheCtl = '') {
     headers: {
       'content-type': 'text/plain',
       'cache-control': cacheCtl || 'no-store, private, must-revalidate',
-      'x-error': message,
+      'x-error': cleanupHeaderValue(message),
     },
   });
 }

@@ -1,3 +1,10 @@
+## [2.12.4](https://github.com/adobe/helix-content-proxy/compare/v2.12.3...v2.12.4) (2021-04-08)
+
+
+### Bug Fixes
+
+* **utils:** ensure x-error header value is clean ([#363](https://github.com/adobe/helix-content-proxy/issues/363)) ([30b6cd9](https://github.com/adobe/helix-content-proxy/commit/30b6cd9429f4114ba8d00f8dc29910f7a0d9ce6f)), closes [adobe/helix-deploy#201](https://github.com/adobe/helix-deploy/issues/201)
+
 ## [2.12.3](https://github.com/adobe/helix-content-proxy/compare/v2.12.2...v2.12.3) (2021-04-06)
 
 
