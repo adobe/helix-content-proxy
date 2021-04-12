@@ -75,6 +75,34 @@ describe('GitHub Integration Tests', () => {
     assert.equal(foundid, 'fake');
   });
 
+  it('Retrieves Markdown from GitHub via Github Pages', async function staticToken() {
+    const { server } = this.polly;
+
+    server
+      .get('https://adobe.github.io/project-helix/fstab.yaml')
+      .intercept((_, res) => res.sendStatus(404));
+
+    server
+      .get('https://adobe.github.io/project-helix/README.md')
+      .intercept((req, res) => {
+        res.status(200).send('# Read me');
+      });
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'project-helix',
+      ref: 'gh-pages',
+      path: 'README.md',
+      __ow_headers: {
+        'x-request-id': 'fake',
+        'x-github-token': 'undisclosed-token',
+      },
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.indexOf('# Read me'), 0);
+  });
+
   it('Retrieves Markdown from GitHub with Token from Config', async function staticToken() {
     const { server } = this.polly;
 

@@ -15,6 +15,13 @@ const { fetch, getFetchOptions, errorResponse } = require('./utils');
 const cache = require('./cache.js');
 
 async function computeGithubURI(root, owner, repo, ref = 'main', path) {
+  if (ref === 'gh-pages') {
+    const url = new URL(`https://${owner}.github.io`);
+    // remove double slashes
+    url.pathname = `/${repo}/${path}`.replace(/\/+/g, '/');
+    return url.href;
+  }
+
   const url = new URL(root);
   const rootPath = url.pathname;
 
