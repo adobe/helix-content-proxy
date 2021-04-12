@@ -1,3 +1,11 @@
+# [2.13.0](https://github.com/adobe/helix-content-proxy/compare/v2.12.4...v2.13.0) (2021-04-12)
+
+
+### Features
+
+* **ghp:** add support for github pages ([#369](https://github.com/adobe/helix-content-proxy/issues/369)) ([392d047](https://github.com/adobe/helix-content-proxy/commit/392d047fb7f1bf4915c82a389b7bf32599764893))
+* **github:** use main as default branch and remove resolve-git-ref ([5f24531](https://github.com/adobe/helix-content-proxy/commit/5f24531cdb3b7b8b2274d6d9f28bada18956d327)), closes [#361](https://github.com/adobe/helix-content-proxy/issues/361)
+
 ## [2.12.4](https://github.com/adobe/helix-content-proxy/compare/v2.12.3...v2.12.4) (2021-04-08)
 
 
