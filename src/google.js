@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { Response } = require('@adobe/helix-fetch');
+const { Response } = require('@adobe/helix-universal');
 const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./google-json');
 const { handleSitemapXML } = require('./google-sitemap');

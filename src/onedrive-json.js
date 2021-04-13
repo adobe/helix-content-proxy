@@ -12,7 +12,8 @@
 
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
-const { AbortError, Response } = require('@adobe/helix-fetch');
+const { Response } = require('@adobe/helix-universal');
+const { AbortError } = require('@adobe/helix-fetch');
 const {
   appendURLParams, fetch, getFetchOptions, errorResponse,
 } = require('./utils');
