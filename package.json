@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-content-proxy",
-  "version": "2.13.0",
+  "version": "2.13.2",
   "private": true,
   "description": "Helix Content Proxy",
   "main": "src/index.js",
@@ -35,11 +35,11 @@
   "dependencies": {
     "@adobe/helix-fetch": "2.2.0",
     "@adobe/helix-onedrive-support": "4.0.5",
-    "@adobe/helix-shared": "7.23.1",
+    "@adobe/helix-shared": "7.24.0",
     "@adobe/helix-status": "9.1.6",
     "@adobe/helix-universal": "1.0.0",
     "@adobe/helix-universal-logger": "1.0.2",
-    "googleapis": "70.0.0",
+    "googleapis": "71.0.0",
     "lru-cache": "6.0.0"
   },
   "devDependencies": {
