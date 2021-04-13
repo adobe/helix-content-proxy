@@ -1,3 +1,10 @@
+## [2.13.3](https://github.com/adobe/helix-content-proxy/compare/v2.13.2...v2.13.3) (2021-04-13)
+
+
+### Bug Fixes
+
+* use helix-universal ([dc3d8f9](https://github.com/adobe/helix-content-proxy/commit/dc3d8f9efdf77ba8d2c876be3a4dded2c2394e01))
+
 ## [2.13.2](https://github.com/adobe/helix-content-proxy/compare/v2.13.1...v2.13.2) (2021-04-13)
 
 
