@@ -11,7 +11,7 @@
  */
 /* eslint-disable no-console */
 
-const { Request } = require('@adobe/helix-fetch');
+const { Request } = require('@adobe/helix-universal');
 const { main } = require('../../src/index.js');
 
 require('dotenv').config();

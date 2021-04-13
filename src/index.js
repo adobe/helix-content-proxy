@@ -9,11 +9,10 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { wrap } = require('@adobe/openwhisk-action-utils');
-const { logger } = require('@adobe/openwhisk-action-logger');
+const { logger } = require('@adobe/helix-universal-logger');
 const { wrap: helixStatus } = require('@adobe/helix-status');
 const { AbortError, FetchError } = require('@adobe/helix-fetch');
-const { MountConfig } = require('@adobe/helix-shared');
+const { wrap, MountConfig } = require('@adobe/helix-shared');
 const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');

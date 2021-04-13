@@ -12,7 +12,7 @@
 
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
-const { Response } = require('@adobe/helix-fetch');
+const { Response } = require('@adobe/helix-universal');
 const { errorResponse } = require('./utils');
 
 async function handleSitemapXML(opts) {
