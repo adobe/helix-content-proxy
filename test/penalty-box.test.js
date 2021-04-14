@@ -23,64 +23,64 @@ describe('Test Penalty Box', () => {
   }).timeout(120000);
 
   it('Go into the box', async () => {
-    const box = new PenaltyBox();
+    const box = new PenaltyBox(3);
     assert.ok(box.ready('player1'));
     assert.ok(box.ready('player2'));
 
     box.foul('player1');
-    await sleep(11);
+    await sleep(1);
     console.log('tick');
     assert.ok(!box.ready('player1'));
     assert.ok(box.ready('player2'));
-    await sleep(11);
+    await sleep(1);
     console.log('tick');
     assert.ok(!box.ready('player1'));
     assert.ok(box.ready('player2'));
-    await sleep(11);
+    await sleep(1);
     console.log('tick');
     assert.ok(box.ready('player1'));
     assert.ok(box.ready('player2'));
   }).timeout(120000);
 
   it('Two games at once', async () => {
-    const box = new PenaltyBox();
+    const box = new PenaltyBox(3);
 
     const game1 = async () => {
-      await sleep(12);
+      await sleep(2);
       console.log('tick');
       box.foul('player1');
-      await sleep(12);
+      await sleep(2);
       console.log('tick');
-      await sleep(12);
+      await sleep(2);
       console.log('tick');
       box.foul('player2');
-      await sleep(12);
+      await sleep(2);
       console.log('tick');
-      await sleep(12);
+      await sleep(2);
       console.log('tick');
     };
 
     const game2 = async () => {
-      await sleep(9);
+      await sleep(2);
       console.log('tock');
+      await sleep(1);
       box.foul('player2');
-      await sleep(9);
       console.log('tock');
-      await sleep(9);
+      await sleep(1);
       console.log('tock');
-      await sleep(9);
+      await sleep(1);
       console.log('tock');
-      await sleep(9);
+      await sleep(1);
       console.log('tock');
       box.foul('player1');
-      await sleep(9);
+      await sleep(1);
       console.log('tock');
     };
 
     const results = [];
 
     const check = async () => {
-      for (let i = 0; i < 80; i += 1) {
+      for (let i = 0; i < 15; i += 1) {
         // eslint-disable-next-line no-await-in-loop
         await sleep(1);
         results.push({
@@ -100,20 +100,20 @@ describe('Test Penalty Box', () => {
       player2: true,
     });
 
-    assert.deepStrictEqual(results[30], {
-      iteration: 30,
-      player1: false,
-      player2: false,
-    });
-
-    assert.deepStrictEqual(results[70], {
-      iteration: 70,
+    assert.deepStrictEqual(results[1], {
+      iteration: 1,
       player1: false,
       player2: true,
     });
 
-    assert.deepStrictEqual(results[75], {
-      iteration: 75,
+    assert.deepStrictEqual(results[2], {
+      iteration: 2,
+      player1: false,
+      player2: false,
+    });
+
+    assert.deepStrictEqual(results[8], {
+      iteration: 8,
       player1: true,
       player2: true,
     });

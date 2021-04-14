@@ -12,8 +12,12 @@
 const LRU = require('lru-cache');
 
 class PenaltyBox {
-  constructor() {
-    this.box = new LRU({ max: 1000, maxAge: 30 * 1000 });
+  /**
+   * Creates a new penalty box with a given timeout
+   * @param {Number} timeout timeout in seconds
+   */
+  constructor(timeout = 30) {
+    this.box = new LRU({ max: 1000, maxAge: timeout * 1000 });
   }
 
   foul(owner, repo) {
