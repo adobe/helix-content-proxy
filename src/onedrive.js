@@ -14,6 +14,10 @@ const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./onedrive-json.js');
 const { handleSitemapXML } = require('./onedrive-sitemap.js');
 const { fetch, getFetchOptions, errorResponse } = require('./utils');
+const PenaltyBox = require('./penalty-box');
+
+// keep this global
+const box = new PenaltyBox();
 
 /**
  * Retrieves a file from OneDrive
@@ -30,6 +34,16 @@ async function handle(opts) {
   const {
     mp, owner, repo, ref, log, options, resolver,
   } = opts;
+
+  if (!box.ready(owner, repo)) {
+    return new Response('Too many requests', {
+      status: 429,
+      headers: {
+        'content-type': 'text/plain',
+      },
+    });
+  }
+
   const url = resolver.createURL({
     package: 'helix-services',
     name: 'word2md',
@@ -64,6 +78,9 @@ async function handle(opts) {
     });
   }
 
+  if (response.status === 429) {
+    box.foul(owner, repo);
+  }
   return errorResponse(log, -response.status, `Unable to fetch ${owner}/${repo}/${ref}${mp.relPath} (${response.status}) from word2md: ${body}`,
     '', 'max-age=60');
 }
