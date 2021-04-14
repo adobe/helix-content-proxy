@@ -52,7 +52,7 @@ describe('OneDrive Integration Tests', () => {
     assert.equal(result.headers.vary, 'x-ow-version-lock');
   }).timeout(5000);
 
-  it.only('Handles 429s from Sharepoint', async function onedrive429() {
+  it('Handles 429s from Sharepoint', async function onedrive429() {
     const { server } = this.polly;
 
     server
