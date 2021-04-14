@@ -21,6 +21,10 @@ async function getEditUrl(opts) {
     mp, log, options,
   } = opts;
 
+  if (options.credentials) {
+    // todo: respect credentials
+  }
+
   const {
     AZURE_WORD2MD_CLIENT_ID: clientId,
     AZURE_WORD2MD_CLIENT_SECRET: clientSecret,

@@ -12,10 +12,11 @@
 
 const { encrypt } = require('../../src/credentials.js');
 
-const KEY = 'ghp_test_key';
+const KEY = 'ghp_xxxx';
 const creds = JSON.stringify({
-  user: 'test@example.com',
-  pass: 'foobar',
+  // u: 'test@example.com',
+  // p: 'foobar',
+  r: '.....-xxxxx',
 });
 
 // eslint-disable-next-line no-console

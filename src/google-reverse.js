@@ -45,6 +45,10 @@ async function reverseLookup(opts) {
   });
   log.debug('mount roots', roots);
 
+  if (options.githubToken) {
+    // todo: respect credentials
+  }
+
   const path = await getPathFromId(id, roots, {
     log,
     ...options,

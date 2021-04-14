@@ -17,6 +17,10 @@ const { errorResponse } = require('./utils.js');
 async function handleSitemapXML(opts) {
   const { mp, log, options } = opts;
 
+  if (options.credentials) {
+    // todo: respect credentials
+  }
+
   const path = `${mp.relPath.substring(1)}.xml`;
   try {
     log.info(`fetch sitemap from gdrive: ${path}`);

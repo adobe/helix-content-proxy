@@ -20,6 +20,10 @@ async function getEditUrl(opts) {
     mp, log, ext, options,
   } = opts;
 
+  if (options.credentials) {
+    // todo: respect credentials
+  }
+
   const docId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
   if (!docId) {
     return '';

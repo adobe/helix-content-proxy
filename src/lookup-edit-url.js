@@ -13,6 +13,7 @@ const { Response } = require('@adobe/helix-universal');
 const google = require('./google-edit-link.js');
 const onedrive = require('./onedrive-edit-link.js');
 const github = require('./github-edit-link.js');
+const { getCredentials } = require('./credentials.js');
 const { errorResponse } = require('./utils.js');
 
 const HANDLERS = [
@@ -27,6 +28,7 @@ async function lookupEditUrl(opts) {
     uri,
     log,
     path,
+    options,
   } = opts;
 
   // extract resource path w/o extension.
@@ -45,6 +47,11 @@ async function lookupEditUrl(opts) {
   const handler = HANDLERS.find(({ test }) => test && test(mp));
   if (!handler) {
     return errorResponse(log, 404, `No handler found for document ${uri}.`, 'Not Found');
+  }
+
+  // extract credentials
+  if (options.gitHubToken) {
+    options.credentials = getCredentials(log, mp, options.gitHubToken);
   }
 
   let location;

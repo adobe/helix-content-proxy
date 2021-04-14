@@ -65,6 +65,10 @@ async function reverseLookup(opts) {
     log,
   });
 
+  if (options.githubToken) {
+    // todo: respect credentials
+  }
+
   // if uri is sharelink, resolve it first
   if (uri.searchParams.get('share') || uri.pathname.indexOf('/s/') >= 0) {
     try {

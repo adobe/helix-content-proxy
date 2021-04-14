@@ -14,6 +14,7 @@ const { utils } = require('@adobe/helix-shared');
 const { handleJSON } = require('./onedrive-json.js');
 const { handleSitemapXML } = require('./onedrive-sitemap.js');
 const { fetch, getFetchOptions, errorResponse } = require('./utils');
+const { getAccessToken } = require('./onedrive-helpers.js');
 
 /**
  * Retrieves a file from OneDrive
@@ -41,7 +42,14 @@ async function handle(opts) {
   url.searchParams.append('rid', options.requestId);
   url.searchParams.append('src', `${owner}/${repo}/${ref}`);
 
-  const response = await fetch(url.href, getFetchOptions(options));
+  const fetchOptions = getFetchOptions(options);
+
+  const { accessToken } = await getAccessToken(opts);
+  if (accessToken) {
+    fetchOptions.headers.authorization = `Bearer ${accessToken}`;
+  }
+
+  const response = await fetch(url.href, fetchOptions);
   const body = await response.text();
   if (response.ok) {
     const headers = {

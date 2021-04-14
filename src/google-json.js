@@ -21,6 +21,10 @@ async function handleJSON(opts, params) {
     mp, log, options, resolver,
   } = opts;
 
+  if (options.credentials) {
+    // todo: respect credentials
+  }
+
   try {
     const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
 

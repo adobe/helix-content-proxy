@@ -22,6 +22,7 @@ const { errorResponse, base64 } = require('./utils.js');
 const github = require('./github');
 const google = require('./google');
 const onedrive = require('./onedrive');
+const { getCredentials } = require('./credentials.js');
 
 const DEFAULT_FORWARD_HEADERS = [
   'x-request-id',
@@ -120,6 +121,7 @@ async function main(req, context) {
       || req.headers.get('x-openwhisk-activation-id')
       || '',
       namespace,
+      gitHubToken,
     };
 
     const dataOptions = {
@@ -187,6 +189,11 @@ async function main(req, context) {
       return errorResponse(log, 501,
         `No handler found for type ${mp.type} at path ${path} (${owner}/${repo})`,
         'Invalid mount configuration');
+    }
+
+    // extract credentials
+    if (gitHubToken && mp) {
+      externalOptions.credentials = getCredentials(log, mp, gitHubToken);
     }
 
     if (path.match(/sitemap(-[^/]+)?\.xml$/) && handler.handleSitemapXML) {

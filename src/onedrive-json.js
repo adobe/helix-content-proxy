@@ -23,6 +23,10 @@ async function handleJSON(opts, params) {
     mp, log, options, resolver,
   } = opts;
 
+  if (options.credentials) {
+    // todo: respect credentials
+  }
+
   const {
     AZURE_WORD2MD_CLIENT_ID: clientId,
     AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
