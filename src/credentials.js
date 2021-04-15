@@ -84,7 +84,7 @@ function getCredentials(log, mp, key) {
     const text = credentials[i];
     if (text) {
       try {
-        return JSON.parse(decrypt(key, text, log));
+        return JSON.parse(decrypt(key, text));
       } catch (e) {
         log.warn(`decrypted credentials in ${mp.path}.credentials[${i}] not valid: ${e.message}.`);
       }
