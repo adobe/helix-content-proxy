@@ -1,3 +1,10 @@
+# [2.14.0](https://github.com/adobe/helix-content-proxy/compare/v2.13.4...v2.14.0) (2021-04-15)
+
+
+### Features
+
+* **proxy:** add multi user support ([#379](https://github.com/adobe/helix-content-proxy/issues/379)) ([972e31e](https://github.com/adobe/helix-content-proxy/commit/972e31ec3af193a5d86ae1e0d502f8d1235ccf84)), closes [#376](https://github.com/adobe/helix-content-proxy/issues/376)
+
 ## [2.13.4](https://github.com/adobe/helix-content-proxy/compare/v2.13.3...v2.13.4) (2021-04-15)
 
 
