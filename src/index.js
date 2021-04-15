@@ -102,7 +102,7 @@ async function main(req, context) {
         return headers;
       }, {
         // pass on authorization token
-        Authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
+        authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
       }),
     };
 

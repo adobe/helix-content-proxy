@@ -10,36 +10,20 @@
  * governing permissions and limitations under the License.
  */
 
-const { OneDrive } = require('@adobe/helix-onedrive-support');
+const { getOneDriveClient } = require('./onedrive-helpers.js');
 
 function test(mp) {
   return mp && mp.type === 'onedrive';
 }
 
+/**
+ * Performs a lookup from the edit url to the source document.
+ * @param {EditLookupOptions} opts options
+ * @returns {Promise<string>} the resolved url
+ */
 async function getEditUrl(opts) {
-  const {
-    mp, log, options,
-  } = opts;
-
-  if (options.credentials) {
-    // todo: respect credentials
-  }
-
-  const {
-    AZURE_WORD2MD_CLIENT_ID: clientId,
-    AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
-    AZURE_HELIX_USER: username,
-    AZURE_HELIX_PASSWORD: password,
-  } = options;
-
-  const drive = new OneDrive({
-    clientId,
-    clientSecret,
-    username,
-    password,
-    log,
-  });
-
+  const { mp, log } = opts;
+  const drive = await getOneDriveClient(opts);
   log.debug(`resolving sharelink to ${mp.url}`);
   const rootItem = await drive.getDriveItemFromShareLink(mp.url);
   log.debug(`retrieving item for ${mp.relPath}`);

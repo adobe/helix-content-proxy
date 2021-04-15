@@ -22,6 +22,11 @@ const HANDLERS = [
   github,
 ];
 
+/**
+ * Performs a lookup from the edit url to the source document.
+ * @param {EditLookupOptions} opts options
+ * @returns {Promise<Response>} a http response
+ */
 async function lookupEditUrl(opts) {
   const {
     mount,

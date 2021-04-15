@@ -16,15 +16,9 @@ const { handleSitemapXML } = require('./google-sitemap');
 const { fetch, getFetchOptions, errorResponse } = require('./utils');
 
 /**
- * Retrieves a file from OneDrive
- * @param {object} opts options
- * @param {object} opts.mp the mountpoint as defined by helix-shared
- * @param {string} opts.owner the GitHub org or username
- * @param {string} opts.repo the GitHub repository
- * @param {string} opts.ref the GitHub ref
- * @param {object} opts.log a Helix-Log instance
- * @param {object} opts.options Helix Fetch options
- * @param {Resolver} opts.resolver Action name resolver
+ * Retrieves a file from google drive
+ * @param {ExternalHandlerOptions} opts the options
+ * @return {Promise<Response>} the http response
  */
 async function handle(opts) {
   const {
@@ -35,8 +29,6 @@ async function handle(opts) {
     name: 'gdocs2md',
     version: 'v2',
   });
-
-
 
   url.searchParams.append('path', mp.relPath);
   url.searchParams.append('rootId', mp.id);

@@ -21,6 +21,11 @@ const HANDLERS = [
   // github,
 ];
 
+/**
+ * Performs a reverse lookup from an edit url to a website url.
+ * @param {ReverseLookupOptions} opts the options.
+ * @returns {Promise<Response>} a http response
+ */
 async function reverseLookup(opts) {
   const {
     uri,
@@ -43,12 +48,7 @@ async function reverseLookup(opts) {
 
   let { prefix } = opts;
   if (!prefix) {
-    prefix = `${repo}--${owner}.hlx.page`;
-    if (ref && ref !== 'master' && ref !== 'main') {
-      prefix = `https://${ref}--${prefix}`;
-    } else {
-      prefix = `https://${prefix}`;
-    }
+    prefix = `https://${ref}--${repo}--${owner}.hlx.page`;
   }
 
   // make author friendly

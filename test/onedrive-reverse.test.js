@@ -14,6 +14,7 @@
 /* eslint-disable global-require, class-methods-use-this, no-console */
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
+const { encrypt } = require('../src/credentials.js');
 const { setupPolly, retrofit } = require('./utils.js');
 const { main: universalMain } = require('../src/index.js');
 const { base64 } = require('../src/utils.js');
@@ -72,7 +73,57 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/article');
+  });
+
+  it('Returns redirect for onedrive document on private repo', async function test() {
+    const { server } = this.polly;
+    const REFRESH_TOKEN = 'fake-refresh-token';
+    const FAKE_GITHUB_TOKEN = 'my-github-token';
+    const creds = encrypt(FAKE_GITHUB_TOKEN, JSON.stringify({ r: REFRESH_TOKEN }));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/prvedit/fstab.yaml')
+      .intercept((req, res) => {
+        if (req.headers.authorization !== `token ${FAKE_GITHUB_TOKEN}`) {
+          res.status(404).send();
+          return;
+        }
+        res.status(200).send(`
+          mountpoints:
+            /other: https://adobe.sharepoint.com/sites/other
+            /: 
+              url: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
+              credentials: ${creds}
+          `);
+      });
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((req, res) => {
+        if (req.body.indexOf(REFRESH_TOKEN) < 0) {
+          res.status(401).send();
+          return;
+        }
+        res.status(200).send(DEFAULT_AUTH);
+      });
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/09BFA93A-78BC-49F6-B93D-990A0ED4D55C')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/drafs/article.docx',
+      }));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'prvedit',
+      path: '/',
+      lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B09BFA93A-78BC-49F6-B93D-990A0ED4D55C%7D&file=article.docx&action=default&mobileredirect=true',
+    }, {
+      ...DEFAULT_ENV,
+      GITHUB_TOKEN: FAKE_GITHUB_TOKEN,
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://prvedit--theblog--adobe.hlx.page/en/drafs/article');
   });
 
   it('Returns redirect for onedrive document (base64)', async function test() {
@@ -95,7 +146,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns redirect for onedrive document via sharelink', async function test() {
@@ -123,7 +174,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns not found for onedrive document via invalid sharelink', async function test() {
@@ -166,7 +217,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns redirect for onedrive document with email sharelink', async function test() {
@@ -194,7 +245,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/article');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/article');
   });
 
   it('Returns redirect for onedrive spreadsheet', async function test() {
@@ -217,7 +268,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test.json');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/some-data-test.json');
   });
 
   it('Returns redirect for onedrive taxonomy spreadsheet', async function test() {
@@ -240,7 +291,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/topics/taxonomy.json');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/topics/taxonomy.json');
   });
 
   it('Returns redirect for onedrive document w/o extension', async function test() {
@@ -263,7 +314,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafs/some-data-test');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafs/some-data-test');
   });
 
   it('Returns redirect for onedrive document with author friendly name', async function test() {
@@ -286,7 +337,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafts/my-1-document');
   });
 
   it('Returns resolve report for onedrive document with author friendly name', async function test() {
@@ -313,8 +364,8 @@ describe('Onedrive Reverse Lookup Tests', () => {
     result.body = JSON.parse(result.body);
     assert.deepEqual(result.body, {
       sourceUrl: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
-      webUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/my-1-document',
-      unfriendlyWebUrl: 'https://theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!',
+      webUrl: 'https://master--theblog--adobe.hlx.page/ms/en/drafts/my-1-document',
+      unfriendlyWebUrl: 'https://master--theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!',
     });
   });
 
@@ -330,7 +381,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/drafts/theblog-embeds');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/drafts/theblog-embeds');
   });
 
   it('Returns redirect for onedrive file on different sharepoint site', async function test() {
@@ -345,7 +396,7 @@ describe('Onedrive Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/ms/en/publish/2020/07/28/in-complex-times-panasonic-made-its-b2b-marketing-simple');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/ms/en/publish/2020/07/28/in-complex-times-panasonic-made-its-b2b-marketing-simple');
   });
 
   it('Returns 404 for a document not below a mountpoint', async function test() {

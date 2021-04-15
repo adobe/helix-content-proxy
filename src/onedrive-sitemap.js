@@ -14,32 +14,18 @@ const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
 const { Response } = require('@adobe/helix-universal');
 const { errorResponse } = require('./utils');
+const { getOneDriveClient } = require('./onedrive-helpers.js');
 
+/**
+ * Fetches an excel sheet with sitemap data from the external source.
+ * @param {ExternalHandlerOptions} opts the options.
+ * @returns {Promise<Response>} a http response
+ */
 async function handleSitemapXML(opts) {
-  const {
-    mp, log, options,
-  } = opts;
-
-  if (options.credentials) {
-    // todo: respect credentials
-  }
-
-  const {
-    AZURE_WORD2MD_CLIENT_ID: clientId,
-    AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
-    AZURE_HELIX_USER: username,
-    AZURE_HELIX_PASSWORD: password,
-  } = options;
+  const { mp, log } = opts;
 
   try {
-    const drive = new OneDrive({
-      clientId,
-      clientSecret,
-      username,
-      password,
-      log,
-    });
-
+    const drive = await getOneDriveClient(opts);
     log.debug(`resolving sharelink to ${mp.url}`);
     const rootItem = await drive.getDriveItemFromShareLink(mp.url);
     log.debug(`retrieving item-id for ${mp.relPath}.xml`);

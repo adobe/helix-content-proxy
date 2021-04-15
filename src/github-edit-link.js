@@ -14,6 +14,11 @@ function test(mp) {
   return !mp;
 }
 
+/**
+ * Performs a lookup from the edit url to the source document.
+ * @param {EditLookupOptions} opts options
+ * @returns {Promise<string>} the resolved url
+ */
 async function getEditUrl(opts) {
   const {
     owner, repo, ref, resourcePath,

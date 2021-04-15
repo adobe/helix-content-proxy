@@ -18,14 +18,8 @@ const { getAccessToken } = require('./onedrive-helpers.js');
 
 /**
  * Retrieves a file from OneDrive
- * @param {object} opts options
- * @param {object} opts.mp the mountpoint as defined by helix-shared
- * @param {string} opts.owner the GitHub org or username
- * @param {string} opts.repo the GitHub repository
- * @param {string} opts.ref the GitHub ref
- * @param {object} opts.log a Helix-Log instance
- * @param {object} opts.options Helix Fetch options
- * @param {Resolver} opts.resolver Version lock helper
+ * @param {ExternalHandlerOptions} opts the options
+ * @return {Promise<Response>} the http response
  */
 async function handle(opts) {
   const {
@@ -44,11 +38,10 @@ async function handle(opts) {
 
   const fetchOptions = getFetchOptions(options);
 
-  const { accessToken } = await getAccessToken(opts);
+  const accessToken = await getAccessToken(opts);
   if (accessToken) {
     fetchOptions.headers.authorization = `Bearer ${accessToken}`;
   }
-
   const response = await fetch(url.href, fetchOptions);
   const body = await response.text();
   if (response.ok) {

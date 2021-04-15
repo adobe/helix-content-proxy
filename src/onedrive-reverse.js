@@ -9,7 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { OneDrive } = require('@adobe/helix-onedrive-support');
+const { getOneDriveClient } = require('./onedrive-helpers.js');
+const { getCredentials } = require('./credentials.js');
 
 function test(uri) {
   return /^.+\.sharepoint.com$/.test(uri.hostname);
@@ -39,8 +40,8 @@ function test(uri) {
  * - https://{tennat}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?email={email}&e=RLSD8R
  * - https://{tenant}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?e=YxP8QV
  *
- * @param opts
- * @returns {Promise<string>}
+ * @param {ReverseLookupOptions} opts options
+ * @returns {Promise<string>} the website url
  */
 async function reverseLookup(opts) {
   const {
@@ -50,24 +51,18 @@ async function reverseLookup(opts) {
   } = opts;
   let { uri } = opts;
 
-  const {
-    AZURE_WORD2MD_CLIENT_ID: clientId,
-    AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
-    AZURE_HELIX_USER: username,
-    AZURE_HELIX_PASSWORD: password,
-  } = options;
-
-  const drive = new OneDrive({
-    clientId,
-    clientSecret,
-    username,
-    password,
-    log,
-  });
-
-  if (options.githubToken) {
-    // todo: respect credentials
+  // extract credentials
+  if (options.gitHubToken) {
+    // currently just take the first mp that has valid credentials. otherwise we would need to
+    // probe every mountpoint to get the dochost
+    for (const mp of mount.mountpoints) {
+      options.credentials = getCredentials(log, mp, options.gitHubToken);
+      if (options.credentials) {
+        break;
+      }
+    }
   }
+  const drive = await getOneDriveClient(opts);
 
   // if uri is sharelink, resolve it first
   if (uri.searchParams.get('share') || uri.pathname.indexOf('/s/') >= 0) {

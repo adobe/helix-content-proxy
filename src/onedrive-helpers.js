@@ -12,6 +12,11 @@
 
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 
+/**
+ * Returns a onedrive client for the given _external_ options.
+ * @param {ExternalOptions} opts the _external_ options.
+ * @returns {OneDrive} the OneDrive client
+ */
 async function getOneDriveClient(opts) {
   const {
     log, options,
@@ -36,7 +41,7 @@ async function getOneDriveClient(opts) {
     }
   }
 
-  if (!clientOpts.username || !clientOpts.refreshToken) {
+  if (!clientOpts.username && !clientOpts.refreshToken) {
     clientOpts.username = options.AZURE_HELIX_USER;
     clientOpts.password = options.AZURE_HELIX_PASSWORD;
   }
@@ -44,9 +49,28 @@ async function getOneDriveClient(opts) {
   return new OneDrive(clientOpts);
 }
 
+/**
+ * Returns the access token to authenticate again onedrive / sharepoint.
+ * @param {ExternalOptions|OneDrive} opts the _external_ options or an onedrive client.
+ * @returns {string} the access token or empty string if it could not be retrieved.
+ */
 async function getAccessToken(opts) {
-  const drive = await getOneDriveClient(opts);
-  return drive.getAccessToken();
+  try {
+    let drive;
+    if ('getAccessToken' in opts) {
+      drive = opts;
+    } else if (opts.options && opts.options.AZURE_WORD2MD_CLIENT_ID) {
+      drive = await getOneDriveClient(opts);
+    } else {
+      opts.log.info('unable to get access token. no onedrive client.');
+      return '';
+    }
+    const { accessToken } = await drive.getAccessToken();
+    return accessToken;
+  } catch (e) {
+    opts.log.warn(`error while retrieving access token: ${e.message}`);
+    return '';
+  }
 }
 
 module.exports = {

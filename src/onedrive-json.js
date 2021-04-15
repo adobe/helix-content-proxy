@@ -14,34 +14,24 @@ const { OneDrive } = require('@adobe/helix-onedrive-support');
 const { utils } = require('@adobe/helix-shared');
 const { Response } = require('@adobe/helix-universal');
 const { AbortError } = require('@adobe/helix-fetch');
+const { getOneDriveClient, getAccessToken } = require('./onedrive-helpers.js');
 const {
   appendURLParams, fetch, getFetchOptions, errorResponse,
 } = require('./utils');
 
+/**
+ * Fetches an excel sheet from the external source.
+ * @param {ExternalHandlerOptions} opts the options.
+ * @param {object} params original request params
+ * @returns {Promise<Response>} a http response
+ */
 async function handleJSON(opts, params) {
   const {
     mp, log, options, resolver,
   } = opts;
 
-  if (options.credentials) {
-    // todo: respect credentials
-  }
-
-  const {
-    AZURE_WORD2MD_CLIENT_ID: clientId,
-    AZURE_WORD2MD_CLIENT_SECRET: clientSecret,
-    AZURE_HELIX_USER: username,
-    AZURE_HELIX_PASSWORD: password,
-  } = options;
-
   try {
-    const drive = new OneDrive({
-      clientId,
-      clientSecret,
-      username,
-      password,
-      log,
-    });
+    const drive = await getOneDriveClient(opts);
 
     log.debug(`resolving sharelink to ${mp.url}`);
     const rootItem = await drive.getDriveItemFromShareLink(mp.url);
@@ -68,6 +58,10 @@ async function handleJSON(opts, params) {
 
       const fopts = getFetchOptions(options);
       fopts.headers['cache-control'] = 'no-cache'; // respected by runtime
+      const accessToken = await getAccessToken(drive);
+      if (accessToken) {
+        fopts.headers.authorization = `Bearer ${accessToken}`;
+      }
 
       const response = await fetch(url, fopts);
       const sourceLocation = response.headers.get('x-source-location') || itemUri.pathname;
