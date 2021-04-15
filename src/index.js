@@ -100,11 +100,12 @@ async function main(req, context) {
           headers[header.toLocaleLowerCase()] = req.headers.get(header);
         }
         return headers;
-      }, {
-        // pass on authorization token
-        authorization: gitHubToken ? `token ${gitHubToken}` : undefined,
-      }),
+      }, {}),
     };
+    if (gitHubToken) {
+      // pass on authorization token
+      githubOptions.headers.authorization = `token ${gitHubToken}`;
+    }
 
     const externalOptions = {
       GOOGLE_DOCS2MD_CLIENT_ID,

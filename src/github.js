@@ -64,8 +64,7 @@ const fetchFSTabCached = cache(fetchFSTabUncached, {
     owner,
     repo,
     ref,
-    options && options.headers && options.headers.authorization
-      ? options.headers.authorization : undefined,
+    options && options.headers && options.headers.authorization,
   ].join()),
 });
 
