@@ -1,3 +1,10 @@
+## [2.14.1](https://github.com/adobe/helix-content-proxy/compare/v2.14.0...v2.14.1) (2021-04-15)
+
+
+### Bug Fixes
+
+* **rel:** trigger deploy ([014afa7](https://github.com/adobe/helix-content-proxy/commit/014afa7e60113c0aa6d842e5c5d4f3cb2d0104b4))
+
 # [2.14.0](https://github.com/adobe/helix-content-proxy/compare/v2.13.4...v2.14.0) (2021-04-15)
 
 
