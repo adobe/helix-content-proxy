@@ -16,10 +16,20 @@ const {
 } = require('./utils');
 const { getIdFromPath } = require('./google-helpers.js');
 
+/**
+ * Fetches an google sheet from the external source.
+ * @param {ExternalHandlerOptions} opts the options.
+ * @param {object} params original request params
+ * @returns {Promise<Response>} a http response
+ */
 async function handleJSON(opts, params) {
   const {
     mp, log, options, resolver,
   } = opts;
+
+  // if (options.credentials) {
+  //   // todo: respect credentials
+  // }
 
   try {
     const sheetId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);

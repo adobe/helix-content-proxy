@@ -93,6 +93,14 @@ function errorResponse(log, status, message, body = '', cacheCtl = '') {
   });
 }
 
+/**
+ * Performs a url-safe base64 encoding
+ *
+ * todo: replace with `Buffer.toString('base64url')` for node 15.
+ *
+ * @param {string} str the input stream
+ * @returns {string} the encoded string.
+ */
 function base64(str) {
   return Buffer.from(str, 'utf-8').toString('base64')
     .replace(/\+/, '-')

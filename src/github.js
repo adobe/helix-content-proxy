@@ -33,13 +33,9 @@ async function computeGithubURI(root, owner, repo, ref = 'main', path) {
 
 /**
  * Fetches an FSTab file from a GitHub repository
- * @param {object} opts options
- * @param {string} opts.root base URL for GitHub
- * @param {string} opts.owner GitHub owner or org
- * @param {string} opts.repo GitHub repository
- * @param {string} opts.ref GitHub ref
- * @param {object} opts.log Helix-Log instance
- * @param {object} opts.options HTTP request options
+ * @param {FetchFSTabOptions} opts options
+ * @returns {Promise<string>} the fstab
+ * @throws {Error} if the fstab cannot be retrieved
  */
 async function fetchFSTabUncached(opts) {
   const {
@@ -68,8 +64,7 @@ const fetchFSTabCached = cache(fetchFSTabUncached, {
     owner,
     repo,
     ref,
-    options && options.headers && options.headers.Authorization
-      ? options.headers.Authorization : undefined,
+    options && options.headers && options.headers.authorization,
   ].join()),
 });
 
@@ -78,14 +73,19 @@ function isImmutable(ref) {
 }
 
 /**
+ * Fetches the fstab from the github repository.
+ * @param {FetchFSTabOptions} opts the options
+ * @returns {Promise<string>} the fstab
+ * @throws {Error} if the fstab cannot be retrieved
+ */
+function fetchFSTab(opts) {
+  return fetchFSTabCached(opts);
+}
+
+/**
  * Retrieves a file from GitHub
- * @param {object} opts
- * @param {string} opts.githubRootPath base URL for raw.githubusercontent.com
- * @param {string} opts.owner GitHub owner or org
- * @param {string} opts.repo GitHub repository
- * @param {string} opts.ref GitHub ref
- * @param {object} opts.log Helix-Log instance
- * @param {object} opts.options HTTP fetch options
+ * @param {GithubHandlerOptions} opts the options
+ * @return {Promise<Response>} the http response
  */
 async function handle(opts) {
   const {
@@ -112,7 +112,8 @@ async function handle(opts) {
       headers,
     });
   }
-  return errorResponse(log, -response.status, `Unable to fetch ${uri} (${response.status}) from GitHub`);
+  const authReason = options.headers.authorization ? '(authenticated)' : '(not authenticated)';
+  return errorResponse(log, -response.status, `Unable to fetch ${uri} (${response.status}) from GitHub ${authReason}`);
 }
 
 function canhandle(mp) {
@@ -120,4 +121,4 @@ function canhandle(mp) {
   return !mp || mp.type === 'github';
 }
 
-module.exports = { canhandle, handle, fetchFSTab: fetchFSTabCached };
+module.exports = { canhandle, handle, fetchFSTab };

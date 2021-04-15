@@ -15,6 +15,7 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const assert = require('assert');
 const proxyquire = require('proxyquire');
+const { encrypt } = require('../src/credentials.js');
 const { setupPolly, retrofit } = require('./utils.js');
 
 // require('dotenv').config();
@@ -227,5 +228,40 @@ describe('Onedrive Edit Link Tests', () => {
 
     assert.equal(result.statusCode, 400);
     assert.equal(result.headers['x-error'], 'Invalid URL: <script>alert(document.domain)</script>');
+  }).timeout(20000);
+
+  it('Retrieves url for a private repository with credentials', async function okOnedrive() {
+    const { server } = this.polly;
+    // scramble(server);
+
+    const REFRESH_TOKEN = 'fake-refresh-token';
+    const FAKE_GITHUB_TOKEN = 'my-github-token';
+    const creds = encrypt(FAKE_GITHUB_TOKEN, JSON.stringify({ r: REFRESH_TOKEN }));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((req, res) => {
+        if (req.headers.authorization !== 'token my-github-token') {
+          res.status(404).send();
+          return;
+        }
+        res.status(200).send(`
+          mountpoints:
+            /: 
+              url: https://adobe.sharepoint.com/sites/cg-helix/Shared%20Documents/private
+              credentials: ${creds}
+          `);
+      });
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      edit: 'https://blog.adobe.com/en/publish/2020/11/09/adobe-to-acquire-workfront.html',
+    }, {
+      GITHUB_TOKEN: FAKE_GITHUB_TOKEN,
+      AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'fake',
+      AZURE_WORD2MD_CLIENT_SECRET: process.env.AZURE_WORD2MD_CLIENT_SECRET || 'fake',
+    });
+
+    assert.equal(result.statusCode, 302);
+    assert.equal(result.headers.location, 'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B0F371509-EA33-49C1-A916-00F99214776F%7D&file=adobe-to-acquire-workfront.docx&action=default&mobileredirect=true');
   }).timeout(20000);
 });

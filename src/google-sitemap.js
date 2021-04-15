@@ -14,8 +14,17 @@ const { utils } = require('@adobe/helix-shared');
 const { getFile, getIdFromPath } = require('./google-helpers.js');
 const { errorResponse } = require('./utils.js');
 
+/**
+ * Fetches an google sheet with sitemap data from the external source.
+ * @param {ExternalHandlerOptions} opts the options.
+ * @returns {Promise<Response>} a http response
+ */
 async function handleSitemapXML(opts) {
   const { mp, log, options } = opts;
+
+  // if (options.credentials) {
+  //   // todo: respect credentials
+  // }
 
   const path = `${mp.relPath.substring(1)}.xml`;
   try {

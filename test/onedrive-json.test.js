@@ -108,6 +108,16 @@ class FakeOneDrive {
   }
 }
 
+const FakeOnedriveHelper = {
+  getOneDriveClient() {
+    return new FakeOneDrive();
+  },
+
+  getAccessToken() {
+    return '';
+  },
+};
+
 describe('Excel JSON Integration tests', () => {
   setupPolly({
     recordIfMissing: false,
@@ -136,9 +146,7 @@ describe('Excel JSON Integration tests', () => {
 
   it('Get JSON', async () => {
     const { handleJSON: original } = proxyquire('../src/onedrive-json', {
-      '@adobe/helix-onedrive-support': {
-        OneDrive: FakeOneDrive,
-      },
+      './onedrive-helpers.js': FakeOnedriveHelper,
     });
     const handleJSON = retrofit(original);
 
@@ -199,11 +207,8 @@ describe('Excel JSON Integration tests', () => {
   }).timeout(50000);
 
   it('Get JSON on author friendly url', async () => {
-    // const { handleJSON } = require('../src/onedrive-json');
     const { handleJSON: original } = proxyquire('../src/onedrive-json', {
-      '@adobe/helix-onedrive-support': {
-        OneDrive: FakeOneDrive,
-      },
+      './onedrive-helpers.js': FakeOnedriveHelper,
     });
     const handleJSON = retrofit(original);
 
@@ -262,9 +267,7 @@ describe('Excel JSON Integration tests', () => {
 
   it('Get missing JSON', async () => {
     const { handleJSON: original } = proxyquire('../src/onedrive-json', {
-      '@adobe/helix-onedrive-support': {
-        OneDrive: FakeOneDrive,
-      },
+      './onedrive-helpers.js': FakeOnedriveHelper,
     });
     const handleJSON = retrofit(original);
 
@@ -294,9 +297,7 @@ describe('Excel JSON Integration tests', () => {
 
   it('Get missing JSON from data-embed', async function test() {
     const { handleJSON: original } = proxyquire('../src/onedrive-json', {
-      '@adobe/helix-onedrive-support': {
-        OneDrive: FakeOneDrive,
-      },
+      './onedrive-helpers.js': FakeOnedriveHelper,
     });
     const handleJSON = retrofit(original);
 
@@ -330,9 +331,7 @@ describe('Excel JSON Integration tests', () => {
 
   it('Get bad JSON', async function test() {
     const { handleJSON: original } = proxyquire('../src/onedrive-json', {
-      '@adobe/helix-onedrive-support': {
-        OneDrive: FakeOneDrive,
-      },
+      './onedrive-helpers.js': FakeOnedriveHelper,
     });
     const handleJSON = retrofit(original);
 
@@ -365,9 +364,7 @@ describe('Excel JSON Integration tests', () => {
 
   it('Get timeout', async function test() {
     const { handleJSON: original } = proxyquire('../src/onedrive-json', {
-      '@adobe/helix-onedrive-support': {
-        OneDrive: FakeOneDrive,
-      },
+      './onedrive-helpers.js': FakeOnedriveHelper,
     });
     const handleJSON = retrofit(original);
 
