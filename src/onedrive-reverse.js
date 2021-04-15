@@ -37,7 +37,7 @@ function test(uri) {
  * - https://{tennat}/:w:/r/{site}/{subsite}/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84w
  *
  * Documents on share links with or w/o email:
- * - https://{tennat}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?email={email}&e=RLSD8R
+ * - https://{tenant}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?email={email}&e=RLSD8R
  * - https://{tenant}/:w:/s/{site}/EfaZv8TXBKtNkDb8MH0HoOsBnwRunv3BxXZ_-XgcEwiqew?e=YxP8QV
  *
  * @param {ReverseLookupOptions} opts options
