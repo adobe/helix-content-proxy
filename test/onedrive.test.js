@@ -11,10 +11,12 @@
  */
 
 /* eslint-env mocha */
+/* eslint-disable no-param-reassign */
 
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 
 const assert = require('assert');
+const { encrypt } = require('../src/credentials.js');
 const { main } = require('../src/index.js');
 const { setupPolly, retrofit } = require('./utils.js');
 
@@ -24,11 +26,53 @@ mountpoints:
   /: https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog
 `;
 
+// require('dotenv').config();
 const index = retrofit(main);
+
+function scramble(server) {
+  server.any().on('beforePersist', (_, recording) => {
+    recording.request.headers = recording.request.headers.filter(({ name }) => name !== 'authorization');
+    delete recording.request.postData;
+
+    if (recording.request.url === 'https://login.windows.net/common/oauth2/token?api-version=1.0') {
+      const val = JSON.parse(recording.response.content.text);
+      val.access_token = val.access_token
+        .replace(/[A-Z]/g, 'A')
+        .replace(/[0-9]/g, '0')
+        .replace(/[a-z]/g, 'a');
+      val.refresh_token = val.refresh_token
+        .replace(/[A-Z]/g, 'A')
+        .replace(/[0-9]/g, '0')
+        .replace(/[a-z]/g, 'a');
+      val.id_token = val.id_token
+        .replace(/[A-Z]/g, 'A')
+        .replace(/[0-9]/g, '0')
+        .replace(/[a-z]/g, 'a');
+
+      recording.response.content.text = JSON.stringify(val);
+    }
+  });
+}
 
 describe('OneDrive Integration Tests', () => {
   setupPolly({
     recordIfMissing: false,
+    matchRequestsBy: {
+      method: true,
+      headers: false,
+      body: false,
+      order: false,
+      url: {
+        protocol: true,
+        username: false,
+        password: false,
+        hostname: true,
+        port: false,
+        pathname: true,
+        query: true,
+        hash: true,
+      },
+    },
   });
 
   it('Retrieves Document from Word', async function okOnedrive() {
@@ -88,7 +132,7 @@ describe('OneDrive Integration Tests', () => {
 
     assert.equal(result.statusCode, 404);
     assert.equal(result.body, '');
-    assert.equal(result.headers['x-error'], 'Unable to fetch adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/not-here (404) from word2md: no matching documents for "/not-here.docx"');
+    assert.equal(result.headers['x-error'], 'Unable to fetch adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6a6/not-here (404) from word2md: ');
     assert.equal(result.headers['cache-control'], 'max-age=60');
   }).timeout(5000);
 
@@ -149,5 +193,143 @@ describe('OneDrive Integration Tests', () => {
 
     assert.equal(result.statusCode, 200);
     assert.equal(result.body, '# Hello, world');
+  });
+
+  it('Retrieves Document from a private repository with credentials', async function okOnedrive() {
+    const { server } = this.polly;
+    scramble(server);
+
+    const REFRESH_TOKEN = 'fake-refresh-token';
+    const FAKE_GITHUB_TOKEN = 'my-github-token';
+    const creds = encrypt(FAKE_GITHUB_TOKEN, JSON.stringify({ r: REFRESH_TOKEN }));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((req, res) => {
+        if (req.headers.authorization !== 'token my-github-token') {
+          res.status(404).send();
+          return;
+        }
+        res.status(200).send(`
+          mountpoints:
+            /: 
+              url: https://adobe.sharepoint.com/sites/cg-helix/Shared%20Documents/private
+              credentials: ${creds}
+          `);
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/index.md',
+    }, {
+      GITHUB_TOKEN: FAKE_GITHUB_TOKEN,
+      AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'fake',
+      AZURE_WORD2MD_CLIENT_SECRET: process.env.AZURE_WORD2MD_CLIENT_SECRET || 'fake',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body, 'Hello my little secret...\n');
+  }).timeout(20000);
+
+  it('Retrieves Document from a private repository with user credentials', async function okOnedrive() {
+    const { server } = this.polly;
+    scramble(server);
+
+    const FAKE_GITHUB_TOKEN = 'my-other-token';
+    const creds = encrypt(FAKE_GITHUB_TOKEN, JSON.stringify({ u: 'helix@adobe.com', p: 'xyz' }));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((req, res) => {
+        if (req.headers.authorization !== 'token my-other-token') {
+          res.status(404).send();
+          return;
+        }
+        res.status(200).send(`
+          mountpoints:
+            /: 
+              url: https://adobe.sharepoint.com/sites/cg-helix/Shared%20Documents/word2md-unit-tests
+              credentials: ${creds}
+          `);
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/breaks.md',
+    }, {
+      GITHUB_TOKEN: FAKE_GITHUB_TOKEN,
+      AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'fake',
+      AZURE_WORD2MD_CLIENT_SECRET: process.env.AZURE_WORD2MD_CLIENT_SECRET || 'fake',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.ok(result.body.startsWith('# Breaks\n'));
+  }).timeout(20000);
+
+  it('Retrieves Document from a private repository with unknown credentials', async function okOnedrive() {
+    // in this case, the access token is ignored and the default auth in word2md is used.
+    const { server } = this.polly;
+    scramble(server);
+
+    const FAKE_GITHUB_TOKEN = 'my-other-token';
+    const creds = encrypt(FAKE_GITHUB_TOKEN, JSON.stringify({ s: 'foobar' }));
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/otherbranch/fstab.yaml')
+      .intercept((req, res) => {
+        if (req.headers.authorization !== 'token my-other-token') {
+          res.status(404).send();
+          return;
+        }
+        res.status(200).send(`
+          mountpoints:
+            /: 
+              url: https://adobe.sharepoint.com/sites/cg-helix/Shared%20Documents/word2md-unit-tests
+              credentials: ${creds}
+          `);
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'otherbranch',
+      path: '/breaks.md',
+    }, {
+      GITHUB_TOKEN: FAKE_GITHUB_TOKEN,
+      AZURE_WORD2MD_CLIENT_ID: process.env.AZURE_WORD2MD_CLIENT_ID || 'fake',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.ok(result.body.startsWith('# Breaks\n'));
+  }).timeout(20000);
+
+  it('Returns 404 from private repository with wrong token', async function okOnedrive() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((req, res) => {
+        res.status(404).send();
+      });
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/index.md')
+      .intercept((req, res) => {
+        if (req.headers.authorization !== 'token my-github-token') {
+          res.status(404).send();
+          return;
+        }
+        res.status(200).send('# welcome');
+      });
+
+    const result = await index({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'master',
+      path: '/index.md',
+    }, {
+      GITHUB_TOKEN: 'wrong-token',
+    });
+
+    assert.equal(result.statusCode, 404);
   });
 });

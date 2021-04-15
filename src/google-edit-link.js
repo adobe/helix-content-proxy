@@ -15,10 +15,19 @@ function test(mp) {
   return mp && mp.type === 'google';
 }
 
+/**
+ * Performs a lookup from the edit url to the source document.
+ * @param {EditLookupOptions} opts options
+ * @returns {Promise<string>} the resolved url
+ */
 async function getEditUrl(opts) {
   const {
     mp, log, ext, options,
   } = opts;
+
+  // if (options.credentials) {
+  // todo: respect credentials
+  // }
 
   const docId = await getIdFromPath(mp.relPath.substring(1), mp.id, log, options);
   if (!docId) {

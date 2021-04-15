@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,21 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
-function test(mp) {
-  return !mp;
-}
+const { encrypt } = require('../../src/credentials.js');
 
-/**
- * Performs a lookup from the edit url to the source document.
- * @param {EditLookupOptions} opts options
- * @returns {Promise<string>} the resolved url
- */
-async function getEditUrl(opts) {
-  const {
-    owner, repo, ref, resourcePath,
-  } = opts;
+const KEY = 'ghp_xxxx';
+const creds = JSON.stringify({
+  // u: 'test@example.com',
+  // p: 'foobar',
+  r: '.....-xxxxx',
+});
 
-  return `https://github.com/${owner}/${repo}/blob/${ref}${resourcePath}.md`;
-}
-
-module.exports = { name: 'github', getEditUrl, test };
+// eslint-disable-next-line no-console
+console.log(`\n  credentials: ${encrypt(KEY, creds)}`);

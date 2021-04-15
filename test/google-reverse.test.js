@@ -109,7 +109,7 @@ describe('Google Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
   }).timeout(50000);
 
   it('Returns redirect for google document (base64)', async function googleSheet() {
@@ -126,7 +126,7 @@ describe('Google Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
   }).timeout(50000);
 
   it('Returns redirect for google document (main branch)', async function googleSheet() {
@@ -144,7 +144,7 @@ describe('Google Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
+    assert.equal(result.headers.location, 'https://main--theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
   }).timeout(50000);
 
   it('Returns redirect for google document (non default branch)', async function googleSheet() {
@@ -231,7 +231,7 @@ describe('Google Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/country-codes.json');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/gdocs/country-codes.json');
   }).timeout(50000);
 
   it('Returns redirect for google document (gdrive uri)', async function googleSheet() {
@@ -248,7 +248,7 @@ describe('Google Reverse Lookup Tests', () => {
     }, DEFAULT_ENV);
 
     assert.equal(result.statusCode, 302);
-    assert.equal(result.headers.location, 'https://theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
+    assert.equal(result.headers.location, 'https://master--theblog--adobe.hlx.page/gdocs/helix-hackathon-part-v');
   }).timeout(50000);
 
   it('Returns 404 for not existent google document', async function googleSheet() {

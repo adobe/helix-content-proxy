@@ -17,6 +17,11 @@ function test(uri) {
     || uri.protocol === 'gdrive:';
 }
 
+/**
+ * Performs a reverse lookup from an edit url to a website url.
+ * @param {ReverseLookupOptions} opts the options.
+ * @returns {Promise<string>} the website url
+ */
 async function reverseLookup(opts) {
   const {
     mount,
@@ -44,6 +49,10 @@ async function reverseLookup(opts) {
     }
   });
   log.debug('mount roots', roots);
+
+  // if (options.githubToken) {
+  //   // todo: respect credentials
+  // }
 
   const path = await getPathFromId(id, roots, {
     log,
