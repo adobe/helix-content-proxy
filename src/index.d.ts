@@ -76,6 +76,7 @@ declare interface EditLookupOptions {
   repo:string;
   ref:string;
   path:string;
+  report:boolean;
   log:Logger;
 }
 

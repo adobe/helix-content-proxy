@@ -172,6 +172,7 @@ async function main(req, context) {
           ref,
           path: path.substring(0, path.length - 4),
           log,
+          report: !!params.report,
         });
       }
 
