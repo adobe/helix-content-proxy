@@ -1,3 +1,10 @@
+## [2.14.3](https://github.com/adobe/helix-content-proxy/compare/v2.14.2...v2.14.3) (2021-04-19)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#384](https://github.com/adobe/helix-content-proxy/issues/384)) ([648186c](https://github.com/adobe/helix-content-proxy/commit/648186c7195239acd439d408b93767462270085a))
+
 ## [2.14.2](https://github.com/adobe/helix-content-proxy/compare/v2.14.1...v2.14.2) (2021-04-19)
 
 
