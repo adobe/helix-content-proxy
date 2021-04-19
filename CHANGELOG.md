@@ -1,3 +1,11 @@
+# [2.16.0](https://github.com/adobe/helix-content-proxy/compare/v2.15.0...v2.16.0) (2021-04-19)
+
+
+### Features
+
+* **onedrive:** guard word2md with penalty box to prevent rate limit exhaustion ([f3d40d0](https://github.com/adobe/helix-content-proxy/commit/f3d40d01181ff966ae53fd25e544fe99cdad681d)), closes [#377](https://github.com/adobe/helix-content-proxy/issues/377)
+* **penalty:** add penalty box to prevent 429 overload ([06b0834](https://github.com/adobe/helix-content-proxy/commit/06b0834c1b9a8d6b89892ead76cf3f2b26c553d8)), closes [#377](https://github.com/adobe/helix-content-proxy/issues/377)
+
 # [2.15.0](https://github.com/adobe/helix-content-proxy/compare/v2.14.3...v2.15.0) (2021-04-19)
 
 
