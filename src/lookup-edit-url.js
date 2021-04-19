@@ -34,6 +34,7 @@ async function lookupEditUrl(opts) {
     log,
     path,
     options,
+    report,
   } = opts;
 
   // extract resource path w/o extension.
@@ -73,6 +74,20 @@ async function lookupEditUrl(opts) {
 
   if (!location) {
     return errorResponse(log, 404, `Handler ${handler.name} could not lookup ${uri}.`, 'Not Found');
+  }
+
+  if (report) {
+    const body = JSON.stringify({
+      sourcePath: path,
+      editUrl: location,
+    });
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'cache-control': 'no-store, private, must-revalidate',
+        'content-type': 'application/json',
+      },
+    });
   }
 
   return new Response(location, {
