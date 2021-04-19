@@ -96,6 +96,36 @@ describe('OneDrive Integration Tests', () => {
     assert.equal(result.headers.vary, 'x-ow-version-lock');
   }).timeout(5000);
 
+  it('Handles 429s from Sharepoint', async function onedrive429() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/spark-website/cb8a0dc5d9d89b800835166783e4130451d3c6a5/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    server
+      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v2')
+      .intercept((_, res) => res.status(429).send('Too many requests'));
+
+    const result1 = await index({
+      owner: 'adobe',
+      repo: 'spark-website',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a5',
+      path: '/index.md',
+    });
+
+    assert.equal(result1.statusCode, 503, 'First response should be a 503 due to backend 429');
+
+    const result2 = await index({
+      owner: 'adobe',
+      repo: 'spark-website',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a5',
+      path: '/index.md',
+    });
+
+    assert.equal(result2.statusCode, 429, 'Second response should be a preemptive 429 to preserve rate limits for other clients');
+  }).timeout(5000);
+
   it('Retrieves Document mounted md from Word', async function okOnedrive() {
     const { server } = this.polly;
 
