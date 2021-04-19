@@ -1,3 +1,10 @@
+# [2.15.0](https://github.com/adobe/helix-content-proxy/compare/v2.14.3...v2.15.0) (2021-04-19)
+
+
+### Features
+
+* **lookup:** add support for reports ([#385](https://github.com/adobe/helix-content-proxy/issues/385)) ([492f5d2](https://github.com/adobe/helix-content-proxy/commit/492f5d29409fbd90c6602f426ccb5287c2d9b2a1)), closes [#383](https://github.com/adobe/helix-content-proxy/issues/383)
+
 ## [2.14.3](https://github.com/adobe/helix-content-proxy/compare/v2.14.2...v2.14.3) (2021-04-19)
 
 
