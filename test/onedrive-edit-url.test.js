@@ -124,6 +124,26 @@ describe('Onedrive Edit Link Tests', () => {
     });
   }).timeout(20000);
 
+  it('Returns report for onedrive document with hlx_report', async function test() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      hlx_report: true,
+      edit: 'https://blog.adobe.com/en/publish/2020/11/09/adobe-to-acquire-workfront.html',
+    });
+
+    assert.equal(result.statusCode, 200);
+    assert.deepEqual(JSON.parse(result.body), {
+      editUrl: 'https://adobe.sharepoint.com/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B0F371509-EA33-49C1-A916-00F99214776F%7D&file=adobe-to-acquire-workfront.docx&action=default&mobileredirect=true',
+      sourcePath: '/en/publish/2020/11/09/adobe-to-acquire-workfront.html',
+    });
+  }).timeout(20000);
+
   it('Returns redirect for onedrive document (lnk)', async function test() {
     const { server } = this.polly;
 
