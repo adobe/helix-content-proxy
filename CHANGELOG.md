@@ -1,3 +1,15 @@
+# [2.17.0](https://github.com/adobe/helix-content-proxy/compare/v2.16.1...v2.17.0) (2021-04-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.26.3 ([#388](https://github.com/adobe/helix-content-proxy/issues/388)) ([b6690a8](https://github.com/adobe/helix-content-proxy/commit/b6690a8941e5d71d1704bc75d7933bfb2bb897c1))
+
+
+### Features
+
+* **lookup:** support hlx_report parameter ([#387](https://github.com/adobe/helix-content-proxy/issues/387)) ([a790b5d](https://github.com/adobe/helix-content-proxy/commit/a790b5de90d635e5770a1b243ba37d4e1697378f))
+
 ## [2.16.1](https://github.com/adobe/helix-content-proxy/compare/v2.16.0...v2.16.1) (2021-04-20)
 
 
