@@ -160,7 +160,7 @@ async function main(req, context) {
             ref,
             options: externalOptions,
             log,
-            report: !!params.report,
+            report: !!params.report || !!params.hlx_report,
           });
         }
 
@@ -172,7 +172,7 @@ async function main(req, context) {
           ref,
           path: path.substring(0, path.length - 4),
           log,
-          report: !!params.report,
+          report: !!params.report || !!params.hlx_report,
         });
       }
 
