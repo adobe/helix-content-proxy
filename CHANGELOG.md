@@ -1,3 +1,11 @@
+## [2.17.3](https://github.com/adobe/helix-content-proxy/compare/v2.17.2...v2.17.3) (2021-04-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared to v7.28.0 ([#396](https://github.com/adobe/helix-content-proxy/issues/396)) ([9c1a7e0](https://github.com/adobe/helix-content-proxy/commit/9c1a7e03900ac0393fbbbf6d0e90e93503251abb))
+* **deps:** update dependency googleapis to v72 ([#395](https://github.com/adobe/helix-content-proxy/issues/395)) ([32807de](https://github.com/adobe/helix-content-proxy/commit/32807de82af01d224ca12af42649db40b61c4cc3))
+
 ## [2.17.2](https://github.com/adobe/helix-content-proxy/compare/v2.17.1...v2.17.2) (2021-04-25)
 
 
