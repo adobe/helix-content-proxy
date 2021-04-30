@@ -12,7 +12,8 @@
 const { logger } = require('@adobe/helix-universal-logger');
 const { wrap: helixStatus } = require('@adobe/helix-status');
 const { AbortError, FetchError } = require('@adobe/helix-fetch');
-const { wrap, MountConfig } = require('@adobe/helix-shared');
+const wrap = require('@adobe/helix-shared-wrap');
+const { MountConfig } = require('@adobe/helix-shared-config');
 const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');

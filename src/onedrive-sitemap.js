@@ -11,7 +11,7 @@
  */
 
 const { OneDrive } = require('@adobe/helix-onedrive-support');
-const { utils } = require('@adobe/helix-shared');
+const utils = require('@adobe/helix-shared-utils');
 const { Response } = require('@adobe/helix-universal');
 const { errorResponse } = require('./utils');
 const { getOneDriveClient } = require('./onedrive-helpers.js');

@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 /* eslint-env mocha */
+/* eslint-disable no-console */
 const assert = require('assert');
 const PenaltyBox = require('../src/penalty-box');
 

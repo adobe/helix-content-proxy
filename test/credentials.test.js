@@ -13,7 +13,7 @@
 /* eslint-env mocha */
 
 const assert = require('assert');
-const { MountConfig } = require('@adobe/helix-shared');
+const { MountConfig } = require('@adobe/helix-shared-config');
 const { getCredentials, encrypt } = require('../src/credentials.js');
 
 const TEST_KEY = 'hello-key';
