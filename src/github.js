@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 const { Response } = require('@adobe/helix-universal');
-const { utils } = require('@adobe/helix-shared');
+const utils = require('@adobe/helix-shared-utils');
 const { fetch, getFetchOptions, errorResponse } = require('./utils');
 const cache = require('./cache.js');
 

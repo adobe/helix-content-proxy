@@ -11,7 +11,7 @@
  */
 /* eslint-disable no-param-reassign */
 const fetchAPI = require('@adobe/helix-fetch');
-const { utils } = require('@adobe/helix-shared');
+const utils = require('@adobe/helix-shared-utils');
 
 const { cleanupHeaderValue } = utils;
 
