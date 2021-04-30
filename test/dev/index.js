@@ -33,7 +33,8 @@ const resolver = {
 
 async function run() {
   const url = new URL('https://adobeioruntime.net/api/v1/web/helix/helix-services/content-proxy@v2');
-  const urlPath = `/hlx_${base64('https://adobe.sharepoint.com/:w:/r/sites/SparkHelix/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84w')}.lnk`;
+  // const urlPath = `/hlx_${base64('https://adobe.sharepoint.com/:w:/r/sites/SparkHelix/_layouts/15/guestaccess.aspx?e=4%3AxSM7pa&at=9&wdLOR=c64EF58AE-CEBB-0540-B444-044062648A17&share=ERMQVuCr7S5FqIBgvCJezO0BUUxpzherbeKSSPYCinf84w')}.lnk`;
+  const urlPath = `/hlx_${base64('https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7BBFD9A19C-4A68-4DBF-8641-DA2F1283C895%7D&file=index.docx&action=default&mobileredirect=true')}.lnk`;
   console.log(urlPath);
   url.searchParams.append('owner', 'tripodsan');
   url.searchParams.append('repo', 'private-pages-test');

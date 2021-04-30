@@ -67,6 +67,7 @@ declare interface ReverseLookupOptions {
   ref:string;
   report:boolean;
   log:Logger;
+  origin:string;
 }
 
 declare interface EditLookupOptions {
