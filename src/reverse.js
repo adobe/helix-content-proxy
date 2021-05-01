@@ -34,6 +34,7 @@ async function reverseLookup(opts) {
     repo,
     owner,
     report,
+    origin,
   } = opts;
   const handler = HANDLERS.find(({ test }) => test(uri));
   if (!handler) {
@@ -63,12 +64,30 @@ async function reverseLookup(opts) {
       webUrl: location,
       unfriendlyWebUrl: `${prefix}${documentPath}`,
     });
+
+    // set cors headers if needed
+    const ALLOWED_ORIGINS = [
+      /^https:\/\/.*\.sharepoint.com$/,
+      /^https:\/\/drive\.google\.com$/,
+      /^https:\/\/github\.com$/,
+    ];
+
+    const headers = {
+      'cache-control': 'no-store, private, must-revalidate',
+      'content-type': 'application/json',
+    };
+
+    if (ALLOWED_ORIGINS.find((pat) => pat.exec(origin))) {
+      log.info(`setting cors headers for origin: ${origin}`);
+      headers['Access-Control-Allow-Origin'] = origin;
+      headers['Access-Control-Allow-Methods'] = 'GET, HEAD, OPTIONS';
+    } else {
+      log.info(`no cors headers for origin: ${origin}`);
+    }
+
     return new Response(body, {
       status: 200,
-      headers: {
-        'cache-control': 'no-store, private, must-revalidate',
-        'content-type': 'application/json',
-      },
+      headers,
     });
   }
 

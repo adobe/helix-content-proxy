@@ -162,6 +162,7 @@ async function main(req, context) {
             options: externalOptions,
             log,
             report: !!params.report || !!params.hlx_report,
+            origin: req.headers.get('origin'),
           });
         }
 

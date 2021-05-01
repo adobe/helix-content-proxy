@@ -385,6 +385,9 @@ describe('Onedrive Reverse Lookup Tests', () => {
 
     const result = await main({
       ...DEFAULT_PARAMS,
+      __ow_headers: {
+        origin: 'https://my-adobe.sharepoint.com',
+      },
       hlx_report: 'true',
       lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
     }, DEFAULT_ENV);
@@ -396,6 +399,46 @@ describe('Onedrive Reverse Lookup Tests', () => {
       webUrl: 'https://master--theblog--adobe.hlx.page/ms/en/drafts/my-1-document',
       unfriendlyWebUrl: 'https://master--theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!',
     });
+
+    // check cors headers
+    assert.equal(result.headers['access-control-allow-origin'], 'https://my-adobe.sharepoint.com');
+    assert.equal(result.headers['access-control-allow-methods'], 'GET, HEAD, OPTIONS');
+  });
+
+  it('Returns resolve does not set cors headers for wrong origin', async function test() {
+    const { server } = this.polly;
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/master/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(fstab));
+    server
+      .post('https://login.windows.net/common/oauth2/token?api-version=1.0')
+      .intercept((_, res) => res.status(200).send(DEFAULT_AUTH));
+    server
+      .get('https://graph.microsoft.com/v1.0/sites/adobe.sharepoint.com:/sites/TheBlog:/lists/documents/items/31F3BD97-BD06-455B-939F-C594D1D92371')
+      .intercept((_, res) => res.status(200).send({
+        webUrl: 'https://adobe.sharepoint.com/sites/TheBlog/Shared%20Documents/theblog/en/drafts/My%201.%20D%C3%B6cument!.docx',
+      }));
+
+    const result = await main({
+      ...DEFAULT_PARAMS,
+      __ow_headers: {
+        origin: 'https://my-adobe.sharepoent.com',
+      },
+      hlx_report: 'true',
+      lookup: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
+    }, DEFAULT_ENV);
+
+    assert.equal(result.statusCode, 200);
+    result.body = JSON.parse(result.body);
+    assert.deepEqual(result.body, {
+      sourceUrl: 'https://adobe.sharepoint.com/:w:/r/sites/TheBlog/_layouts/15/Doc.aspx?sourcedoc=%7B31F3BD97-BD06-455B-939F-C594D1D92371%7D&file=My%201.%20D%C3%B6cument!.docx&action=default&mobileredirect=true',
+      webUrl: 'https://master--theblog--adobe.hlx.page/ms/en/drafts/my-1-document',
+      unfriendlyWebUrl: 'https://master--theblog--adobe.hlx.page/ms/en/drafts/My%201.%20D%C3%B6cument!',
+    });
+
+    // check cors headers
+    assert.equal(result.headers['access-control-allow-origin'], undefined);
+    assert.equal(result.headers['access-control-allow-methods'], undefined);
   });
 
   it('Returns redirect for onedrive file', async function test() {
