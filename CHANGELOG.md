@@ -1,3 +1,10 @@
+# [2.18.0](https://github.com/adobe/helix-content-proxy/compare/v2.17.4...v2.18.0) (2021-05-01)
+
+
+### Features
+
+* **reverse:** add cors headers for well known origins ([#400](https://github.com/adobe/helix-content-proxy/issues/400)) ([f6131e7](https://github.com/adobe/helix-content-proxy/commit/f6131e73cddb2ee6e630d5aa35eda4180b186d2e)), closes [#399](https://github.com/adobe/helix-content-proxy/issues/399)
+
 ## [2.17.4](https://github.com/adobe/helix-content-proxy/compare/v2.17.3...v2.17.4) (2021-04-30)
 
 
