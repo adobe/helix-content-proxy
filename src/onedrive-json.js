@@ -46,7 +46,7 @@ async function handleJSON(opts, params) {
     const actionUrl = resolver.createURL({
       package: 'helix-services',
       name: 'data-embed',
-      version: 'v2',
+      version: 'v3',
     });
     const url = appendURLParams(actionUrl, {
       ...params,

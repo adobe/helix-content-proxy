@@ -148,7 +148,7 @@ mountpoints:
       }));
 
     server
-      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?sheet=all&table=test&src=onedrive%3A%2Fdrives%2Fdummy_driveId%2Fitems%2F1234')
+      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v3?sheet=all&table=test&src=onedrive%3A%2Fdrives%2Fdummy_driveId%2Fitems%2F1234')
       .intercept((req, res) => {
         assert.deepEqual(req.query, {
           sheet: 'all',
