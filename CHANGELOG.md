@@ -1,3 +1,10 @@
+## [2.18.7](https://github.com/adobe/helix-content-proxy/compare/v2.18.6...v2.18.7) (2021-05-14)
+
+
+### Bug Fixes
+
+* **json:** use data-embed v3 ([#419](https://github.com/adobe/helix-content-proxy/issues/419)) ([f1aa190](https://github.com/adobe/helix-content-proxy/commit/f1aa190c984ef07f10ae9896a433dc2b961e0fe7))
+
 ## [2.18.6](https://github.com/adobe/helix-content-proxy/compare/v2.18.5...v2.18.6) (2021-05-11)
 
 
