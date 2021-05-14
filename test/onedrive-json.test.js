@@ -177,7 +177,7 @@ describe('Excel JSON Integration tests', () => {
     assert.deepEqual(res.headers, {
       'cache-control': 'no-store, private',
       'content-type': 'application/json',
-      'last-modified': 'Mon, 14 Dec 2020 20:14:25 GMT',
+      'last-modified': 'Thu, 20 Aug 2020 03:25:58 GMT',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       'surrogate-key': 'uZNkzznjLFRdaoIc',
       'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C',
@@ -239,6 +239,7 @@ describe('Excel JSON Integration tests', () => {
     assert.deepEqual(res.headers, {
       'cache-control': 'no-store, private',
       'content-type': 'application/json',
+      'last-modified': 'Mon, 12 Apr 2021 19:59:43 GMT',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       'surrogate-key': 'IEPk2TBbQwWp8mOq',
       'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW6SABPFMJZNWJCJ3WRV2GBPB5UY',
@@ -301,7 +302,7 @@ describe('Excel JSON Integration tests', () => {
     });
     const handleJSON = retrofit(original);
 
-    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v3?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept((req, res) => res
         .sendStatus(404));
 
@@ -335,7 +336,7 @@ describe('Excel JSON Integration tests', () => {
     });
     const handleJSON = retrofit(original);
 
-    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+    this.polly.server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v3?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept((req, res) => res
         .status(200)
         .send('no json'));
@@ -369,7 +370,7 @@ describe('Excel JSON Integration tests', () => {
     const handleJSON = retrofit(original);
 
     const { server } = this.polly;
-    server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v2?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
+    server.get('https://adobeioruntime.net/api/v1/web/helix/helix-services/data-embed@v3?src=onedrive%3A%2Fdrives%2Fb%21PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH%2Fitems%2F01DJQLOW65RTXCQHBBGZFZ6IHSOUITJM2C')
       .intercept(async (req, res) => {
         await server.timeout(1000);
         res.status(200).send([]);
