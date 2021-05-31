@@ -41,7 +41,7 @@
     "@adobe/helix-status": "9.1.7",
     "@adobe/helix-universal": "1.6.1",
     "@adobe/helix-universal-logger": "1.0.4",
-    "googleapis": "73.0.0",
+    "googleapis": "74.2.0",
     "lru-cache": "6.0.0"
   },
   "devDependencies": {
@@ -58,7 +58,7 @@
     "codecov": "3.8.2",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
-    "dotenv": "9.0.2",
+    "dotenv": "10.0.0",
     "eslint": "7.27.0",
     "eslint-plugin-header": "3.1.1",
     "eslint-plugin-import": "2.23.4",
