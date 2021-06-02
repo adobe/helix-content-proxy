@@ -1,3 +1,10 @@
+## [2.18.11](https://github.com/adobe/helix-content-proxy/compare/v2.18.10...v2.18.11) (2021-06-02)
+
+
+### Bug Fixes
+
+* pass if-modified-since to word2md ([#435](https://github.com/adobe/helix-content-proxy/issues/435)) ([330c83d](https://github.com/adobe/helix-content-proxy/commit/330c83d727632fc245c1809bc783b73415385c20))
+
 ## [2.18.10](https://github.com/adobe/helix-content-proxy/compare/v2.18.9...v2.18.10) (2021-05-31)
 
 
