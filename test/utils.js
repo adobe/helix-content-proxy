@@ -14,6 +14,7 @@ const querystring = require('querystring');
 const NodeHttpAdapter = require('@pollyjs/adapter-node-http');
 const FSPersister = require('@pollyjs/persister-fs');
 const { setupMocha } = require('@pollyjs/core');
+const { Request } = require('@adobe/helix-universal');
 
 function setupPolly(opts) {
   setupMocha({
@@ -43,10 +44,10 @@ function retrofit(fn) {
     },
   };
   return async (params = {}, env = {}) => {
-    const resp = await fn({
-      url: `https://content-proxy.com/proxy?${querystring.encode(params)}`,
-      headers: new Map(Object.entries(params.__ow_headers || {})),
-    }, {
+    const req = new Request(`https://content-proxy.com/proxy?${querystring.encode(params)}`, {
+      headers: params.__ow_headers || {},
+    });
+    const resp = await fn(req, {
       resolver,
       env,
     });
