@@ -1,3 +1,10 @@
+## [2.18.12](https://github.com/adobe/helix-content-proxy/compare/v2.18.11...v2.18.12) (2021-06-04)
+
+
+### Bug Fixes
+
+* adjust to querybuilder removal ([#437](https://github.com/adobe/helix-content-proxy/issues/437)) ([1a4f04f](https://github.com/adobe/helix-content-proxy/commit/1a4f04fa580f70350ec2a60258974c1f6544e966))
+
 ## [2.18.11](https://github.com/adobe/helix-content-proxy/compare/v2.18.10...v2.18.11) (2021-06-02)
 
 
