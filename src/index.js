@@ -11,6 +11,7 @@
  */
 const { logger } = require('@adobe/helix-universal-logger');
 const { wrap: helixStatus } = require('@adobe/helix-status');
+const bodyData = require('@adobe/helix-shared-body-data');
 const { AbortError, FetchError } = require('@adobe/helix-fetch');
 const wrap = require('@adobe/helix-shared-wrap');
 const { MountConfig } = require('@adobe/helix-shared-config');
@@ -50,12 +51,7 @@ async function main(req, context) {
     AZURE_WORD2MD_CLIENT_ID, AZURE_WORD2MD_CLIENT_SECRET,
     AZURE_HELIX_USER, AZURE_HELIX_PASSWORD,
   } = env;
-  const { searchParams } = new URL(req.url);
-  const params = Array.from(searchParams.entries()).reduce((p, [key, value]) => {
-    // eslint-disable-next-line no-param-reassign
-    p[key] = value;
-    return p;
-  }, {});
+  const params = context.data;
 
   try {
     // keep lookup/edit backward compatible - remove eventually
@@ -82,14 +78,6 @@ async function main(req, context) {
     const githubRootPath = REPO_RAW_ROOT || 'https://raw.githubusercontent.com/';
     // eslint-disable-next-line no-underscore-dangle
     const namespace = process.env.__OW_NAMESPACE || 'helix';
-
-    const qboptions = Object.entries(params)
-      .filter(([key]) => key.startsWith('hlx_'))
-      .reduce((p, [key, value]) => {
-        // eslint-disable-next-line no-param-reassign
-        p[key] = value;
-        return p;
-      }, {});
 
     const githubOptions = {
       cache: 'no-store',
@@ -128,9 +116,8 @@ async function main(req, context) {
     };
 
     const dataOptions = {
-      ...qboptions,
-      'hlx_p.limit': limit,
-      'hlx_p.offset': offset,
+      limit,
+      offset,
       sheet,
       table,
     };
@@ -288,6 +275,7 @@ async function main(req, context) {
 }
 
 module.exports.main = wrap(main)
+  .with(bodyData)
   .with(vary)
   .with(helixStatus)
   .with(logger.trace)

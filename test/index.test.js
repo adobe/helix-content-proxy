@@ -14,6 +14,8 @@
 
 'use strict';
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
+
 const assert = require('assert');
 const { main: universalMain } = require('../src/index.js');
 const { setupPolly, retrofit } = require('./utils.js');
@@ -49,8 +51,8 @@ mountpoints:
       repo: 'theblog',
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a4',
       path: '/foo/index.md',
-      'hlx_p.limit': 1,
-      'hlx_p.offset': 1,
+      limit: 1,
+      offset: 1,
     });
     assert.equal(result.statusCode, 501);
   });
@@ -153,6 +155,8 @@ mountpoints:
         assert.deepEqual(req.query, {
           sheet: 'all',
           table: 'test',
+          limit: '1',
+          offset: '1',
           src: 'onedrive:/drives/dummy_driveId/items/1234',
         });
         res.status(200).send({
@@ -169,8 +173,8 @@ mountpoints:
       path: '/en/drafts/query-index.json',
       sheet: 'all',
       table: 'test',
-      'hlx_p.limit': 1,
-      'hlx_p.offset': 1,
+      limit: 1,
+      offset: 1,
     }, {
       AZURE_WORD2MD_CLIENT_ID: 'fake',
       AZURE_WORD2MD_CLIENT_SECRET: 'fake',

@@ -170,7 +170,7 @@ describe('Excel JSON Integration tests', () => {
         namespace: 'helix',
       },
     }, {
-      'hlx_p.limit': 4,
+      limit: 4,
     });
 
     assert.equal(res.statusCode, 200);
@@ -232,14 +232,14 @@ describe('Excel JSON Integration tests', () => {
         namespace: 'helix',
       },
     }, {
-      'hlx_p.limit': 2,
+      limit: 2,
     });
 
     assert.equal(res.statusCode, 200);
     assert.deepEqual(res.headers, {
       'cache-control': 'no-store, private',
       'content-type': 'application/json',
-      'last-modified': 'Mon, 12 Apr 2021 19:59:43 GMT',
+      'last-modified': 'Fri, 28 May 2021 16:52:33 GMT',
       'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
       'surrogate-key': 'IEPk2TBbQwWp8mOq',
       'x-source-location': '/drives/b!PpnkewKFAEaDTS6slvlVjh_3ih9lhEZMgYWwps6bPIWZMmLU5xGqS4uES8kIQZbH/items/01DJQLOW6SABPFMJZNWJCJ3WRV2GBPB5UY',
