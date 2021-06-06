@@ -1,3 +1,10 @@
+## [2.18.14](https://github.com/adobe/helix-content-proxy/compare/v2.18.13...v2.18.14) (2021-06-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared-config to v1.1.4 ([#440](https://github.com/adobe/helix-content-proxy/issues/440)) ([5b95c07](https://github.com/adobe/helix-content-proxy/commit/5b95c07df3c2dc8ca80539bf08ac069b202b2823))
+
 ## [2.18.13](https://github.com/adobe/helix-content-proxy/compare/v2.18.12...v2.18.13) (2021-06-04)
 
 
