@@ -1,3 +1,10 @@
+## [2.18.15](https://github.com/adobe/helix-content-proxy/compare/v2.18.14...v2.18.15) (2021-06-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v75 ([#441](https://github.com/adobe/helix-content-proxy/issues/441)) ([3b11a73](https://github.com/adobe/helix-content-proxy/commit/3b11a73841e49b59afdc234ec3212c09a41a6bfe))
+
 ## [2.18.14](https://github.com/adobe/helix-content-proxy/compare/v2.18.13...v2.18.14) (2021-06-06)
 
 
