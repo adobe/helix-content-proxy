@@ -1,3 +1,11 @@
+## [2.18.16](https://github.com/adobe/helix-content-proxy/compare/v2.18.15...v2.18.16) (2021-06-10)
+
+
+### Bug Fixes
+
+* adjust to querybuilder removal ([#442](https://github.com/adobe/helix-content-proxy/issues/442)) ([0ab18bf](https://github.com/adobe/helix-content-proxy/commit/0ab18bff65ecc7facd27f96ae972952dfefb3d86)), closes [#434](https://github.com/adobe/helix-content-proxy/issues/434)
+* use word2md and gdocs2md V3 ([#443](https://github.com/adobe/helix-content-proxy/issues/443)) ([c1ac676](https://github.com/adobe/helix-content-proxy/commit/c1ac676fe091017e2e01ad839fa3197c9f05d827))
+
 ## [2.18.15](https://github.com/adobe/helix-content-proxy/compare/v2.18.14...v2.18.15) (2021-06-08)
 
 
