@@ -57,6 +57,17 @@ async function handle(opts) {
     fetchOptions.headers.authorization = `Bearer ${accessToken}`;
   }
   const response = await fetch(url.href, fetchOptions);
+  if (response.status === 304) {
+    // not modified
+    return new Response('Not modified', {
+      status: 304,
+      headers: {
+        'x-source-location': response.headers.get('x-source-location'),
+        'surrogate-key': utils.computeSurrogateKey(response.headers.get('x-source-location')),
+        'last-modified': response.headers.get('last-modified'),
+      },
+    });
+  }
   const body = await response.text();
   if (response.ok) {
     const headers = {

@@ -1,3 +1,38 @@
+## [2.18.15](https://github.com/adobe/helix-content-proxy/compare/v2.18.14...v2.18.15) (2021-06-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency googleapis to v75 ([#441](https://github.com/adobe/helix-content-proxy/issues/441)) ([3b11a73](https://github.com/adobe/helix-content-proxy/commit/3b11a73841e49b59afdc234ec3212c09a41a6bfe))
+
+## [2.18.14](https://github.com/adobe/helix-content-proxy/compare/v2.18.13...v2.18.14) (2021-06-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared-config to v1.1.4 ([#440](https://github.com/adobe/helix-content-proxy/issues/440)) ([5b95c07](https://github.com/adobe/helix-content-proxy/commit/5b95c07df3c2dc8ca80539bf08ac069b202b2823))
+
+## [2.18.13](https://github.com/adobe/helix-content-proxy/compare/v2.18.12...v2.18.13) (2021-06-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared-body-data to v1.0.8 ([#438](https://github.com/adobe/helix-content-proxy/issues/438)) ([1a3e3e5](https://github.com/adobe/helix-content-proxy/commit/1a3e3e50c0ca2fcd72635d7d0f9b5c246fbdf92e))
+
+## [2.18.12](https://github.com/adobe/helix-content-proxy/compare/v2.18.11...v2.18.12) (2021-06-04)
+
+
+### Bug Fixes
+
+* adjust to querybuilder removal ([#437](https://github.com/adobe/helix-content-proxy/issues/437)) ([1a4f04f](https://github.com/adobe/helix-content-proxy/commit/1a4f04fa580f70350ec2a60258974c1f6544e966))
+
+## [2.18.11](https://github.com/adobe/helix-content-proxy/compare/v2.18.10...v2.18.11) (2021-06-02)
+
+
+### Bug Fixes
+
+* pass if-modified-since to word2md ([#435](https://github.com/adobe/helix-content-proxy/issues/435)) ([330c83d](https://github.com/adobe/helix-content-proxy/commit/330c83d727632fc245c1809bc783b73415385c20))
+
 ## [2.18.10](https://github.com/adobe/helix-content-proxy/compare/v2.18.9...v2.18.10) (2021-05-31)
 
 

@@ -110,6 +110,7 @@ async function main(req, context) {
       || req.headers.get('x-cdn-request-id')
       || req.headers.get('x-openwhisk-activation-id')
       || '',
+      ifModifiedSince: req.headers.get('if-modified-since'),
       namespace,
       gitHubToken,
     };

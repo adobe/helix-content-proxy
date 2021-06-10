@@ -52,6 +52,9 @@ function getFetchOptions(options) {
   if (options.fetchTimeout) {
     fetchopts.signal = timeoutSignal(options.fetchTimeout);
   }
+  if (options.ifModifiedSince) {
+    fetchopts.headers['if-modified-since'] = options.ifModifiedSince;
+  }
   delete fetchopts.requestId;
   // delete all secrets
   Object.keys(fetchopts)
