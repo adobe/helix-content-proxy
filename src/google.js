@@ -27,7 +27,7 @@ async function handle(opts) {
   const url = resolver.createURL({
     package: 'helix-services',
     name: 'gdocs2md',
-    version: 'v2',
+    version: 'v3',
   });
 
   url.searchParams.append('path', mp.relPath);

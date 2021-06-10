@@ -109,7 +109,7 @@ describe('OneDrive Integration Tests', () => {
       ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6a5',
       path: '/index.md',
       __ow_headers: {
-        'if-modified-since': 'Tue, 01 Jun 2021 20:04:53 GMT',
+        'if-modified-since': 'Tue, 10 Jun 2021 20:04:53 GMT',
       },
     });
 
@@ -124,7 +124,7 @@ describe('OneDrive Integration Tests', () => {
       .intercept((_, res) => res.status(200).send(fstab));
 
     server
-      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v2')
+      .get('https://adobeioruntime.net/api/v1/web/helix/helix-services/word2md@v3')
       .intercept((_, res) => res.status(429).send('Too many requests'));
 
     const result1 = await index({
