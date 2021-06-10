@@ -42,7 +42,7 @@ async function handle(opts) {
   const url = resolver.createURL({
     package: 'helix-services',
     name: 'word2md',
-    version: 'v2',
+    version: 'v3',
   });
   url.searchParams.append('path', mp.relPath ? `${mp.relPath}.docx` : '');
   url.searchParams.append('shareLink', mp.url);
