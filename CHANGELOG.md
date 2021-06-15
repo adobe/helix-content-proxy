@@ -1,3 +1,11 @@
+## [2.18.18](https://github.com/adobe/helix-content-proxy/compare/v2.18.17...v2.18.18) (2021-06-15)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#447](https://github.com/adobe/helix-content-proxy/issues/447)) ([7cd62e0](https://github.com/adobe/helix-content-proxy/commit/7cd62e0c8826a98fd4cb86b9af4ff0b6286d1a04))
+* **deps:** update external major (major) ([#448](https://github.com/adobe/helix-content-proxy/issues/448)) ([0af6731](https://github.com/adobe/helix-content-proxy/commit/0af6731eea96b9fc3f0b6bf46809662cb861d835))
+
 ## [2.18.17](https://github.com/adobe/helix-content-proxy/compare/v2.18.16...v2.18.17) (2021-06-12)
 
 
