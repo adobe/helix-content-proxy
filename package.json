@@ -42,7 +42,7 @@
     "@adobe/helix-status": "9.1.8",
     "@adobe/helix-universal": "1.6.3",
     "@adobe/helix-universal-logger": "1.0.5",
-    "googleapis": "77.0.0",
+    "googleapis": "80.1.0",
     "lru-cache": "6.0.0"
   },
   "devDependencies": {
