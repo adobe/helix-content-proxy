@@ -1,3 +1,10 @@
+## [2.18.20](https://github.com/adobe/helix-content-proxy/compare/v2.18.19...v2.18.20) (2021-07-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-universal to v1.6.4 ([#456](https://github.com/adobe/helix-content-proxy/issues/456)) ([c26ffa7](https://github.com/adobe/helix-content-proxy/commit/c26ffa78961a86ebf50adc2bb21ecf7eb42b6a2d))
+
 ## [2.18.19](https://github.com/adobe/helix-content-proxy/compare/v2.18.18...v2.18.19) (2021-07-05)
 
 
