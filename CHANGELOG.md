@@ -1,3 +1,10 @@
+## [2.18.25](https://github.com/adobe/helix-content-proxy/compare/v2.18.24...v2.18.25) (2021-07-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared-body-data to v1.0.11 ([#462](https://github.com/adobe/helix-content-proxy/issues/462)) ([6fd1f16](https://github.com/adobe/helix-content-proxy/commit/6fd1f166a3217ca0b65e2802c585e2e3adc06257))
+
 ## [2.18.24](https://github.com/adobe/helix-content-proxy/compare/v2.18.23...v2.18.24) (2021-07-13)
 
 
