@@ -1,3 +1,10 @@
+## [2.18.35](https://github.com/adobe/helix-content-proxy/compare/v2.18.34...v2.18.35) (2021-08-18)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#485](https://github.com/adobe/helix-content-proxy/issues/485)) ([e913185](https://github.com/adobe/helix-content-proxy/commit/e9131850f2f0723e5520b2871fe40d3d4fec2a7c))
+
 ## [2.18.34](https://github.com/adobe/helix-content-proxy/compare/v2.18.33...v2.18.34) (2021-08-18)
 
 
