@@ -36,7 +36,7 @@
     "@adobe/helix-fetch": "2.4.2",
     "@adobe/helix-onedrive-support": "5.0.3",
     "@adobe/helix-shared-body-data": "1.0.13",
-    "@adobe/helix-shared-config": "1.1.15",
+    "@adobe/helix-shared-config": "1.2.0",
     "@adobe/helix-shared-utils": "1.0.3",
     "@adobe/helix-shared-wrap": "1.0.0",
     "@adobe/helix-status": "9.2.2",
