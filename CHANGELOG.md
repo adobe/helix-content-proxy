@@ -1,3 +1,10 @@
+## [2.18.43](https://github.com/adobe/helix-content-proxy/compare/v2.18.42...v2.18.43) (2021-09-27)
+
+
+### Bug Fixes
+
+* **deps:** use secrets-manager ([00683a6](https://github.com/adobe/helix-content-proxy/commit/00683a63c47051c8b5749ffe366d6e5d1fe5fda3))
+
 ## [2.18.42](https://github.com/adobe/helix-content-proxy/compare/v2.18.41...v2.18.42) (2021-09-06)
 
 
