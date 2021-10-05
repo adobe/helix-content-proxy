@@ -36,11 +36,11 @@
     "@adobe/helix-fetch": "2.4.2",
     "@adobe/helix-onedrive-support": "5.1.1",
     "@adobe/helix-shared-body-data": "1.1.1",
-    "@adobe/helix-shared-config": "1.4.0",
+    "@adobe/helix-shared-config": "1.4.1",
     "@adobe/helix-shared-utils": "1.0.3",
     "@adobe/helix-shared-wrap": "1.0.0",
     "@adobe/helix-status": "9.2.3",
-    "@adobe/helix-universal": "1.7.0",
+    "@adobe/helix-universal": "1.8.0",
     "@adobe/helix-universal-logger": "1.0.9",
     "googleapis": "88.2.0",
     "lru-cache": "6.0.0"
