@@ -1,3 +1,10 @@
+## [2.18.46](https://github.com/adobe/helix-content-proxy/compare/v2.18.45...v2.18.46) (2021-10-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-onedrive-support to v6 ([#516](https://github.com/adobe/helix-content-proxy/issues/516)) ([c847a07](https://github.com/adobe/helix-content-proxy/commit/c847a07fa0d1b1381a893bf744b8c2afdda8fa0b))
+
 ## [2.18.45](https://github.com/adobe/helix-content-proxy/compare/v2.18.44...v2.18.45) (2021-10-04)
 
 
