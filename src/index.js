@@ -14,7 +14,7 @@ const { wrap: helixStatus } = require('@adobe/helix-status');
 const bodyData = require('@adobe/helix-shared-body-data');
 const { AbortError, FetchError } = require('@adobe/helix-fetch');
 const wrap = require('@adobe/helix-shared-wrap');
-const { MountConfig } = require('@adobe/helix-shared-config');
+const { MountConfig, ValidationError } = require('@adobe/helix-shared-config');
 const vary = require('./vary.js');
 const { fetchFSTab } = require('./github');
 const reverse = require('./reverse.js');
@@ -259,6 +259,9 @@ async function main(req, context) {
       if (e.code === 'ERR_INVALID_URL') {
         e.status = 400;
       }
+    }
+    if (e instanceof ValidationError) {
+      return errorResponse(log, 502, e.message);
     }
 
     /* istanbul ignore next */

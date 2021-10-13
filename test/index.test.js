@@ -57,6 +57,25 @@ mountpoints:
     assert.equal(result.statusCode, 501);
   });
 
+  it('index returns 502 if mount config is malformed', async function badMountpoint() {
+    const { server } = this.polly;
+
+    server
+      .get('https://raw.githubusercontent.com/adobe/theblog/cb8a0dc5d9d89b800835166783e4130451d3c6aa/fstab.yaml')
+      .intercept((_, res) => res.status(200).send(`
+  /foo: onedrive:/drives/dummy_driveId/items/dummy_rootId`));
+
+    const result = await main({
+      owner: 'adobe',
+      repo: 'theblog',
+      ref: 'cb8a0dc5d9d89b800835166783e4130451d3c6aa',
+      path: '/foo/index.md',
+      limit: 1,
+      offset: 1,
+    });
+    assert.equal(result.statusCode, 502);
+  });
+
   it('index returns 404 on invalid path', async () => {
     const result = await main({
       owner: 'adobe',
