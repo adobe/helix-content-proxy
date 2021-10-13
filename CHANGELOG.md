@@ -1,3 +1,10 @@
+## [2.18.47](https://github.com/adobe/helix-content-proxy/compare/v2.18.46...v2.18.47) (2021-10-13)
+
+
+### Bug Fixes
+
+* catch validation errors, return as 502 ([#521](https://github.com/adobe/helix-content-proxy/issues/521)) ([467ee6d](https://github.com/adobe/helix-content-proxy/commit/467ee6d1730c7bdf8e33f67e6ff7b912ae5c9796))
+
 ## [2.18.46](https://github.com/adobe/helix-content-proxy/compare/v2.18.45...v2.18.46) (2021-10-08)
 
 
