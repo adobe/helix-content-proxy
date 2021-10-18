@@ -41,6 +41,7 @@ async function getUncachedIdFromPath(path, parentId, log, options) {
     GOOGLE_DOCS2MD_REFRESH_TOKEN: refresh_token,
   } = options;
 
+  // eslint-disable-next-line camelcase
   const auth = await createCachedOAuthClient({ clientId, clientSecret }, { refresh_token });
 
   const drive = google.drive({
@@ -110,6 +111,7 @@ async function getFile(fileId, log, options) {
     GOOGLE_DOCS2MD_REFRESH_TOKEN: refresh_token,
   } = options;
 
+  // eslint-disable-next-line camelcase
   const auth = await createCachedOAuthClient({ clientId, clientSecret }, { refresh_token });
 
   const drive = google.drive({
@@ -132,6 +134,7 @@ async function getPathFromId(fileId, roots, options) {
     log,
   } = options;
 
+  // eslint-disable-next-line camelcase
   const auth = await createCachedOAuthClient({ clientId, clientSecret }, { refresh_token });
 
   const drive = google.drive({

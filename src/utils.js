@@ -15,14 +15,9 @@ const utils = require('@adobe/helix-shared-utils');
 
 const { cleanupHeaderValue } = utils;
 
-const { context, ALPN_HTTP1_1, Response } = fetchAPI;
-const { fetch, timeoutSignal } = process.env.HELIX_FETCH_FORCE_HTTP1
-  ? context({
-    alpnProtocols: [ALPN_HTTP1_1],
-    userAgent: 'helix-fetch', // static user agent for test recordings
-  })
-  /* istanbul ignore next */
-  : fetchAPI;
+const { Response, fetch, timeoutSignal } = process.env.HELIX_FETCH_FORCE_HTTP1
+  ? /* istanbul ignore next */ fetchAPI.h1({ userAgent: 'helix-fetch' })
+  : /* istanbul ignore next */ fetchAPI;
 
 function appendURLParams(url, params) {
   const u = new URL(url);
