@@ -1,3 +1,10 @@
+## [2.18.48](https://github.com/adobe/helix-content-proxy/compare/v2.18.47...v2.18.48) (2021-10-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-fetch to v3 ([f039d31](https://github.com/adobe/helix-content-proxy/commit/f039d317861e00d48a3905c0c0aa1e4012a9697b))
+
 ## [2.18.47](https://github.com/adobe/helix-content-proxy/compare/v2.18.46...v2.18.47) (2021-10-13)
 
 
