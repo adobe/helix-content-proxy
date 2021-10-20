@@ -1,3 +1,10 @@
+## [2.18.50](https://github.com/adobe/helix-content-proxy/compare/v2.18.49...v2.18.50) (2021-10-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-universal-logger to v2 ([#525](https://github.com/adobe/helix-content-proxy/issues/525)) ([310c292](https://github.com/adobe/helix-content-proxy/commit/310c2924e3419ff8e04d7d2f1f11aff6c3684f94))
+
 ## [2.18.49](https://github.com/adobe/helix-content-proxy/compare/v2.18.48...v2.18.49) (2021-10-20)
 
 
