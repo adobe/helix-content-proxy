@@ -90,17 +90,29 @@ async function handleJSON(opts, params) {
         });
       }
 
-      return errorResponse(log, -response.status,
-        `Unable to fetch ${url} (${response.status}) from data-embed`, '', 'max-age=60');
+      return errorResponse(
+        log,
+        -response.status,
+        `Unable to fetch ${url} (${response.status}) from data-embed`,
+        '',
+        'max-age=60',
+      );
     } catch (gatewayerror) {
-      return errorResponse(log, gatewayerror instanceof AbortError ? 504 : 502,
-        `error fetching data from ${url}: ${gatewayerror}`);
+      return errorResponse(
+        log,
+        gatewayerror instanceof AbortError ? 504 : 502,
+        `error fetching data from ${url}: ${gatewayerror}`,
+      );
     }
   } catch (servererror) {
     if (servererror.statusCode) {
-      return errorResponse(log, -servererror.statusCode,
+      return errorResponse(
+        log,
+        -servererror.statusCode,
         `Unable to fetch spreadsheet from onedrive (${servererror.statusCode}) - ${servererror.message}`,
-        '', 'max-age=60');
+        '',
+        'max-age=60',
+      );
     }
 
     return errorResponse(log, 500, servererror.toString(), '', 'max-age=60');

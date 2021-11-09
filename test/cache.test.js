@@ -128,7 +128,9 @@ describe('Cache Tests', () => {
     const cached = quick(countfn);
     assert.equal(await cached(), 1);
     assert.equal(await cached(), 1);
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
     assert.equal(await cached(), 2);
     assert.equal(await cached(), 2);
   });

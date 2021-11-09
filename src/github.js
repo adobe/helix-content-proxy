@@ -14,6 +14,7 @@ const utils = require('@adobe/helix-shared-utils');
 const { fetch, getFetchOptions, errorResponse } = require('./utils');
 const cache = require('./cache.js');
 
+// eslint-disable-next-line default-param-last
 async function computeGithubURI(root, owner, repo, ref = 'main', path) {
   if (ref === 'gh-pages') {
     const url = new URL(`https://${owner}.github.io`);

@@ -53,8 +53,11 @@ async function handleSitemapXML(opts) {
     });
   } catch (servererror) {
     if (servererror.statusCode) {
-      return errorResponse(log, -servererror.statusCode,
-        `Unable to fetch file from onedrive (${servererror.statusCode}) - ${servererror.message}`);
+      return errorResponse(
+        log,
+        -servererror.statusCode,
+        `Unable to fetch file from onedrive (${servererror.statusCode}) - ${servererror.message}`,
+      );
     }
     return errorResponse(log, 500, servererror.toString());
   }

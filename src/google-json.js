@@ -70,8 +70,13 @@ async function handleJSON(opts, params) {
         },
       });
     }
-    return errorResponse(log, -response.status,
-      `Unable to fetch ${url} (${response.status}) from gdocs2md`, '', 'max-age=60');
+    return errorResponse(
+      log,
+      -response.status,
+      `Unable to fetch ${url} (${response.status}) from gdocs2md`,
+      '',
+      'max-age=60',
+    );
   } catch (e) {
     return errorResponse(log, 502, `error fetching data: ${e.message} (${e.code})`);
   }
