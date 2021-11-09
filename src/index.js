@@ -178,9 +178,12 @@ async function main(req, context) {
     }
 
     if (!handler) {
-      return errorResponse(log, 501,
+      return errorResponse(
+        log,
+        501,
         `No handler found for type ${mp.type} at path ${path} (${owner}/${repo})`,
-        'Invalid mount configuration');
+        'Invalid mount configuration',
+      );
     }
 
     // extract credentials

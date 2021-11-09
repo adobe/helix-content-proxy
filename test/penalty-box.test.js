@@ -14,7 +14,9 @@
 const assert = require('assert');
 const PenaltyBox = require('../src/penalty-box');
 
-const sleep = (s) => new Promise((res) => setTimeout(res, s * 1000));
+const sleep = (s) => new Promise((res) => {
+  setTimeout(res, s * 1000);
+});
 
 describe('Test Penalty Box', () => {
   it('No foul, no harm', async () => {

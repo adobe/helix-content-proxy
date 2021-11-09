@@ -93,8 +93,13 @@ async function handle(opts) {
   if (response.status === 429) {
     box.foul(owner, repo);
   }
-  return errorResponse(log, -response.status, `Unable to fetch ${owner}/${repo}/${ref}${mp.relPath} (${response.status}) from word2md: ${body}`,
-    '', 'max-age=60');
+  return errorResponse(
+    log,
+    -response.status,
+    `Unable to fetch ${owner}/${repo}/${ref}${mp.relPath} (${response.status}) from word2md: ${body}`,
+    '',
+    'max-age=60',
+  );
 }
 
 function canhandle(mp) {
