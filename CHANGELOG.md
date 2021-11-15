@@ -1,3 +1,10 @@
+## [2.18.57](https://github.com/adobe/helix-content-proxy/compare/v2.18.56...v2.18.57) (2021-11-15)
+
+
+### Bug Fixes
+
+* **deps:** update external major (major) ([#542](https://github.com/adobe/helix-content-proxy/issues/542)) ([3fbd22d](https://github.com/adobe/helix-content-proxy/commit/3fbd22d5e2cff06781d1568684351bbb70c5adcf))
+
 ## [2.18.56](https://github.com/adobe/helix-content-proxy/compare/v2.18.55...v2.18.56) (2021-11-12)
 
 
