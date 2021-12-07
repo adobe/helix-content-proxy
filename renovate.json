@@ -10,8 +10,8 @@
       "allowedVersions": "<6.0.0"
     },
     {
-      "packageNames": ["@pollyjs/core"],
-      "allowedVersions": "<persister-fs"
+      "packageNames": ["@pollyjs/persister-fs"],
+      "allowedVersions": "<6.0.0"
     }
   ]
 }
