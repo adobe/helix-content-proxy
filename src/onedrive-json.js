@@ -12,7 +12,7 @@
 
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 const utils = require('@adobe/helix-shared-utils');
-const { Response } = require('@adobe/helix-universal');
+const { Response } = require('@adobe/helix-fetch');
 const { AbortError } = require('@adobe/helix-fetch');
 const { getOneDriveClient, getAccessToken } = require('./onedrive-helpers.js');
 const {

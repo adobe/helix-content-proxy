@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const { Response } = require('@adobe/helix-universal');
+const { Response } = require('@adobe/helix-fetch');
 const { filename2url } = require('./filename-to-url.js');
 const google = require('./google-reverse.js');
 const onedrive = require('./onedrive-reverse.js');
