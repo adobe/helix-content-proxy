@@ -213,7 +213,7 @@ mountpoints:
         'cache-control': 'no-store, private',
         'content-type': 'application/json',
         'surrogate-control': 'max-age=30758400, stale-while-revalidate=30758400, stale-if-error=30758400, immutable',
-        'surrogate-key': 'ERUhf9+V6/T5sTc/',
+        'surrogate-key': 'ERUhf9-V6_T5sTc_',
         'x-source-location': '/drives/dummy_driveId/items/1234',
         vary: 'x-ow-version-lock',
       },
