@@ -41,7 +41,7 @@
     "@adobe/helix-shared-wrap": "1.0.0",
     "@adobe/helix-status": "9.2.4",
     "@adobe/helix-universal-logger": "2.0.0",
-    "googleapis": "92.0.0",
+    "googleapis": "94.0.0",
     "lru-cache": "6.0.0"
   },
   "devDependencies": {
