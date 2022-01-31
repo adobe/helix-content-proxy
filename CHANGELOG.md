@@ -1,3 +1,10 @@
+## [2.18.66](https://github.com/adobe/helix-content-proxy/compare/v2.18.65...v2.18.66) (2022-01-31)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-shared-utils to v2 ([#573](https://github.com/adobe/helix-content-proxy/issues/573)) ([1f35ec5](https://github.com/adobe/helix-content-proxy/commit/1f35ec529c55e048a5b4b4ebfa34f2cbcfada520))
+
 ## [2.18.65](https://github.com/adobe/helix-content-proxy/compare/v2.18.64...v2.18.65) (2022-01-10)
 
 
