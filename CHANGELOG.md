@@ -1,3 +1,10 @@
+## [2.18.68](https://github.com/adobe/helix-content-proxy/compare/v2.18.67...v2.18.68) (2022-02-04)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#581](https://github.com/adobe/helix-content-proxy/issues/581)) ([40f6c68](https://github.com/adobe/helix-content-proxy/commit/40f6c68f6a26e6d28cdc943dc13137f744f00615))
+
 ## [2.18.67](https://github.com/adobe/helix-content-proxy/compare/v2.18.66...v2.18.67) (2022-02-01)
 
 
