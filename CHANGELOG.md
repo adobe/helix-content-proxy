@@ -1,3 +1,10 @@
+## [2.18.76](https://github.com/adobe/helix-content-proxy/compare/v2.18.75...v2.18.76) (2022-02-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency lru-cache to v7 ([#598](https://github.com/adobe/helix-content-proxy/issues/598)) ([1ad9264](https://github.com/adobe/helix-content-proxy/commit/1ad92644e8463d510f617a948d5135d6c2aa8467))
+
 ## [2.18.75](https://github.com/adobe/helix-content-proxy/compare/v2.18.74...v2.18.75) (2022-02-23)
 
 
