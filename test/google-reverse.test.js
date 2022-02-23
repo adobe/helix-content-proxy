@@ -72,7 +72,7 @@ function scramble(server) {
 describe('Google Reverse Lookup Tests', () => {
   before(() => {
     // clear cache for tests
-    cache.options({ maxSize: 1000 });
+    cache.options({ max: 1000 });
   });
 
   setupPolly({
