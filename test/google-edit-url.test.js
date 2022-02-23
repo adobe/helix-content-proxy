@@ -64,7 +64,7 @@ function scramble(server) {
 describe('Google Edit Link Tests', () => {
   before(() => {
     // clear cache for tests
-    cache.options({ maxSize: 1000 });
+    cache.options({ max: 1000 });
   });
 
   setupPolly({

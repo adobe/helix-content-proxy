@@ -60,7 +60,7 @@ function scramble(server) {
 describe('Google Sitemap Tests', () => {
   beforeEach(() => {
     // clear cache for tests
-    cache.options({ maxSize: 1000 });
+    cache.options({ max: 1000 });
   });
 
   setupPolly({

@@ -34,7 +34,7 @@ mountpoints:
 describe('Google Integration Tests', () => {
   before(() => {
     // clear cache for tests
-    cache.options({ maxSize: 1000 });
+    cache.options({ max: 1000 });
   });
 
   setupPolly({
@@ -123,7 +123,7 @@ function scramble(server) {
 describe('Google JSON Tests', () => {
   before(() => {
     // clear cache for tests
-    cache.options({ maxSize: 1000 });
+    cache.options({ max: 1000 });
   });
 
   setupPolly({
