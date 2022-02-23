@@ -267,7 +267,8 @@ describe('Onedrive Edit Link Tests', () => {
     });
 
     assert.equal(result.statusCode, 400);
-    assert.equal(result.headers['x-error'], 'Invalid URL');
+    // note that this will change with node 16
+    assert.equal(result.headers['x-error'], 'Invalid URL: <script>alert(document.domain)</script>');
   }).timeout(20000);
 
   it('Retrieves url for a private repository with credentials', async function okOnedrive() {
